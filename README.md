@@ -3,3 +3,7 @@ This project aims to help farmers by providing the necessary information that wi
 of fertilizers and water needs.
 
 Existing commercial soil sensors were developed for large agricultural concerns (for “big ag”) and require internet connectivity, cloud-based solutions,and on going subscription fees (at rates of thousands of dollars per month). Rural small-scale farms are challenged with lack of networks, electric power, and the extremely high cost of these commercial solutions. 
+
+---
+
+*This is a Capstone Project done by ASU seniors during the 2018-2019 School Year*
