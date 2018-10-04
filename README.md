@@ -1,4 +1,5 @@
 # SolarSENSE
+
 This project aims to help farmers by providing the necessary information that will enable them to adapt their farming behaviors to the changing climactic conditions, finding the right balance between high yields and low environmental impact. More specifically, this will be done by providing farmers with valuable data from soil sensors to boost their yields while accurately identifying correct levels
 of fertilizers and water needs.
 
