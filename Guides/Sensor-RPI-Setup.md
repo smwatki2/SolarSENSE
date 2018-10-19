@@ -13,7 +13,7 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 
 		*```gatttool --help```*
 
-		If this returns a unkown command error, restart install from steps 1.1.
+		If this returns a unkown command error, restart install from step 1.i.
 
 2. **INSTALL a MQTT Broker**
 	
