@@ -1,11 +1,15 @@
 # Author: Tresor Cyubahiro
-# Date: 10.20.2018
-# Description: A program that subscribes to sensor topic and retrieves data sent
-#              by the sensors. All sensors post their data to topic mifora/Flora-care
+# Date: 10.19.2018
+# Description: A program that subscribes to sensor topic and retrieves data sent#              by the sensors
 # SolarSENSE Capstone Project
 
-import paho.mqtt.client as mqtt #Install package as 'pip install paho-mqtt'
+
+#Install package as 'pip install paho-mqtt'
+import paho.mqtt.client as mqtt 
 import json
+import datetime
+
+file = open("sensorReportData.txt", "a")
 
 def on_connect(client, data, flags, rc):
     print("Connection to Blocker established "+str(rc))
@@ -14,6 +18,11 @@ def on_connect(client, data, flags, rc):
 def on_message(client, data, message):
     jsonData = message.payload.decode("utf-8", "ignore")
     reading = json.loads(jsonData) 
+
+    date = datetime.datetime.now()
+
+    # Write Sensor Data and Date to file
+    file.write("Date: "+str(date)+", Data: "+jsonData+"\n")
 
     print("Reading from topic: "+message.topic+"\n")
     print("Moisture: {} \nConductivity {}\nLight: {}\nTemperature: {} \nBattery: {}\n ".format(reading["moisture"], reading["conductivity"], reading["light"], reading["temperature"], reading["battery"]))
