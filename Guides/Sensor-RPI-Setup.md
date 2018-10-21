@@ -13,7 +13,7 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 
 		*```gatttool --help```*
 
-		If this returns a unkown command error, restart install from steps 1.1.
+		If this returns a unkown command error, restart install from step 1.i.
 
 2. **INSTALL a MQTT Broker**
 	
@@ -32,7 +32,7 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 
 		* *```mosquitto -v```* *
 
-3. Configure Daemon 
+3. **Configure Daemon** 
 
 	To get the deamon to connect to our sensors, we will configure properties such as frequency of measurements, Addresses of the sensors, and so forth. To do that we will edit the config file and add our configurations.
 
@@ -64,7 +64,7 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 		This will scan and list all available bluetooth devices. Locate your sensor by looking at its MAC ADDRESS, then add its name and address in the above config file.
 
 
-4. Test that everything works by running the daemon as:
+4. **Test that everything works by running the daemon as:**
 
 	*`python3 /opt/miflora-mqtt-daemon/miflora-mqtt-daemon.py`*
 
