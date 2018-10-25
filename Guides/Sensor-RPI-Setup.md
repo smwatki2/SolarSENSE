@@ -39,8 +39,8 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 	1. Run the following commands to create, open and edit the config file
 
 
-		* *```cp /opt/miflora-mqtt-daemon/config.{ini.dist,ini}```* *
-		* *```vim /opt/miflora-mqtt-daemon/config.ini```*
+		* *```cp /opt/miflora-mqtt-daemon/config.{ini.dist,ini}```* 
+		* *```vim /opt/miflora-mqtt-daemon/config.ini```
 
 	2. Replace all the contents with the following (Our minimum settings):
 
