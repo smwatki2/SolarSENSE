@@ -57,4 +57,5 @@ sudo rm /etc/nginx/sites-enabled/default
 sudo cp ./solarSENSE.conf /etc/nginx/sites-available/solarSENSE.conf
 sudo ln -s /etc/nginx/sites-available/solarSENSE.conf /etc/nginx/sites-enabled
 
-echo "All done! .... Now please reboot"
+echo "All done! .... Now rebooting"
+sudo reboot

@@ -13,11 +13,11 @@
 
 4. **The script will now start setting things up. Wait for it to do it's thing**
 
-    * If you are connecting to your Pi over ssh, your connection will drop after *`Stopping dhcpcd`*, but everything is fine. Wait about a minute or so before restarting your Pi
+    * If you are connecting to your Pi over ssh, your connection will drop after *`Stopping dhcpcd`*, but everything is fine. Wait about a minute or so for the Pi to reboot itself
 
-    * If you are connected to your Pi via HDMI and a keyboard/mouse, you should see all the messages from the script, and will know when it is finished
+    * If you are connected to your Pi via HDMI and a keyboard/mouse, you should see all the messages from the script, and will know when it is finished.
 
-5. **Once the script has finished, reboot your Raspberry Pi by unplugging the power cord, and plugging it back in**
+5. **Once the script has finished, it will automatically reboot your Raspberry Pi**
 
 6. **Everything should be setup and ready to go.**
   
