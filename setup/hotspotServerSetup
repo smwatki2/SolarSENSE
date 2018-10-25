@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#install all necessary packages
+echo "Installing necessary packages"
+sudo apt-get install -y hostapd dnsmasq nginx python3 python3-dev python3-pip build-essential
+sudo pip3 install flask uwsgi
+
+#move configuration files for dhcpcd, dnsmasq, hostapd, and running it all at start up
+#  dhcpd handles DHCP for the hotspot
+#  dnsmasq handles DNS, router advertisement, etc
+#  hostapd allows us to use the wifi chip as a access point
+#  wifistart is a script that makes an access point network interface work together with the normal wifi interface at boot
+#  rc.local holds info on scripts to run at start up
+
+echo "moving configuration files"
+sudo cp ./dhcpcd.conf /etc/dhcpcd.conf
+#backup the original dnsmasq.conf file
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+sudo cp ./dnsmasq.conf /etc/dnsmasq.conf
+sudo cp ./hostapd.conf /etc/hostapd/hostapd.conf
+sudo iwconfig wlan0 channel 1
+sudo cp ./hostapd /etc/default/hostapd
+sudo cp ./wifistart /usr/local/bin/wifistart
+sudo chmod +x /usr/local/bin/wifistart
+sudo cp ./rc.local /etc/rc.local 
+sudo echo -e "11.11.11.11 \t solar.sense" >> /etc/hosts
+
+#disable regular resources, since we just defined our own custom ones
+echo "Stopping hostapd"
+sudo systemctl stop hostapd
+echo "Stopping dnsmasq"
+sudo systemctl stop dnsmasq
+echo "Stopping dhcpcd"
+sudo systemctl stop dhcpcd
+echo "Disabling hostapd"
+sudo systemctl disable hostapd
+echo "Disabling dnsmasq"
+sudo systemctl disable dnsmasq
+echo "Disabling dhcpcd"
+sudo systemctl disable dhcpcd
+
+#setup Flask, uWSGI, and NGINX
+echo "Setting up Flask, uWSGI, and NGINX"
+sudo export FLASK_DEBUG=1
+sudo mkdir /home/pi/solarSENSE
+sudo chown www-data /home/pi/solarSENSE
+sudo cp ./home.py /home/pi/solarSENSE
+sudo mkdir /home/pi/solarSENSE/static
+sudo mkdir /home/pi/solarSENSE/templates
+sudo cp ./static/solarspell.jpg /home/pi/solarSENSE/static
+sudo cp ./templates/index.html /home/pi/solarSENSE/templates
+sudo cp ./uwsgi_config.ini /home/pi/solarSENSE
+
+#delete the default NGINX page
+sudo rm /etc/nginx/sites-enabled/default
+# set NGINX as a reverse proxy, serving the socket from uWSGI at port 80 instead
+sudo cp ./solarSENSE.conf /etc/nginx/sites-available/solarSENSE.conf
+sudo ln -s /etc/nginx/sites-available/solarSENSE.conf /etc/nginx/sites-enabled
+
+echo "All done! .... Now rebooting"
+sudo reboot
