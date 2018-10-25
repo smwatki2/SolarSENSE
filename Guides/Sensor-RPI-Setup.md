@@ -22,15 +22,15 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 	1. Install the Mosquitto MQTT Broker by running: 
 
 		* *```sudo apt update```*
-		* *```sudo apt install -y mosquitto mosquitto-clients```* *
+		* *```sudo apt install -y mosquitto mosquitto-clients```* 
 
 	2. To make sure the broker auto starts on start up, run:
 
-		* *```sudo systemctl enable mosquitto.service```* * 
+		* *```sudo systemctl enable mosquitto.service```* 
 
 	3. Test if installation was successful by running: 
 
-		* *```mosquitto -v```* *
+		* *```mosquitto -v```* 
 
 3. **Configure Daemon** 
 
