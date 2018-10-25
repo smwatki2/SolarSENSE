@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home | Python Match Maker</title>
+</head>
+<body>
+
+	<h1><i>MatchMaker: The Python Version</i></h1>
+	<form action="" method="POST">
+		{{ form.hidden_tag() }}
+		<p>
+			{{ form.username.label }} : 
+			{{ form.username(size=32) }}
+		</p>
+		<p>
+			{{ form.survey }} {{ form.match }}
+		</p>
+	</form>
+
+</body>
+</html>

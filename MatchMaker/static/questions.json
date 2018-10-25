@@ -1,0 +1,19 @@
+{
+	"questions" : [
+		{"ques" : "What is your favorite Color?",
+		 "ans"  :  ["Red","Blue","Green"]
+		},
+		{
+		 "ques" : "Are you left or right handed?",
+		 "ans"  :  ["Left", "Right", "Unsure"]
+		},
+		{
+			"ques" :"Do you prefer pen or pencil?",
+			"ans" : ["Pen", "Pencil", "Why Not ink and quil?"]
+		},
+		{
+			"ques" :"Red or Blue",
+			"ans" : ["Red", "Blue", "Sorry I'm Color Blind"]
+		}
+	]
+}
