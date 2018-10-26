@@ -71,6 +71,6 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 
 	
 
-*Author: Tresor Cyubahiro
+*Author: ASU Capstone Team 2018
 Date Modified: 10.17.2018
 SolarSENSE Project*
