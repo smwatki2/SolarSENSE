@@ -50,8 +50,10 @@ This guide outlines the steps needed to setup the MongoDB Connection for storing
 	Run ```exit``` to log out of the mongoDB shell
 
 
-Author: ASU Capstone Team 2018
-Date Modified: 10.25.2018
 
 Glossary:
 	RPI : Raspberry Pi
+
+
+Author: ASU Capstone Team 2018
+Date Modified: 10.25.2018
