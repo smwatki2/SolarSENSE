@@ -36,9 +36,13 @@ This guide outlines the steps needed to setup the MongoDB Connection for storing
 
 	Opted to use 3.4.0 because the latest (3.7.2) was having problems connecting with the latest mongo release
 
-6. Run the python daemon from folder SensorReader, sensorReader.py, and make sure there is data reported 	at least once so you can test the next step
+6. Copy the modified daemon (located inside folder SensorReader) to /opt/miflora-mqtt-daemon as:
 
-6. Sample code to use to test if the daemon is saving to the database:
+	```sudo cp miflora-mqtt-daemon.py /opt/miflora-mqtt-daemon```
+
+7. Run the python file from folder SensorReader, sensorReader.py, and make sure there is data reported 	at least once so you can test the next step
+
+8. Sample code to use to test if the daemon is saving to the database:
 
 	```
 	mongo
@@ -56,4 +60,4 @@ Glossary:
 
 
 Author: ASU Capstone Team 2018
-Date Modified: 10.25.2018
+Date Modified: 10.27.2018
