@@ -42,7 +42,7 @@ This guide outlines the steps needed to setup the MongoDB Connection for storing
 
 7. Run the python file from folder SensorReader, sensorReader.py, and make sure there is data reported 	at least once so you can test the next step
 
-	NOTE: Currently, both sensorReader.py and /opt/miflora-mqtt-daemon/miflora-mqtt-daemon.py have to run 	
+	**NOTE**: Currently, both sensorReader.py and /opt/miflora-mqtt-daemon/miflora-mqtt-daemon.py have to run 	
 	      simultaneously.
 
 8. Sample code to use to test if the daemon is saving to the database:
