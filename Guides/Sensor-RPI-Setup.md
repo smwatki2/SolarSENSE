@@ -54,8 +54,8 @@ This document outlines the steps needed to **setup communication between Xiaomi 
 		[MQTT]
 		keepalive = 60
 		[Sensors]
-		# Here goes sensors in format Sensor name@favorable identifier = MAC ADDRESS
-		# For instance the sensor I have is added as FloraCare@Tresor = CA:7C:8D:66:CF:40
+		# Here goes sensors in format Flora-care@favorable identifier = MAC ADDRESS
+		# For instance the sensor I have is added as Flora-care@Tresor = CA:7C:8D:66:CF:40
 		```
 	3. To add a sensor, make sure your bluetooth is enabled and run command:
 
