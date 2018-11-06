@@ -9,5 +9,10 @@
 			{{ form.hidden_tag() }}
 			{{ form.generateData }}
 		</form>
+		{% if result %}
+		<p>{{result}}</p>
+		{% else %}
+		<p></p>
+		{% endif %}
 	</body>
 </html>	
