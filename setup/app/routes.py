@@ -1,10 +1,11 @@
 import subprocess
 import os
+import traceback
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
-from flask import render_template
 from app.modules import SoilDataModel
+from flask import render_template
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -15,21 +16,22 @@ def home():
     if form.validate_on_submit():
         if form.generateData.data:
             obj = sdm.getData()
-            # print(subprocess.check_output(['ehco', 'hello world']))
-            # file = Path("./app/static/log.txt")
-            # if file.exists():
-            #     print("File exists")
-            #     log = open("./app/static/log.txt","w")
-            # else:
-            #     print("File does not exist")
-            #     log = open("./app/static/log.txt","a")
-            # # with open('/static/log.txt','a') as log:
-            #     subprocess.call(['echo', 'Hello World'], stdout=log)
-            #     log.close()
-            # print(os.getcwd())
-            # result = subprocess.run(['python3', '/opt/miflora-mqtt-daemon/miflora-mqtt-daemon.py'], stdout=subprocess.PIPE)
-            # cap_obj = result.stdout
-            # print("Test Capture Command Result: " + cap_obj)
             return render_template('index.html', hello=hello, form=form, result=obj)
 
     return render_template('index.html', hello=hello, form=form)
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    file = open("errorlog.txt", "a")
+    file.write(traceback.format_exc())
+    file.close()
+    return traceback.format_exc()
+
+
+@app.errorhandler(404)
+def resource_not_found(error):
+    file = open("errorlog.txt","a")
+    file.write(traceback.format_exc())
+    file.close()
+    return traceback.format_exc()
