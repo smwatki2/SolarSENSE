@@ -20,6 +20,13 @@ def home():
 
     return render_template('index.html', hello=hello, form=form)
 
+@app.route("/instant", methods=['GET'])
+def instant():
+    return render_template('instant.html')
+
+@app.route("/scan", methods=['GET'])
+def scan():
+    return render_template('scan.html')
 
 @app.errorhandler(500)
 def internal_error(error):
