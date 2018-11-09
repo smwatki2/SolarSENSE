@@ -19,6 +19,6 @@ fi
 
 /usr/local/bin/wifistart
 
-/usr/local/bin/uwsgi --ini /home/pi/solarSENSE/uwsgi_config.ini --uid www-data --gid www-data --daemonize /var/log/uwsgi.log --touch-reload /home/pi/solarSENSE/home.py
+/usr/local/bin/uwsgi --ini /home/pi/solarSENSE/uwsgi_config.ini --uid www-data --gid www-data --daemonize /var/log/uwsgi.log --touch-reload /home/pi/solarSENSE/run.py
 
 exit 0
