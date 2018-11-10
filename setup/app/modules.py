@@ -15,12 +15,12 @@ class SoilDataModel(object):
 
     def getData(self):
         try:
-            client = MongoClient("mongodb://127.0.0.1:27017")
+            client = MongoClient("mongodb://0.0.0.0:27017")
             db = client.solarsensereports
             reports = db.reports
             jsonObj = dumps(reports.find())
             return jsonObj
         except Exception as exc:
-        	file = open("errorlog.txt","a")
+        	file = open("./static/errorlog.txt","a")
         	file.write(traceback.format_exc())
         	file.close()
