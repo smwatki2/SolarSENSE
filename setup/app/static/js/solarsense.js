@@ -6,6 +6,11 @@
 
 var app = angular.module('solarsenseApp', []);
 
+app.config(['$interpolateProvider', function($interpolateProvider) {
+  $interpolateProvider.startSymbol('{a');
+  $interpolateProvider.endSymbol('a}');
+}]);
+
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.startCollection = function () {
@@ -18,8 +23,26 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	
 });
 
-app.controller('InstantCtrl', function($scope, $timeout, $http, $window) {
-	
+app.controller('InstantCtrl', function($scope,$http){
+
+	$scope.test = "This is a Test";
+	$scope.soilData = [];
+
+	$scope.dataRequest = function() {
+		console.log("Calling Data Object");
+		$http.get('http://0.0.0.0:5000/data')
+		.then(function success(response){
+			$scope.response = response.data;
+			for(var i = 0; i < $scope.response.length; i++){
+				var soilObj = JSON.parse($scope.response[i]);
+				$scope.soilData.push(soilObj);
+			}
+		}, function error(response){
+			console.log("There was an error getting the data");
+		});
+
+	};
+
 });
 
 app.controller('ScanCtrl', function($scope, $timeout, $http) {
