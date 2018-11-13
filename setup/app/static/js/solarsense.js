@@ -30,7 +30,15 @@ app.controller('InstantCtrl', function($scope,$http){
 
 	$scope.dataRequest = function() {
 		console.log("Calling Data Object");
-		$http.get('http://0.0.0.0:5000/data')
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/data',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
 		.then(function success(response){
 			$scope.response = response.data;
 			for(var i = 0; i < $scope.response.length; i++){
