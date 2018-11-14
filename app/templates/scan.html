@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
-	<body ng-controller="InstantCtrl">
+	<body ng-controller="ScanCtrl">
 		<nav class="navbar navbar-expand-lg navbar-light header">
 			<div class="logo pull-left"></div>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,6 +30,11 @@
 					<div></div>
 				</div>
 				<p style="text-align: center;color: grey;margin: 10px;"><small>Locating sensors...</small></p>
+				<!-- <div class="progress progress-stripped active {{percent_done}}">
+					<div class="bar" style="min-width: 2em;width: {{percent_done}}%;"></div> </div> -->
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{a percent a}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{a percent a}%</div>
+				</div>
 			</div>
 		</div>
 
