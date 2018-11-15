@@ -78,6 +78,7 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 });
 
 app.controller('ScanCtrl', function($scope, $timeout, $http) {
+	$window.location.href = "scanFind"; 
   $scope.percent = 0;
   $scope.waitTime = 2;
   $scope.showBar = true;

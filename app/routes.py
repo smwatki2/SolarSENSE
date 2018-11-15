@@ -45,13 +45,17 @@ def data():
 def scan():
     return render_template('scan.html')
 
+@app.route('/scanFind')
+def scanFind()
+    result = subprocess.run(['sudo', '/usr/local/bin/autofindFlowerCare'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    return render_template('scanFinished.html', scanResults = result)
+
 @app.errorhandler(500)
 def internal_error(error):
     file = open("errorlog.txt", "a")
     file.write(traceback.format_exc())
     file.close()
     return traceback.format_exc()
-
 
 @app.errorhandler(404)
 def resource_not_found(error):
