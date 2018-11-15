@@ -25,15 +25,22 @@
 		</nav>
 		<div class="container">
 			<div class="lds-css ng-scope">
-				<div style="width:100%;height:100%;" class="lds-ripple">
+				<div style="width:100%;height:100%;" class="lds-ripple" ng-show="showBar">
 					<div></div>
 					<div></div>
 				</div>
-				<p style="text-align: center;color: grey;margin: 10px;"><small>Locating sensors...</small></p>
+				<p class="ng-scope" style="text-align: center;color: grey;margin: 10px;" ng-show="showBar"><small>Locating more sensors...</small></p>
 				<!-- <div class="progress progress-stripped active {{percent_done}}">
 					<div class="bar" style="min-width: 2em;width: {{percent_done}}%;"></div> </div> -->
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="{a percent a}" aria-valuemin="0" aria-valuemax="100" style="width: 100%">{a percent a}%</div>
+				<div class="progress" ng-show="showBar">
+					<div class="progress-bar progress-bar-striped progress-bar-animated ng-scope" role="progressbar" aria-valuenow="{a percent a}" aria-valuemin="0" aria-valuemax="100" style="width: {a percent a}%">{a percent a}%</div>
+				</div>
+				<div ng-show="showFinished">
+					<h1> Found some new sensors! </h1>
+					<h3> Now have a total of 3 sensors</h3>
+					<p> Sensor 1</p>
+					<p> Sensor 2</p>
+					<p> Sensor 3</p>
 				</div>
 			</div>
 		</div>

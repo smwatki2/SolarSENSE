@@ -79,9 +79,22 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 
 app.controller('ScanCtrl', function($scope, $timeout, $http) {
   $scope.percent = 0;
-  $timeout(function(){
-        for(var i = 0; i < 100; i++){
-          $scope.percent+=10;
-        }
-      },1000);
+  $scope.waitTime = 2;
+  $scope.showBar = true;
+  $scope.showFinished = false;
+  $scope.onTimeout = function() {
+	if ($scope.percent<100){
+	  $scope.percent+=10;
+	  $timeout($scope.onTimeout,1000);
+	} else {
+	  if ($scope.waitTime!=0){
+	    $scope.waitTime--;
+	    $timeout($scope.onTimeout,200);
+	  } else {
+	    $scope.showBar = false;
+            $scope.showFinished = true;
+	  }
+	}
+  }
+  $timeout($scope.onTimeout, 1000);
 });
