@@ -20,6 +20,27 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.scanSensors = function () {
 		$window.location.href = "scan"; 
 	}
+	// Function to check for notifications
+	$scope.checkNotifications = function() {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/notifications',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
+		.then(function success(response){
+			console.log(response.data);
+		}, function error(err){
+			console.log(err);
+		});
+
+	};
+
+	$scope.checkNotifications();
+
 	
 });
 

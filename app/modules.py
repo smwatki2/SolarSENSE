@@ -75,6 +75,10 @@ class Notifications(object):
 
         """ method to get new notifications """
     def getNewNotifications(self):
+        self.checkNewNotifications()
+        return self.allNotifications
+
+    def checkNewNotifications(self):
         try:
             notifications = db.notifications
             newNotifications = notifications.find()
@@ -87,12 +91,23 @@ class Notifications(object):
             file.close()
 
         """ method to save a new notification """
-    def saveNewNotifications(self, content, type, timestamp):
+    def saveNewNotification(self, content, type, timestamp):
         try:
             notifications = db.notifications
             newNotification = Notification(content, type, timestamp)
             toJson = json.loads(newNotification.toString()) 
             result = notifications.insert_one(toJson)
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+        """ method to delete a notification """
+    def deleteNotification(self, id):
+        try:
+            notifications = db.notifications
+            query = {'__id': id}
+            result = notifications.delete_one(query)
 
         except Exception as e:
             file = open("errorlog.txt", "a")
