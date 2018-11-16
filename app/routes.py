@@ -45,10 +45,16 @@ def data():
 def scan():
     return render_template('scan.html')
 
-@app.route('/scanFind')
-def scanFind()
+@app.route('/scanScript')
+def scanScript():
+    jsonArray = []
     result = subprocess.run(['sudo', '/usr/local/bin/autofindFlowerCare'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    return render_template('scanFinished.html', scanResults = result)
+    jsonArray.append(json.dumps(result))
+    return make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
 
 @app.errorhandler(500)
 def internal_error(error):
