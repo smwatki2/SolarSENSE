@@ -18,7 +18,12 @@ if [ "$_IP" ]; then
 fi
 
 /usr/local/bin/wifistart
+/usr/local/bin/autofindFlowerCare
 
-/usr/local/bin/uwsgi --ini /home/pi/solarSENSE/uwsgi_config.ini --uid www-data --gid www-data --daemonize /var/log/uwsgi.log --touch-reload /home/pi/solarSENSE/run.py
+/usr/local/bin/uwsgi --ini DIRECTORY_HERE/uwsgi_config.ini --uid www-data --gid www-data --daemonize /var/log/uwsgi.log --touch-reload DIRECTORY_HERE/run.py
+
+python3 /opt/miflora-mqtt-daemon/miflora-mqtt-daemon.py &
+
+python3 DIRECTORY_HERE/sensorReader.py &
 
 exit 0
