@@ -5,6 +5,9 @@ from flask import url_for
 import json
 import traceback
 
+client = MongoClient("mongodb://0.0.0.0:27017")
+#client = MongoClient("mongodb://localhost:27017")
+db = client.solarsensereports
 
 class SoildDataCollection(object):
 
@@ -17,9 +20,9 @@ class SoildDataCollection(object):
 
     def getData(self):
         try:
-            client = MongoClient("mongodb://0.0.0.0:27017")
+            #client = MongoClient("mongodb://0.0.0.0:27017")
             #client = MongoClient("mongodb://localhost:27017")
-            db = client.solarsensereports
+            #db = client.solarsensereports
             reports = db.reports
             jsonObj = reports.find()
             print("[DEBUG MODULES] ")
@@ -54,19 +57,21 @@ class SoilDataModel(object):
 '''
 Notifications class
 '''
+class Notification(object):
+    """ This is a class for a notification """
+    def __init__(self, content, type, timestamp):
+        self.content = content
+        self.type = type
+        self.timestamp = timestamp
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+
 class Notifications(object):
     """This is a class for all app's instance Notifications"""
     def __init__(self):
         self.allNotifications = []
-
-    class Notification(object):
-        """ This is a class for a notification """
-        def __init__(self, content, type, timestamp):
-            self.content = content
-            self.type = type
-            self.timestamp = timestamp
-        def toString(self):
-            return json.dumps(self)
 
         """ method to get new notifications """
     def getNewNotifications(self):
@@ -75,7 +80,7 @@ class Notifications(object):
             newNotifications = notifications.find()
             for newNotification in newNotifications:
                 notif = Notification(newNotification.content, newNotification.type, newNotification.timestamp)
-                self.allNotifications.append(newNotification)
+                self.allNotifications.append(notif)
         except Exception as e:
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
@@ -92,7 +97,7 @@ class Notifications(object):
         except Exception as e:
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
-            file.close()""
+            file.close()
             
 
 
