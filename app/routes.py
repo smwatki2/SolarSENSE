@@ -80,7 +80,7 @@ def notificationSave():
     ''' End point for testing notification deletion ''' 
 @app.route('/deleteNotification/<id>', methods=['GET'])
 @cross_origin()
-def notificationSave():
+def deleteNotification(id):
     notifications = Notifications()
     notifications.deleteNotification(id)
 
