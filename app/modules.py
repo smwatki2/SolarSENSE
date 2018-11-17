@@ -59,15 +59,15 @@ Notifications class
 '''
 class Notification(object):
     """ This is a class for a notification """
-    def __init__(self, content, type, timestamp):
-        self.content = content
-        self.type = type
+    def __init__(self, current, goal, timestamp):
+        self.current = current
+        self.goal = goal
         self.timestamp = timestamp
 
-    def __init__(self, id, content, type, timestamp):
+    def __init__(self, id, current, goal, timestamp):
         self.id = id
-        self.content = content
-        self.type = type
+        self.current = current
+        self.goal = goal
         self.timestamp = timestamp
     
     def toString(self):
@@ -90,7 +90,7 @@ class Notifications(object):
             newNotifications = notifications.find()
             for newNotification in newNotifications:
                 newNotification['_id'] = str(newNotification['_id'])
-                notif = Notification(newNotification['_id'], newNotification['content'], newNotification['type'], newNotification['timestamp'])
+                notif = Notification(newNotification['_id'], newNotification['current'], newNotification['goal'], newNotification['timestamp'])
                 self.allNotifications.append(notif)
         except Exception as e:
             file = open("errorlog.txt", "a")
@@ -98,12 +98,12 @@ class Notifications(object):
             file.close()
 
         """ method to save a new notification """
-    def saveNewNotification(self, content, type, timestamp):
+    def saveNewNotification(self, current, goal, timestamp):
         try:
             notifications = db.notifications
-            newNotification = Notification(content, type, timestamp)
-            toJson = json.loads(newNotification.toString()) 
-            result = notifications.insert_one(toJson)
+            #newNotification = Notification(current, goal, timestamp)
+            #toJson = json.loads(newNotification.toString()) 
+            result = notifications.insert_one({'timestamp': timestamp, 'current': current, 'goal': goal})
 
         except Exception as e:
             file = open("errorlog.txt", "a")

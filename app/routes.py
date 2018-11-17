@@ -69,7 +69,7 @@ def notifications():
 @cross_origin()
 def notificationSave():
     notifications = Notifications()
-    notifications.saveNewNotification("{'water': 12, 'goal': 15}", 0, '2018-11-16 04:43:59')
+    notifications.saveNewNotification(12, 15, '2018-11-16 04:43:59')
 
     return make_response(jsonify('success'),200,{
         'Access-Control-Allow-Origin': '*',

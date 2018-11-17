@@ -35,7 +35,11 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		})
 		.then(function success(response){
 			console.log(response.data);
-			$scope.notifications = response.data;
+			for (var i = 0; i < response.data.length; i++) {
+				$scope.notifications.push(JSON.parse(response.data[i]));
+				console.log(response.data[i]);
+			}
+			console.log($scope.notifications);
 		}, function error(err){
 			console.log(err);
 		});
