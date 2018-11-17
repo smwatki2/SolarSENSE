@@ -64,12 +64,38 @@ def notifications():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
 
+    ''' End point for testing saving a notification ''' 
+@app.route('/notificationSave', methods=['GET'])
+@cross_origin()
+def notificationSave():
+    notifications = Notifications()
+    notifications.saveNewNotification("{'water': 12, 'goal': 15}", 0, '2018-11-16 04:43:59')
+
+    return make_response(jsonify('success'),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' End point for testing notification deletion ''' 
+@app.route('/deleteNotification/<id>', methods=['GET'])
+@cross_origin()
+def notificationSave():
+    notifications = Notifications()
+    notifications.deleteNotification(id)
+
+    return make_response(jsonify('success'),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
 """ END POINTS END HERE """
 
 
-    """ TEST END POINTS START HERE """
+""" TEST END POINTS START HERE """
     
-    """ TEST ENDPOINTS END HERE """
+""" TEST ENDPOINTS END HERE """
 
 
 """ ERROR HANDLERS START HERE """

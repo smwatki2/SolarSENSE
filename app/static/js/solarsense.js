@@ -13,6 +13,8 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
+	$scope.notifications = [];
+
 	$scope.startCollection = function () {
 		$window.location.href = "instant"; 
 	}
@@ -33,6 +35,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		})
 		.then(function success(response){
 			console.log(response.data);
+			$scope.notifications = response.data;
 		}, function error(err){
 			console.log(err);
 		});

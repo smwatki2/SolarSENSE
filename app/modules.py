@@ -63,6 +63,12 @@ class Notification(object):
         self.content = content
         self.type = type
         self.timestamp = timestamp
+
+    def __init__(self, id, content, type, timestamp):
+        self.id = id
+        self.content = content
+        self.type = type
+        self.timestamp = timestamp
     
     def toString(self):
         return json.dumps(self.__dict__)
@@ -83,7 +89,8 @@ class Notifications(object):
             notifications = db.notifications
             newNotifications = notifications.find()
             for newNotification in newNotifications:
-                notif = Notification(newNotification.content, newNotification.type, newNotification.timestamp)
+                newNotification['_id'] = str(newNotification['_id'])
+                notif = Notification(newNotification['_id'], newNotification['content'], newNotification['type'], newNotification['timestamp'])
                 self.allNotifications.append(notif)
         except Exception as e:
             file = open("errorlog.txt", "a")
@@ -106,7 +113,7 @@ class Notifications(object):
     def deleteNotification(self, id):
         try:
             notifications = db.notifications
-            query = {'__id': id}
+            query = {'_id': id}
             result = notifications.delete_one(query)
 
         except Exception as e:
