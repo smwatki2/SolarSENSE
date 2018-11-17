@@ -3,4 +3,3 @@
 uwsgi_config.ini
 __pycache__/
 errorlog.txt
-.AppleDouble/*
