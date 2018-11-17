@@ -43,11 +43,22 @@ def data():
 
 @app.route('/scan')
 def scan():
+    subprocess.Popen(['/bin/bash','/usr/local/bin/autofindFlowerCare'])
+    #I've been working on this for at least 2 hours today. This is what I've found
+        #running the sudo command makes it break
+        #the autofindFlowerCare relies on pipes and redirecting stdout to files
+        #  apparently Popen does not play well with that, and does not save those files at all.
+        # problem is that the lescan only outputs to stdout, and will do so until it is killed
+    # So I think it was failing because the lescan output wasn't being captured at all becasue Popen is trying to grab it instead
+    # So I'll probably have to run the commands of the autofindFlowerCare script line by line with their own popen lines
+    # I was really hoping I would be able to just fork my autofindFlowerCare script in the background and do the webpage stuff while waiting
+    # but now I don't know what I'll do
     return render_template('scan.html')
 
 @app.route('/scanScript')
 def scanScript():
     jsonArray = []
+    # I'll probably have to do everything here. I'm not sure if the Angular stuff will continue in the meantime...
     result = subprocess.run(['sudo', '/usr/local/bin/autofindFlowerCare'], stdout=subprocess.PIPE).stdout.decode('utf-8')
     jsonArray.append(json.dumps(result))
     return make_response(jsonify(jsonArray),200,{
