@@ -2,6 +2,7 @@ import subprocess
 import os
 import traceback
 import json
+import time
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
@@ -58,14 +59,23 @@ def scan():
 @app.route('/scanScript')
 def scanScript():
     jsonArray = []
-    # I'll probably have to do everything here. I'm not sure if the Angular stuff will continue in the meantime...
-    result = subprocess.run(['sudo', '/usr/local/bin/autofindFlowerCare'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-    jsonArray.append(json.dumps(result))
-    return make_response(jsonify(jsonArray),200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        })
+    subprocess.Popen(['hciconfig', 'hci0', 'down'])
+    subprocess.Popen(['hciconfig', 'hci0', 'up'])
+    scan = subprocess.Popen(['hcitool', 'lescan'], stdout=subprocess.PIPE)
+    time.sleep(10)
+    scan.kill()
+    scan.wait()
+    scan_results = scan.stdout
+    file = open("bluetooth_thing.txt")
+    file.write(scan_results)
+    file.close()
+
+    #jsonArray.append(json.dumps(result))
+    #return make_response(jsonify(jsonArray),200,{
+    #    'Access-Control-Allow-Origin': '*',
+    #    'Access-Control-Allow-Methods' : 'PUT,GET',
+    #    'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+    #    })
 
 @app.errorhandler(500)
 def internal_error(error):
