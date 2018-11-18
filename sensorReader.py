@@ -11,6 +11,7 @@ import pymongo
 from pymongo import MongoClient
 import json
 import datetime
+from app.modules import Notifications
 
 # declare mongo client on port 27017
 mongoClient = MongoClient('localhost', 27017)
@@ -34,8 +35,37 @@ def on_message(client, data, message):
     # Save sensor data to database
     result = reports.insert_one(reading)
 
+    # Retrieve current and required water level
+    currentWaterLevel = getCurrentWaterLevel()
+    requiredWaterLevel = getRequiredWaterLevel()
+
+    # Check if the current condition needs attention and notify farmer
+    if (waterIsLow(currentWaterLevel, requiredWaterLevel)):
+        notifyFarmer(currentWaterLevel, requiredWaterLevel, reading["timestamp"])
+
     print("Reading from topic: "+message.topic+"\n")
     print("Moisture: {} \nConductivity {}\nLight: {}\nTemperature: {} \nBattery: {}\n Sensor: {}\n Time: {}\n MAC ADDRESS: {}\n".format(reading["moisture"],reading["conductivity"], reading["light"], reading["temperature"], reading["battery"], reading["name_pretty"], reading["timestamp"], reading["mac"]))
+
+# Method to compare water levels
+def waterIsLow(actual, goal):
+    if (actual < goal):
+        return True
+    else:
+        return False
+
+# Method to generate and push a notification 
+def notifyFarmer(actual, goal, timestamp):
+    notifications.saveNewNotification(actual, goal, timestamp)
+
+# Method to calculate actual water level
+# Currently a place holder/ Skeleton
+def getCurrentWaterLevel():
+    return 0
+
+# Method to calculate required water level
+# Currently a place holder/ Skeleton
+def getRequiredWaterLevel():
+    return 0
 
 client = mqtt.Client()
 client.on_connect = on_connect
