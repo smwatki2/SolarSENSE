@@ -13,6 +13,8 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
+	$scope.notifications = [];
+
 	$scope.startCollection = function () {
 		$window.location.href = "instant"; 
 	}
@@ -20,6 +22,32 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.scanSensors = function () {
 		$window.location.href = "scan"; 
 	}
+	// Function to check for notifications
+	$scope.checkNotifications = function() {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/notifications',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
+		.then(function success(response){
+			console.log(response.data);
+			for (var i = 0; i < response.data.length; i++) {
+				$scope.notifications.push(JSON.parse(response.data[i]));
+				console.log(response.data[i]);
+			}
+			console.log($scope.notifications);
+		}, function error(err){
+			console.log(err);
+		});
+
+	};
+
+	$scope.checkNotifications();
+
 	
 });
 
