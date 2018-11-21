@@ -9,6 +9,7 @@ client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
 db = client.solarsensereports
 historicalDb = client.HistoricalDatabase
+cropFactorDb = client.CropFactorDatabase
 
 class SoildDataCollection(object):
 
@@ -120,7 +121,33 @@ class Notifications(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
-     
+'''
+Crop Factor Class
+'''       
+class CropFactor(object):
+    """docstring for CropFactor"""
+    def __init__(self, crop, phase):
+        self.crop = crop
+        self.phase = phase
+        self.cropFactor = 0
+
+    """ method to get crop's crop factor """
+    def getCropFactor(self):
+        self.retrieveCropFactor()
+        return self.cropFactor
+
+    def retrieveCropFactor(self):
+        try:
+            cropFactorCollection = cropFactorDb.cropFactor #Will replace with db name from Wes
+            query = {'crop': self.crop, 'phase': self.phase}
+            cropFactor = cropFactorCollection.find(query)
+            self.cropFactor = cropFactor 
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+            
 '''
 Historical Data Class
 '''       
@@ -137,9 +164,9 @@ class HistoricalData(object):
 
     def retrieveHistoricalData(self):
         try:
-            countryDataDb = historicalDb.historicalData #Will replace with db name from Wes
+            countryDataCollection = historicalDb.historicalData #Will replace with db name from Wes
             query = {'country': self.country}
-            countryData = countryDataDb.find(query)
+            countryData = countryDataCollection.find(query)
             self.weatherData = countryData 
 
         except Exception as e:
