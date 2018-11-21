@@ -1,0 +1,25 @@
+{
+	"AZCrops":[
+		{
+			"CROPID" : "ALF",
+			"CROPNAME" : "Alfalfa",
+			"CROPCO_G" : 0.40,
+			"CROPCO_MID" : 0.95,
+			"CROPCO_HARV" : 0.90
+		},
+		{
+			"CROPID" : "CTN",
+			"CROPNAME" : "Cotton",
+			"CROPCO_G" : 0.35,
+			"CROPCO_MID" : 1.15,
+			"CROPCO_HARV" : 0.70
+		},
+		{
+			"CROPID" : "WHT",
+			"CROPNAME" : "Wheat",
+			"CROPCO_G" : 0.3,
+			"CROPCO_MID" : 1.15,
+			"CORPCO_HARV" : 0.4
+		}
+	]
+}
