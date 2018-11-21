@@ -23,8 +23,9 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="alert alert-warning alert-dismissible fade show" role="alert">
-			<strong>Hey farmer!</strong> Your crops need better care, please see recent reports
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="notification in notifications">
+			<strong>Hey farmer!</strong> Your crops need more water. Current level is <strong>{a notification.current a}</strong>. Goal is <strong>{a notification.goal a}.</strong> On
+			<small>{a notification.timestamp a}</small>
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
