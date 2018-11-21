@@ -50,3 +50,24 @@ class SoilDataModel(object):
     def getSoilData(self):
         return self.__dataValues
 
+class HistoricalData(object):
+    """docstring for HistoricalData"""
+    def __init__(self, country):
+        self.country = country
+        self.weatherData = {}
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
