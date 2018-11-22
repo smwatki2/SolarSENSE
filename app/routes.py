@@ -58,16 +58,24 @@ def scan():
 
 @app.route('/scanScript')
 def scanScript():
-    jsonArray = []
+    file = open("bluetooth_thing.txt", "a")
+    # jsonArray = []
     subprocess.Popen(['hciconfig', 'hci0', 'down'])
     subprocess.Popen(['hciconfig', 'hci0', 'up'])
-    scan = subprocess.Popen(['hcitool', 'lescan'], stdout=subprocess.PIPE)
-    time.sleep(10)
-    scan.kill()
-    scan.wait()
-    scan_results = scan.stdout
-    file = open("bluetooth_thing.txt")
-    file.write(scan_results)
+    # scan = subprocess.Popen(['hcitool', 'lescan'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    scan = subprocess.Popen(['echo $USER'], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    # time.sleep(10)
+    # scan.kill()
+    # scan.wait()
+    output = scan.stdout.readline()
+    # result, err = scan.communicate()
+    # os.system("hcitool lescan> scan.txt & pkill --signal SIGINT hcitool")
+    file.write("Here we go: \n")
+    scan = open("scan.txt", "r")
+    file.write(scan.read())
+    # for line in output:
+    file.write(output.decode("utf-8"))
+    file.write("ALL DONE\n")
     file.close()
 
     #jsonArray.append(json.dumps(result))
