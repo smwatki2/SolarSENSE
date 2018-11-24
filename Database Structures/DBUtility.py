@@ -18,7 +18,7 @@ class DBUtility(object):
 			print(dbName + ' already exists')
 			return False #returns false if the db exists and the operation was not successful
 		else:
-			newDB = self.mongoClient[self.dbName]
+			newDB = self.mongoClient[dbName]
 			newCol = newDB['dummyCollection']
 			newCol.insert_one(dummyObject)
 
