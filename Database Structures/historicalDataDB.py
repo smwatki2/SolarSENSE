@@ -5,11 +5,7 @@ import os
 from DBUtility import DBUtility
 
 # Create the client object to connect to the Mongo DB Server
-if(len(sys.argv) > 0 and len(sys.argv) == 2): #should be self and dbname
-	dbName = sys.argv[1]
-else:
-	print("Error in Usage!\n USE: python3 historicalDataDB.py [dbname]")
-	exit(1)
+dbName = 'HistoricalClimateData'
 
 mongoClient = pymongo.MongoClient("mongodb://localhost:27017")
 dbUtil = DBUtility(mongoClient)
