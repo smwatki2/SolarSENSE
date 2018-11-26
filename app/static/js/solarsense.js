@@ -22,6 +22,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.scanSensors = function () {
 		$window.location.href = "scan"; 
 	}
+	
+	$scope.openConfig = function () {
+		$window.location.href = "config"; 
+	}
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -112,4 +116,33 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
           $scope.percent+=10;
         }
       },1000);
+});
+
+app.controller('ConfigCtrl', function($scope,$http,$timeout){
+
+	function dropdownRegionFunc() {
+		document.getElementById('dropdownRegionButton').classList.toggle("show");
+	}
+	
+	function dropdownDateFunc() {
+		document.getElementById('dropdownDateButton').classList.toggle("show");
+	}
+	
+	function dropdownCropFunc() {
+		document.getElementById('dropdownCropButton').classList.toggle("show");
+	}
+	
+	window.onclick = function(event) {
+	if (!event.target.matches('.dropbtn')) {
+
+		var dropdownList = document.getElementsByClassName("dropdown-content");
+		var i;
+		for (i = 0; i < dropdownList.length; i++) {
+			var openDropdown = dropdownList[i];
+			if (openDropdown.classList.contains('show')) {
+				openDropdown.classList.remove('show');
+			}
+		}
+	}
+
 });
