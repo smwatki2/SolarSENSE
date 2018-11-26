@@ -44,7 +44,7 @@ def data():
 
 @app.route('/scan')
 def scan():
-    subprocess.Popen(['/bin/bash','/usr/local/bin/autofindFlowerCare'])
+    # subprocess.Popen(['/bin/bash','/usr/local/bin/autofindFlowerCare'])
     #I've been working on this for at least 2 hours today. This is what I've found
         #running the sudo command makes it break
         #the autofindFlowerCare relies on pipes and redirecting stdout to files
@@ -60,21 +60,24 @@ def scan():
 def scanScript():
     file = open("bluetooth_thing.txt", "a")
     # jsonArray = []
-    subprocess.Popen(['hciconfig', 'hci0', 'down'])
-    subprocess.Popen(['hciconfig', 'hci0', 'up'])
+    # subprocess.Popen(['hciconfig', 'hci0', 'down'])
+    # subprocess.Popen(['hciconfig', 'hci0', 'up'])
     # scan = subprocess.Popen(['hcitool', 'lescan'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    scan = subprocess.Popen(['echo $USER'], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    os.system("echo $USER > user2.txt")
+    os.system("ls > directory2.txt")
+    os.system("sudo hcitool lescan > scan2.txt &")
+    # scan = subprocess.Popen(['echo $USER'], shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     # time.sleep(10)
     # scan.kill()
     # scan.wait()
-    output = scan.stdout.readline()
+    # output = scan.stdout.readline()
     # result, err = scan.communicate()
     # os.system("hcitool lescan> scan.txt & pkill --signal SIGINT hcitool")
     file.write("Here we go: \n")
-    scan = open("scan.txt", "r")
-    file.write(scan.read())
+    # scan = open("scan.txt", "r")
+    # file.write(scan.read())
     # for line in output:
-    file.write(output.decode("utf-8"))
+    # file.write(output.decode("utf-8"))
     file.write("ALL DONE\n")
     file.close()
 
