@@ -9,7 +9,7 @@ client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
 db = client.solarsensereports
 historicalDb = client.HistoricalDatabase
-cropFactorDb = client.CropFactorDatabase
+cropFactorDb = client.CropFactor
 
 class SoildDataCollection(object):
 
@@ -126,10 +126,10 @@ Crop Factor Class
 '''       
 class CropFactor(object):
     """docstring for CropFactor"""
-    def __init__(self, crop, phase):
+    def __init__(self, crop):
         self.crop = crop
-        self.phase = phase
-        self.cropFactor = 0
+        #self.phase = phase
+        self.cropFactor = {}
 
     """ method to get crop's crop factor """
     def getCropFactor(self):
@@ -138,9 +138,10 @@ class CropFactor(object):
 
     def retrieveCropFactor(self):
         try:
-            cropFactorCollection = cropFactorDb.cropFactor #Will replace with db name from Wes
-            query = {'crop': self.crop, 'phase': self.phase}
+            cropFactorCollection = cropFactorDb.AZTest
+            query = {'CROPNAME': self.crop}
             cropFactor = cropFactorCollection.find(query)
+            cropFactor['_id'] = str(cropFactor['_id'])
             self.cropFactor = cropFactor 
 
         except Exception as e:

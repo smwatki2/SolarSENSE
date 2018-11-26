@@ -7,6 +7,7 @@ from app import app
 from app.forms import HomeForm
 from app.modules import SoildDataCollection
 from app.modules import Notifications
+from app.modules import CropFactor
 from flask import render_template, make_response
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -85,6 +86,19 @@ def deleteNotification(id):
     notifications.deleteNotification(id)
 
     return make_response(jsonify('success'),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' End point for testing getting crop factor ''' 
+@app.route('/cropfactor/<name>', methods=['GET'])
+@cross_origin()
+def cropfactor(name):
+    factor = CropFactor(name)
+    thisCropFactor = factor.getCropFactor()
+
+    return make_response(jsonify(thisCropFactor),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
