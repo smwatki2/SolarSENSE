@@ -8,8 +8,8 @@ import traceback
 client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
 db = client.solarsensereports
-historicalDb = client.HistoricalDatabase
-cropFactorDb = client.CropFactorDatabase
+historicalDb = client.HistoricalClimateData
+cropFactorDb = client.CropFactor
 
 class SoildDataCollection(object):
 
@@ -121,41 +121,80 @@ class Notifications(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+
+'''
+Factors class
+'''
+class Factors(object):
+    """ This is a class for a crop's factors """
+    def __init__(self, cropid, name, mid, germination, harvest):
+        self.cropid = cropid
+        self.name = name
+        self.mid = mid
+        self.germination = germination
+        self.harvest = harvest
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
 '''
 Crop Factor Class
 '''       
 class CropFactor(object):
     """docstring for CropFactor"""
-    def __init__(self, crop, phase):
+    def __init__(self, crop):
         self.crop = crop
-        self.phase = phase
-        self.cropFactor = 0
+        self.cropFactors = []
 
     """ method to get crop's crop factor """
     def getCropFactor(self):
         self.retrieveCropFactor()
-        return self.cropFactor
+        return self.cropFactors
 
     def retrieveCropFactor(self):
         try:
-            cropFactorCollection = cropFactorDb.cropFactor #Will replace with db name from Wes
-            query = {'crop': self.crop, 'phase': self.phase}
-            cropFactor = cropFactorCollection.find(query)
-            self.cropFactor = cropFactor 
+            cropFactorCollection = cropFactorDb.AZTest
+            query = {'CROPNAME': self.crop}
+            cropFactors = cropFactorCollection.find(query)
+            for cropFactor in cropFactors:
+                factors = Factors(cropFactor['CROPID'], cropFactor['CROPNAME'], cropFactor['CROPCO_MID'], cropFactor['CROPCO_G'], cropFactor['CROPCO_HARV'])
+                self.cropFactors.append(factors)
 
         except Exception as e:
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+'''
+Historical Data Object
+'''
+class HistoricalReport(object):
+    """ This is a class for Historical Data Object """
+    def __init__(self, hourlyDewPointTemp, locationID, hourlyWindSpeed, hourlyDryBulbTemp, hourlyRelHumidity, hourlyPrecip, date, sublocationID, hourlyWindDirection):
+        self.hourlyDewPointTemp = hourlyDewPointTemp
+        self.locationID = locationID
+        self.hourlyWindSpeed = hourlyWindSpeed
+        self.hourlyDryBulbTemp = hourlyDryBulbTemp
+        self.hourlyRelHumidity = hourlyRelHumidity
+        self.hourlyPrecip = hourlyPrecip
+        self.date = date
+        self.sublocationID = sublocationID
+        self.hourlyWindDirection = hourlyWindDirection
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
             
 '''
 Historical Data Class
 '''       
 class HistoricalData(object):
     """docstring for HistoricalData"""
-    def __init__(self, country):
+    def __init__(self, country, location, datetime):
         self.country = country
-        self.weatherData = {}
+        self.location = location
+        self.datetime = datetime
+        self.weatherData = []
 
     """ method to get country's historical data """
     def getHistoricalData(self):
@@ -164,10 +203,12 @@ class HistoricalData(object):
 
     def retrieveHistoricalData(self):
         try:
-            countryDataCollection = historicalDb.historicalData #Will replace with db name from Wes
-            query = {'country': self.country}
-            countryData = countryDataCollection.find(query)
-            self.weatherData = countryData 
+            locationDataCollection = historicalDb.mesaGatewayClimateData
+            query = {'location_id': self.country, 'sublocation_id': self.location, 'date': self.datetime}
+            allData = locationDataCollection.find(query)
+            for data in allData:
+                report = HistoricalReport(data['hourly_dew_point_temp'], data['location_id'], data['hourly_wind_speed'], data['hourly_drybulb_temp'], data['hourly_rel_humidity'], data['hourly_precip'], data['date'], data['sublocation_id'], data['hourly_wind_direction'])
+                self.weatherData.append(report)
 
         except Exception as e:
             file = open("errorlog.txt", "a")
