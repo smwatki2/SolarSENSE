@@ -8,6 +8,7 @@ from app.forms import HomeForm
 from app.modules import SoildDataCollection
 from app.modules import Notifications
 from app.modules import CropFactor
+from app.modules import HistoricalData
 from flask import render_template, make_response
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -101,6 +102,21 @@ def cropfactor(name):
         factors.append(cropfactor.toString())
 
     return make_response(jsonify(factors),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' End point for testing getting crop factor ''' 
+@app.route('/history/<country>/<location>/<datetime>', methods=['GET'])
+@cross_origin()
+def history(country, location, datetime):
+    history = []
+    AllReports = HistoricalData(country, location, datetime)
+    for report in AllReports.getHistoricalData():
+        history.append(report.toString())
+
+    return make_response(jsonify(history),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
