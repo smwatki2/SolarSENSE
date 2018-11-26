@@ -95,10 +95,12 @@ def deleteNotification(id):
 @app.route('/cropfactor/<name>', methods=['GET'])
 @cross_origin()
 def cropfactor(name):
-    factor = CropFactor(name)
-    thisCropFactor = factor.getCropFactor()
+    factors = []
+    AllFactors = CropFactor(name)
+    for cropfactor in AllFactors.getCropFactor():
+        factors.append(cropfactor.toString())
 
-    return make_response(jsonify(thisCropFactor),200,{
+    return make_response(jsonify(factors),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'

@@ -121,6 +121,23 @@ class Notifications(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+
+'''
+Factors class
+'''
+class Factors(object):
+    """ This is a class for a crop's factors """
+    def __init__(self, cropid, name, mid, germination, harvest):
+        self.cropid = cropid
+        self.name = name
+        self.mid = mid
+        self.germination = germination
+        self.harvest = harvest
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
 '''
 Crop Factor Class
 '''       
@@ -128,21 +145,21 @@ class CropFactor(object):
     """docstring for CropFactor"""
     def __init__(self, crop):
         self.crop = crop
-        #self.phase = phase
-        self.cropFactor = {}
+        self.cropFactors = []
 
     """ method to get crop's crop factor """
     def getCropFactor(self):
         self.retrieveCropFactor()
-        return self.cropFactor
+        return self.cropFactors
 
     def retrieveCropFactor(self):
         try:
             cropFactorCollection = cropFactorDb.AZTest
             query = {'CROPNAME': self.crop}
-            cropFactor = cropFactorCollection.find(query)
-            cropFactor['_id'] = str(cropFactor['_id'])
-            self.cropFactor = cropFactor 
+            cropFactors = cropFactorCollection.find(query)
+            for cropFactor in cropFactors:
+                factors = Factors(cropFactor['CROPID'], cropFactor['CROPNAME'], cropFactor['CROPCO_MID'], cropFactor['CROPCO_G'], cropFactor['CROPCO_HARV'])
+                self.cropFactors.append(factors)
 
         except Exception as e:
             file = open("errorlog.txt", "a")
