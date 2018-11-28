@@ -13,12 +13,20 @@ To run this script use the following command:
 
 Example:
 
-`sudo python3 cropfactordb.py CropFactor AZTest AZCrops.json`
+`sudo python3 cropfactordb.py CropFactor CropFactors Crops.json`
 
-Right now this script only takes in one name of a collection to add to and one json file
-to read data from. This will be fixed later once the different regions have been finalized
-and the crops for those regions have been discussed. In the mean time the default script command
-would be to execute the example above.
+The above will create the CropFactor database with a generalized list of all Crop Factors in a CropFactors
+collection. This collection is found in the Crops.json.
+
+To add another collection run the same script with the existing database name and add the new collection
+name and the file supporting it.
+
+Example:
+
+`sudo python3 cropfactordb.py CropFactor AZCrops AZCrops.json`
+
+This command will use the already existing CropFactor database and add a new collection with the following
+json file.
 
 
 
