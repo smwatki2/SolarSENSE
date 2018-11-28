@@ -19,7 +19,7 @@
 			"CROPNAME" : "Wheat",
 			"CROPCO_G" : 0.3,
 			"CROPCO_MID" : 1.15,
-			"CORPCO_HARV" : 0.4
+			"CROPCO_HARV" : 0.4
 		}
 	]
 }
