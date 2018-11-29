@@ -133,14 +133,15 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	}
 	
 	window.onclick = function(event) {
-	if (!event.target.matches('.dropbtn')) {
+		if (!event.target.matches('.dropbtn')) {
 
-		var dropdownList = document.getElementsByClassName("dropdown-content");
-		var i;
-		for (i = 0; i < dropdownList.length; i++) {
-			var openDropdown = dropdownList[i];
-			if (openDropdown.classList.contains('show')) {
-				openDropdown.classList.remove('show');
+			var dropdownList = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdownList.length; i++) {
+				var openDropdown = dropdownList[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
 			}
 		}
 	}

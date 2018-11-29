@@ -10,6 +10,7 @@ client = MongoClient("mongodb://0.0.0.0:27017")
 db = client.solarsensereports
 historicalDb = client.HistoricalClimateData
 cropFactorDb = client.CropFactor
+constraintsDb = client.Constraints
 
 class SoildDataCollection(object):
 
@@ -214,6 +215,68 @@ class HistoricalData(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+'''
+Constraint class
+'''
+class Constraint(object):
+    """ This is a class for Constraint """
+    def __init__(self, region, crop, date):
+        self.region = region
+        self.crop = crop
+        self.date = date
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+'''
+Constraints Class
+'''       
+class Constraints(object):
+    """docstring for Constraints"""
+    def __init__(self, region, crop,  date):
+        self.region = region
+        self.crop = crop
+        self.date = date
+        self.constraints = []
+
+    """ method to get current constraints """
+    def getConstraints(self):
+        self.retrieveConstraints()
+        return self.constraints
+
+    def retrieveConstraints(self):
+        try:
+            farmConstraintsCollection = constraintsDb.constraints
+            query = {'CROPNAME': self.crop}
+            farmConstraints = farmConstraintsCollection.find(query)
+            for farmConstraint in farmConstraints:
+                currentConstraint = Constraint(currentConstraint['region'], currentConstraint['crop'], currentConstraint['date'])
+                self.constraints.append(currentConstraint)
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+    """ method to set constraints """
+    def setConstraints(self):
+        try:
+            farmConstraintsCollection = constraintsDb.constraints
+            query = {'crop': self.crop}
+            if farmConstraintsCollection.find(query).count() > 0:
+                newConstraints = {'$set': {'region': self.region, 'date': self.date}}
+                farmConstraintsCollection.update_one(query, newConstraints)
+            else:
+                newConstraints = {{'region': self.region, 'crop': self.crop, 'date': self.date}}
+                farmConstraintsCollection.insert_one(newConstraints)
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+        
+
 
 
 
