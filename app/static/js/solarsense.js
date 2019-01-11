@@ -122,6 +122,7 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 	$scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
+	$scope.seasons = ['Spring', 'Summer', 'Winter', 'Fall'];
 	$scope.regionCrops = ['Cotton', 'Wheat', 'Alfalfa'];
 
 	$scope.saveConstraints = function() {
