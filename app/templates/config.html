@@ -18,75 +18,79 @@
 			<div class="collapse navbar-collapse" id="navbarToggler">
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 					<li class="nav-item active">
-						<a class="nav-link white-color" href="#">Library</a>
+						<a class="nav-link white-color" href="/">Settings</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
 		<div class="container">
 				<div>
-					<p style="text-align: center;color: grey;margin: 10px;"><big><strong>Settings</strong></big></p>
+					<h1 style="text-align: center;color: grey;margin: 10px;"><big><strong>Settings</strong></big></h1>
 				</div>
 				<div>
 					<p style="text-align: left;color: grey;margin: 10px;"><big>Presets</big></p>
 					<hr/>
 				</div>
-			<div class="row">			
 				<div class="dropdownRegion">
-					<p style="color: grey;margin: 10px;"><big>Region:</big></br>
+					<h3 style="color: grey;margin: 10px;">Region:</h3>
+					<select>
+						<option value="" disabled selected>Select A Region</option>
+						<option ng-repeat="item in regions">{a item a}</option>
+					</select>
+
 					<!-- TODO: Dynamically get regions from settings files -->
-					<button onclick="dropdownRegionFunc()" class="dropbtn">Region</button> 
+<!-- 					<button onclick="dropdownRegionFunc()" class="dropbtn">Region</button> 
 					<div id="dropdownRegionButton" class="dropdown-content">				
 					<a href="#Region1">Region 1</a>
 					<a href="#Region2">Region 2</a>
-					<a href="#Region3">Region 3</a>
-					</div>
+					<a href="#Region3">Region 3</a> -->
 				</div>
 				<div class="dropdownCrop">
-					<p style="color: grey;margin: 10px;"><big>Crop:</big></br>
+					<h3 style="color: grey;margin: 10px;">Crop:</h3>
+					<select>
+						<option value="" disabled selected>Select A Crop</option>
+						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
+					</select><br>
 					<!-- TODO: Dynamically get crops from settings files -->
-					<button onclick="dropdownCropFunc()" class="dropbtn">Crop</button> 
+<!-- 					<button onclick="dropdownCropFunc()" class="dropbtn">Crop</button> 
 					<div id="dropdownCropButton" class="dropdown-content">				
 					<a href="#Crop1">Crop 1</a>
 					<a href="#Crop2">Crop 2</a>
-					<a href="#Crop3">Crop 3</a>
-					</div>
+					<a href="#Crop3">Crop 3</a> -->
 				</div>
 				<div class="dropdownDay">
-					<p style="color: grey;margin: 10px;"><big>Date:</big></br>
+					<h3 style="color: grey;margin: 10px;">Date:</h3>
 					<!-- TODO: Set current Date as button name -->
 					<!--<button onclick="dropdownDateFunc()" class="dropbtn">Date</button>
 					<div id="dropdownDateButton" class="dropdown-content">-->
 					<input type="date" name="Date">
 					<!-- TODO: Dynamically fill button list -->					
-					</div>
-				</div>
-				
-			</div>
+				</div><br>
+				<button ng-click="saveConstraints()">Save Settings</button>
 		</div>
 		
-	<script>
-	function dropdownRegionFunc() {
-		document.getElementById('dropdownRegionButton').classList.toggle("show");
-	}
-	
-	function dropdownCropFunc() {
-		document.getElementById('dropdownCropButton').classList.toggle("show");
-	}
-	
-	window.onclick = function(event) {
-	if (!event.target.matches('.dropbtn')) {
+<!-- 	<script>
+		function dropdownRegionFunc() {
+			document.getElementById('dropdownRegionButton').classList.toggle("show");
+		}
+		
+		function dropdownCropFunc() {
+			document.getElementById('dropdownCropButton').classList.toggle("show");
+		}
+		
+		window.onclick = function(event) {
+		if (!event.target.matches('.dropbtn')) {
 
-		var dropdownList = document.getElementsByClassName("dropdown-content");
-		var i;
-		for (i = 0; i < dropdownList.length; i++) {
-			var openDropdown = dropdownList[i];
-			if (openDropdown.classList.contains('show')) {
-				openDropdown.classList.remove('show');
+			var dropdownList = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdownList.length; i++) {
+				var openDropdown = dropdownList[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
 			}
 		}
-	}
-	</script>
+	</script> -->
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="../static/js/popper.min.js"></script>

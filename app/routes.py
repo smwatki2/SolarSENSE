@@ -26,6 +26,10 @@ def instant():
 @app.route('/scan')
 def scan():
     return render_template('scan.html')
+
+@app.route('/config')
+def config():
+    return render_template('config.html')
 """ ROUTES END HERE """
 
 

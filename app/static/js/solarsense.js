@@ -81,7 +81,8 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			url:'http://11.11.11.11/data',
+			// url:'http://11.11.11.11/data',
+			url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -120,30 +121,11 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
 
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
-	function dropdownRegionFunc() {
-		document.getElementById('dropdownRegionButton').classList.toggle("show");
-	}
-	
-	function dropdownDateFunc() {
-		document.getElementById('dropdownDateButton').classList.toggle("show");
-	}
-	
-	function dropdownCropFunc() {
-		document.getElementById('dropdownCropButton').classList.toggle("show");
-	}
-	
-	window.onclick = function(event) {
-		if (!event.target.matches('.dropbtn')) {
+	$scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
+	$scope.regionCrops = ['Cotton', 'Wheat', 'Alfalfa'];
 
-			var dropdownList = document.getElementsByClassName("dropdown-content");
-			var i;
-			for (i = 0; i < dropdownList.length; i++) {
-				var openDropdown = dropdownList[i];
-				if (openDropdown.classList.contains('show')) {
-					openDropdown.classList.remove('show');
-				}
-			}
-		}
-	}
+	$scope.saveConstraints = function() {
+		console.log("Constraints Saved");
+	};
 
 });
