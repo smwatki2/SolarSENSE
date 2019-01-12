@@ -23,6 +23,12 @@
 				</ul>
 			</div>
 		</nav>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-if="didSave()">
+			<p><strong>{a saveMessage a}</strong></p>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="resetSaveAlert()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
 		<div class="container">
 				<div>
 					<h1 style="text-align: center;color: grey;margin: 10px;"><big><strong>Settings</strong></big></h1>
@@ -33,71 +39,31 @@
 				</div>
 				<div class="dropdownRegion">
 					<h3 style="color: grey;margin: 10px;">Region:</h3>
-					<select>
+					<select id="region" required>
 						<option value="" disabled selected>Select A Region</option>
-						<option ng-repeat="item in regions">{a item a}</option>
+						<option ng-repeat="item in regions" value="{a item a}">{a item a}</option>
 					</select>
-
-					<!-- TODO: Dynamically get regions from settings files -->
-<!-- 					<button onclick="dropdownRegionFunc()" class="dropbtn">Region</button> 
-					<div id="dropdownRegionButton" class="dropdown-content">				
-					<a href="#Region1">Region 1</a>
-					<a href="#Region2">Region 2</a>
-					<a href="#Region3">Region 3</a> -->
 				</div>
 				<div>
 					<h3 style="color: grey; margin: 10px;">Season:</h3>
-					<select>
+					<select id="season" required>
 						<option value="" disabled selected="">Select a Season</option>
 						<option ng-repeat="season in seasons" value="{a season a}">{a season a}</option>
 					</select>
 				</div>
 				<div class="dropdownCrop">
 					<h3 style="color: grey;margin: 10px;">Crop:</h3>
-					<select>
+					<select id="crops" required>
 						<option value="" disabled selected>Select A Crop</option>
 						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
 					</select><br>
-					<!-- TODO: Dynamically get crops from settings files -->
-<!-- 					<button onclick="dropdownCropFunc()" class="dropbtn">Crop</button> 
-					<div id="dropdownCropButton" class="dropdown-content">				
-					<a href="#Crop1">Crop 1</a>
-					<a href="#Crop2">Crop 2</a>
-					<a href="#Crop3">Crop 3</a> -->
 				</div>
 				<div class="dropdownDay">
 					<h3 style="color: grey;margin: 10px;">Date:</h3>
-					<!-- TODO: Set current Date as button name -->
-					<!--<button onclick="dropdownDateFunc()" class="dropbtn">Date</button>
-					<div id="dropdownDateButton" class="dropdown-content">-->
-					<input type="date" name="Date">
-					<!-- TODO: Dynamically fill button list -->					
-				</div><br>
+					<input type="date" name="Date">			
+				</div><br>	
 				<button ng-click="saveConstraints()">Save Settings</button>
 		</div>
-		
-<!-- 	<script>
-		function dropdownRegionFunc() {
-			document.getElementById('dropdownRegionButton').classList.toggle("show");
-		}
-		
-		function dropdownCropFunc() {
-			document.getElementById('dropdownCropButton').classList.toggle("show");
-		}
-		
-		window.onclick = function(event) {
-		if (!event.target.matches('.dropbtn')) {
-
-			var dropdownList = document.getElementsByClassName("dropdown-content");
-			var i;
-			for (i = 0; i < dropdownList.length; i++) {
-				var openDropdown = dropdownList[i];
-				if (openDropdown.classList.contains('show')) {
-					openDropdown.classList.remove('show');
-				}
-			}
-		}
-	</script> -->
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="../static/js/popper.min.js"></script>
