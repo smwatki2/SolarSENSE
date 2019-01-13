@@ -22,6 +22,11 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.scanSensors = function () {
 		$window.location.href = "scan"; 
 	}
+
+	$scope.goToLearn = function () {
+		$window.location.href = "learn"; 
+	}
+
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -112,4 +117,10 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
           $scope.percent+=10;
         }
       },1000);
+});
+
+app.controller('LearnCtrl', function($scope, $timeout, $http) {
+	$scope.goHome = function () {
+		$window.location.href = "/"; 
+	}
 });
