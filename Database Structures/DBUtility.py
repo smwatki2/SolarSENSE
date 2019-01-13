@@ -51,4 +51,7 @@ class DBUtility(object):
 		for row in reader:
 			col.insert_one(row)
 		col.delete_one({"id" : 0}) # Removes dummy value from the collection
+
+	def close_client(self):
+		self.mongoClient.close()
 		

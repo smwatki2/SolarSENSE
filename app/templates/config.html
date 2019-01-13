@@ -39,9 +39,9 @@
 				</div>
 				<div class="dropdownRegion">
 					<h3 style="color: grey;margin: 10px;">Region:</h3>
-					<select id="region" required>
+					<select id="region" ng-init="getRegion()"required>
 						<option value="" disabled selected>Select A Region</option>
-						<option ng-repeat="item in regions" value="{a item a}">{a item a}</option>
+						<option ng-repeat="item in regions" value="{a item.name a}">{a item.name a}</option>
 					</select>
 				</div>
 				<div>
@@ -53,14 +53,14 @@
 				</div>
 				<div class="dropdownCrop">
 					<h3 style="color: grey;margin: 10px;">Crop:</h3>
-					<select id="crops" required>
+					<select id="crops"  required>
 						<option value="" disabled selected>Select A Crop</option>
 						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
 					</select><br>
 				</div>
 				<div class="dropdownDay">
 					<h3 style="color: grey;margin: 10px;">Date:</h3>
-					<input type="date" name="Date">			
+					<input type="date" name="Date" id="selected_date">			
 				</div><br>	
 				<button ng-click="saveConstraints()">Save Settings</button>
 		</div>

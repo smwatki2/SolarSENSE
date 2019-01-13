@@ -1,0 +1,15 @@
+{
+	"Regions":[
+		{
+			"REGION_NAME" : "AZ Test Data",
+			"CF_COLLECTION": "AZCrops"
+		},{
+			"REGION_NAME" : "Hawaii",
+			"CF_COLLECTION": "TODO"
+		},
+		{
+			"REGION_NAME" : "Rwanda",
+			"CF_COLLECTION": "TODO"
+		}
+	]
+}

@@ -9,6 +9,8 @@ from app.modules import SoildDataCollection
 from app.modules import Notifications
 from app.modules import CropFactor
 from app.modules import HistoricalData
+from app.modules import Constraint
+from app.modules import RegionCollection
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -126,11 +128,30 @@ def history(country, location, datetime):
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
 
+    ''' Enpoint for getting regions '''
+
+@app.route("/getRegions", methods=['GET'])
+@cross_origin()
+def getRegions():
+    regions = []
+    regionCollection = RegionCollection()
+    for region in regionCollection.getRegions():
+        print(region.toString())
+        regions.append(region.toString())
+    print("Reqest was received")
+    return make_response(jsonify(regions), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        })   
+
     ''' Enpoint for saving constraints'''
 @app.route('/saveConstraints', methods=['POST'])
 @cross_origin()
 def saveConstraints():
-    print(request.data);
+    constraint = Constraint(request.get_json())
+    constraint.updateConstraint()
+    print("Save Successful")
     return make_response(jsonify("Test Response"), 200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',

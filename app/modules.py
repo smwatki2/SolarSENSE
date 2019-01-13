@@ -10,7 +10,8 @@ client = MongoClient("mongodb://0.0.0.0:27017")
 db = client.solarsensereports
 historicalDb = client.HistoricalClimateData
 cropFactorDb = client.CropFactor
-constraintsDb = client.Constraints
+constraintsDb = client.Constraint
+regionDB = client.Regions
 
 class SoildDataCollection(object):
 
@@ -23,9 +24,6 @@ class SoildDataCollection(object):
 
     def getData(self):
         try:
-            #client = MongoClient("mongodb://0.0.0.0:27017")
-            #client = MongoClient("mongodb://localhost:27017")
-            #db = client.solarsensereports
             reports = db.reports
             jsonObj = reports.find()
             print("[DEBUG MODULES] ")
@@ -219,64 +217,50 @@ class HistoricalData(object):
 '''
 Constraint class
 '''
+
 class Constraint(object):
-    """ This is a class for Constraint """
-    def __init__(self, region, crop, date):
-        self.region = region
-        self.crop = crop
-        self.date = date
-    
+
+    def __init__(self, constraintDict):
+        self.constraint = constraintDict
+
+    def updateConstraint(self):
+        constrainCollection = constraintsDb.SolarSENSEConstraint
+        query = { "ID" : 0 }
+        updateVals = {"$set":{"REGION": self.constraint.get("region"),"CROPNAME": self.constraint.get('crop'), "SEASON": self.constraint.get('season'), "DATE": self.constraint.get('date')}}
+
+        constrainCollection.update_one(query,updateVals)
+        for constraint in constrainCollection.find():
+            print(constraint)
+        
+
+'''
+Region Class
+'''
+
+class Region(object):
+
+    def __init__(self, name, cropFactorCollection):
+        self.name = name
+        self.cfCollection = cropFactorCollection
+
     def toString(self):
         return json.dumps(self.__dict__)
 
-'''
-Constraints Class
-'''       
-class Constraints(object):
-    """docstring for Constraints"""
-    def __init__(self, region, crop,  date):
-        self.region = region
-        self.crop = crop
-        self.date = date
-        self.constraints = []
+class RegionCollection(object):
 
-    """ method to get current constraints """
-    def getConstraints(self):
-        self.retrieveConstraints()
-        return self.constraints
+    def __init__(self):
+        self.regions = []
 
-    def retrieveConstraints(self):
-        try:
-            farmConstraintsCollection = constraintsDb.constraints
-            query = {'CROPNAME': self.crop}
-            farmConstraints = farmConstraintsCollection.find(query)
-            for farmConstraint in farmConstraints:
-                currentConstraint = Constraint(currentConstraint['region'], currentConstraint['crop'], currentConstraint['date'])
-                self.constraints.append(currentConstraint)
+    def retrieveRegions(self):
+        regionInfoCollection = regionDB.RegionInfo
+        regionInfo = regionInfoCollection.find()
+        for info in regionInfo:
+            rInfo = Region(info['REGION_NAME'],info['CF_COLLECTION'])
+            self.regions.append(rInfo)
 
-        except Exception as e:
-            file = open("errorlog.txt", "a")
-            file.write(traceback.format_exc())
-            file.close()
-
-    """ method to set constraints """
-    def setConstraints(self):
-        try:
-            farmConstraintsCollection = constraintsDb.constraints
-            query = {'crop': self.crop}
-            if farmConstraintsCollection.find(query).count() > 0:
-                newConstraints = {'$set': {'region': self.region, 'date': self.date}}
-                farmConstraintsCollection.update_one(query, newConstraints)
-            else:
-                newConstraints = {{'region': self.region, 'crop': self.crop, 'date': self.date}}
-                farmConstraintsCollection.insert_one(newConstraints)
-
-        except Exception as e:
-            file = open("errorlog.txt", "a")
-            file.write(traceback.format_exc())
-            file.close()
-        
-
+    def getRegions(self):
+        self.retrieveRegions()
+        return self.regions
 
 
 
