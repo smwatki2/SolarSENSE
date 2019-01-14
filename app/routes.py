@@ -28,6 +28,10 @@ def scan():
 @app.route('/learn')
 def learn():
     return render_template('learn.html')
+
+@app.route('/status')
+def status():
+    return render_template('status.html')
 """ ROUTES END HERE """
 
 
