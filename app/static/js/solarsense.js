@@ -27,6 +27,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$window.location.href = "learn"; 
 	}
 
+	$scope.goToFarmStatus = function () {
+		$window.location.href = "status"; 
+	}
+
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -120,6 +124,12 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
 });
 
 app.controller('LearnCtrl', function($scope, $timeout, $http) {
+	$scope.goHome = function () {
+		$window.location.href = "/"; 
+	}
+});
+
+app.controller('StatusCtrl', function($scope, $timeout, $http) {
 	$scope.goHome = function () {
 		$window.location.href = "/"; 
 	}
