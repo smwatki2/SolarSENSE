@@ -262,5 +262,33 @@ class RegionCollection(object):
         self.retrieveRegions()
         return self.regions
 
+class SoilAlgorithm(object):
+    """
+    My thinking is to leave this as generic as possible in case we switch to a more
+    complicated Algorith which may or may not still use some of these variables
+    """
+    def __init__(self):
+        # grab historical data right away, in case sensor data is unavailable
+        # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
+        self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
+        self.mean_temp = 0 # In degrees celcius
 
+        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
 
+    def getMeanDaylight(self):
+        return self.mean_daily_percentage_daylight
+
+    def setMeanDaylight(self, light):
+        self.mean_daily_percentage_daylight = light
+
+    def getMeanTemp(self):
+        return self.mean_temp
+
+    def setMeanTemp(self, temp):
+        self.mean_temp = temp
+
+    def getEvotransporation(self):
+        #recalculate the evotransporation, assuming 
+        # BLANEY-CRIDDLE equation comes from https://en.wikipedia.org/wiki/Blaney%E2%80%93Criddle_equation
+        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+        return self.evotransporation
