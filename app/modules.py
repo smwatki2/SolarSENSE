@@ -342,6 +342,3 @@ class SoilAlgorithm(object):
         self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
         print(self.evotransporation)
         return self.evotransporation
-
-
-
