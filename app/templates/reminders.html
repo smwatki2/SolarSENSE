@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
-	<body ng-controller="HomeCtrl">
+	<body ng-controller="RemindersCtrl">
 		<nav class="navbar navbar-expand-lg navbar-light header">
 			<div class="logo pull-left"></div>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,26 +18,50 @@
 			<div class="collapse navbar-collapse" id="navbarToggler">
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 					<li class="nav-item active">
-						<a class="nav-link white-color" href="/reminders">Reminders</a>
+						<a class="nav-link white-color" href="/">Home</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="notification in notifications">
-			<strong>Hey farmer!</strong> Your crops need more water. Current level is <strong>{a notification.current a}</strong>. Goal is <strong>{a notification.goal a}.</strong> On
-			<small>{a notification.timestamp a}</small>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div class="container">
+		<div class="container reminders">
 			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button>
+				<div class="col-sm-12">
+					<center><strong>How often should I remind you?</strong></center>
 				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan Sensors</button>
-				</div>
+			</div>
+			<div class="col-sm-12">
+				  <div class="form-group">
+				    <label for="reminderLabel"><center><small>in hours</small></center></label>
+				    	<select class="form-control" id="reminderLabel">
+				      		<option>1</option>
+				      		<option>2</option>
+				      		<option>3</option>
+				      		<option>4</option>
+				      		<option>5</option>
+				      		<option>6</option>
+				      		<option>7</option>
+				      		<option>8</option>
+				      		<option>9</option>
+				      		<option>10</option>
+				      		<option>11</option>
+				      		<option>12</option>
+				      		<option>13</option>
+				      		<option>14</option>
+				      		<option>15</option>
+				      		<option>16</option>
+				      		<option>17</option>
+				      		<option>18</option>
+				      		<option>19</option>
+				      		<option>20</option>
+				      		<option>21</option>
+				      		<option>22</option>
+				      		<option>23</option>
+				      		<option>24</option>
+				    	</select>
+				  	</div>
+				  	<div class="col-sm-12">
+				  		<button type="submit" class="btn btn-info mb-2 btn-block" ng-click="saveReminders()">Save</button>
+				  	</div>
 			</div>
 		</div>
 

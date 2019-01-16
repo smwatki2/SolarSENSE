@@ -113,3 +113,10 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
         }
       },1000);
 });
+
+app.controller('RemindersCtrl', function($scope, $timeout, $http) {
+	$scope.reminders = [];
+	$scope.saveReminders = function () {
+		
+	}
+});
