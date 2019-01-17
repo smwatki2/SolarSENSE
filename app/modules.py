@@ -120,6 +120,52 @@ class Notifications(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+'''
+Reminder class
+'''
+class Reminder(object):
+    """ This is a class for a reminder """
+    def __init__(self, id, timestamp, type):
+        self.id = id
+        self.timestamp = timestamp
+        self.type = type
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+'''
+Reminders class
+'''
+class Reminders(object):
+    """ This is a class for a reminders """
+    def __init__(self):
+        self.allReminders = []
+
+    def __init__(self, frequency):
+        self.frequency = frequency
+        self.allReminders = []
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+    """ method to get new reminders """
+    def getReminders(self):
+        self.checkReminders()
+        return self.allReminders
+
+    def checkNewNotifications(self):
+        try:
+            reminders = db.reminders
+            newReminders = reminders.find()
+            for newReminder in newReminders:
+                newReminder['_id'] = str(newReminder['_id'])
+                remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['type'])
+                self.allReminders.append(remind)
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
             
 
 

@@ -14,6 +14,7 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.notifications = [];
+	$scope.reminders = [];
 
 	$scope.startCollection = function () {
 		$window.location.href = "instant"; 
@@ -47,6 +48,32 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	};
 
 	$scope.checkNotifications();
+
+	// Function to check reminders
+	$scope.checkReminders = function() {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/getReminders',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
+		.then(function success(response){
+			console.log(response.data);
+			for (var i = 0; i < response.data.length; i++) {
+				$scope.reminders.push(JSON.parse(response.data[i]));
+				console.log(response.data[i]);
+			}
+			console.log($scope.reminders);
+		}, function error(err){
+			console.log(err);
+		});
+
+	};
+
+	//$scope.checkReminders();
 
 	
 });
@@ -116,7 +143,26 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
 
 app.controller('RemindersCtrl', function($scope, $timeout, $http) {
 	$scope.reminders = [];
+	$scope.reminderFrequency = 8;
+
+	// Function to save remonders
 	$scope.saveReminders = function () {
-		
+		$http({
+			method:'POST',
+			url:'http://11.11.11.11/editReminders',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			},
+			data: {
+				frequency: $scope.reminderFrequency
+			}
+		})
+		.then(function success(response){
+			console.log(response.data);
+		}, function error(err){
+			console.log(err);
+		});
 	}
 });
