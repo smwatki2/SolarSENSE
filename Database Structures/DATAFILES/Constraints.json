@@ -1,0 +1,10 @@
+{
+	"Constraints": [
+	{
+		"ID" : 0,
+		"REGION" : "",
+		"CROPNAME": "",
+		"SEASON" : "",
+		"DATE" : ""
+	}]
+}
