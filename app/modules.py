@@ -8,6 +8,10 @@ import traceback
 client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
 db = client.solarsensereports
+historicalDb = client.HistoricalClimateData
+cropFactorDb = client.CropFactor
+constraintsDb = client.Constraint
+regionDB = client.Regions
 
 class SoildDataCollection(object):
 
@@ -20,9 +24,6 @@ class SoildDataCollection(object):
 
     def getData(self):
         try:
-            #client = MongoClient("mongodb://0.0.0.0:27017")
-            #client = MongoClient("mongodb://localhost:27017")
-            #db = client.solarsensereports
             reports = db.reports
             jsonObj = reports.find()
             print("[DEBUG MODULES] ")
@@ -52,7 +53,6 @@ class SoilDataModel(object):
 
     def getSoilData(self):
         return self.__dataValues
-
 
 '''
 Notifications class
@@ -120,6 +120,147 @@ class Notifications(object):
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
             file.close()
+
+
+'''
+Factors class
+'''
+class Factors(object):
+    """ This is a class for a crop's factors """
+    def __init__(self, cropid, name, mid, germination, harvest):
+        self.cropid = cropid
+        self.name = name
+        self.mid = mid
+        self.germination = germination
+        self.harvest = harvest
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+'''
+Crop Factor Class
+'''       
+class CropFactor(object):
+    """docstring for CropFactor"""
+    def __init__(self, crop):
+        self.crop = crop
+        self.cropFactors = []
+
+    """ method to get crop's crop factor """
+    def getCropFactor(self):
+        self.retrieveCropFactor()
+        return self.cropFactors
+
+    def retrieveCropFactor(self):
+        try:
+            cropFactorCollection = cropFactorDb.AZTest
+            query = {'CROPNAME': self.crop}
+            cropFactors = cropFactorCollection.find(query)
+            for cropFactor in cropFactors:
+                factors = Factors(cropFactor['CROPID'], cropFactor['CROPNAME'], cropFactor['CROPCO_MID'], cropFactor['CROPCO_G'], cropFactor['CROPCO_HARV'])
+                self.cropFactors.append(factors)
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+'''
+Historical Data Object
+'''
+class HistoricalReport(object):
+    """ This is a class for Historical Data Object """
+    def __init__(self, hourlyDewPointTemp, locationID, hourlyWindSpeed, hourlyDryBulbTemp, hourlyRelHumidity, hourlyPrecip, date, sublocationID, hourlyWindDirection):
+        self.hourlyDewPointTemp = hourlyDewPointTemp
+        self.locationID = locationID
+        self.hourlyWindSpeed = hourlyWindSpeed
+        self.hourlyDryBulbTemp = hourlyDryBulbTemp
+        self.hourlyRelHumidity = hourlyRelHumidity
+        self.hourlyPrecip = hourlyPrecip
+        self.date = date
+        self.sublocationID = sublocationID
+        self.hourlyWindDirection = hourlyWindDirection
+    
+    def toString(self):
+        return json.dumps(self.__dict__)
             
+'''
+Historical Data Class
+'''       
+class HistoricalData(object):
+    """docstring for HistoricalData"""
+    def __init__(self, country, location, datetime):
+        self.country = country
+        self.location = location
+        self.datetime = datetime
+        self.weatherData = []
+
+    """ method to get country's historical data """
+    def getHistoricalData(self):
+        self.retrieveHistoricalData()
+        return self.weatherData
+
+    def retrieveHistoricalData(self):
+        try:
+            locationDataCollection = historicalDb.mesaGatewayClimateData
+            query = {'location_id': self.country, 'sublocation_id': self.location, 'date': self.datetime}
+            allData = locationDataCollection.find(query)
+            for data in allData:
+                report = HistoricalReport(data['hourly_dew_point_temp'], data['location_id'], data['hourly_wind_speed'], data['hourly_drybulb_temp'], data['hourly_rel_humidity'], data['hourly_precip'], data['date'], data['sublocation_id'], data['hourly_wind_direction'])
+                self.weatherData.append(report)
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+'''
+Constraint class
+'''
+
+class Constraint(object):
+
+    def __init__(self, constraintDict):
+        self.constraint = constraintDict
+
+    def updateConstraint(self):
+        constrainCollection = constraintsDb.SolarSENSEConstraint
+        query = { "ID" : 0 }
+        updateVals = {"$set":{"REGION": self.constraint.get("region"),"CROPNAME": self.constraint.get('crop'), "SEASON": self.constraint.get('season'), "DATE": self.constraint.get('date')}}
+
+        constrainCollection.update_one(query,updateVals)
+        for constraint in constrainCollection.find():
+            print(constraint)
+        
+
+'''
+Region Class
+'''
+
+class Region(object):
+
+    def __init__(self, name, cropFactorCollection):
+        self.name = name
+        self.cfCollection = cropFactorCollection
+
+    def toString(self):
+        return json.dumps(self.__dict__)
+
+class RegionCollection(object):
+
+    def __init__(self):
+        self.regions = []
+
+    def retrieveRegions(self):
+        regionInfoCollection = regionDB.RegionInfo
+        regionInfo = regionInfoCollection.find()
+        for info in regionInfo:
+            rInfo = Region(info['REGION_NAME'],info['CF_COLLECTION'])
+            self.regions.append(rInfo)
+
+    def getRegions(self):
+        self.retrieveRegions()
+        return self.regions
+
 
 

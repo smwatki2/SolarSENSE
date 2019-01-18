@@ -8,7 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
-	<body ng-controller="HomeCtrl">
+	<body ng-controller="ConfigCtrl">
 		<nav class="navbar navbar-expand-lg navbar-light header">
 			<div class="logo pull-left"></div>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,40 +18,51 @@
 			<div class="collapse navbar-collapse" id="navbarToggler">
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 					<li class="nav-item active">
-						<a class="nav-link white-color" href="#">Library</a>
+						<a class="nav-link white-color" href="/">Settings</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="notification in notifications">
-			<strong>Hey farmer!</strong> Your crops need more water. Current level is <strong>{a notification.current a}</strong>. Goal is <strong>{a notification.goal a}.</strong> On
-			<small>{a notification.timestamp a}</small>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-if="didSave()">
+			<p><strong>{a saveMessage a}</strong></p>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="resetSaveAlert()">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
 		<div class="container">
-			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button>
+				<div>
+					<h1 style="text-align: center;color: grey;margin: 10px;"><big><strong>Settings</strong></big></h1>
 				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan Sensors</button>
+				<div>
+					<p style="text-align: left;color: grey;margin: 10px;"><big>Presets</big></p>
+					<hr/>
 				</div>
-			</div>
-			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button>
+				<div class="dropdownRegion">
+					<h3 style="color: grey;margin: 10px;">Region:</h3>
+					<select id="region" ng-init="getRegion()"required>
+						<option value="" disabled selected>Select A Region</option>
+						<option ng-repeat="item in regions" value="{a item.name a}">{a item.name a}</option>
+					</select>
 				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="goToFarmStatus()"><i class="fas fa-check"></i><br>Farm Status</button>				
+				<div>
+					<h3 style="color: grey; margin: 10px;">Season:</h3>
+					<select id="season" required>
+						<option value="" disabled selected="">Select a Season</option>
+						<option ng-repeat="season in seasons" value="{a season a}">{a season a}</option>
+					</select>
 				</div>
-			</div>
-			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button>
+				<div class="dropdownCrop">
+					<h3 style="color: grey;margin: 10px;">Crop:</h3>
+					<select id="crops"  required>
+						<option value="" disabled selected>Select A Crop</option>
+						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
+					</select><br>
 				</div>
-			</div>
+				<div class="dropdownDay">
+					<h3 style="color: grey;margin: 10px;">Date:</h3>
+					<input type="date" name="Date" id="selected_date">			
+				</div><br>	
+				<button ng-click="saveConstraints()">Save Settings</button>
 		</div>
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
