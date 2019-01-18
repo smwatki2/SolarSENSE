@@ -28,6 +28,7 @@ def instant():
 
 @app.route('/scan')
 def scan():
+    soil = SoilAlgorithm()
     return render_template('scan.html')
 
 @app.route('/config')
