@@ -268,6 +268,12 @@ class SoilAlgorithm(object):
     complicated Algorith which may or may not still use some of these variables
     """
     def __init__(self):
+        """ Let's figure out how to get the constaints that the user set"""
+        constrainCollection = constraintsDb.SolarSENSEConstraint
+        file = open("test_log.txt", "a")
+        for constraint in constrainCollection.find():
+            file.write(constraint)
+        file.close()
         # grab historical data right away, in case sensor data is unavailable
         # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
