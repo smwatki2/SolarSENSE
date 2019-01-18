@@ -146,6 +146,17 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		$scope.saveSuccessful = false;
 	}
 
+	$scope.getRegionCFCollection = function(region) {
+
+		for(var i = 0; i < $scope.regions.length; i++){
+			if(region === $scope.regions[i].name){
+				console.log($scope.regions[i])
+				return $scope.regions[i].cfCollection;
+			}
+		}
+
+	}
+
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
@@ -179,7 +190,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			"region": region,
 			"season": season,
 			"crop": crop,
-			"date": date
+			"date": date,
+			"cfCollection" : $scope.getRegionCFCollection(region)
 		};
 
 		console.log(constraintObj);

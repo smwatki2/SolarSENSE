@@ -11,7 +11,7 @@ if dbUtil.create_database(dbName):
 	print(dbName + " created.")
 
 if dbUtil.create_collection(dbName, collectionName):
-	print(collectionName + "created.")
+	print(collectionName + " created.")
 
 dbUtil.read_json(dbName,collectionName, "./DATAFILES/Constraints.json")
 

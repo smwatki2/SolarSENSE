@@ -226,7 +226,7 @@ class Constraint(object):
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
         query = { "ID" : 0 }
-        updateVals = {"$set":{"REGION": self.constraint.get("region"),"CROPNAME": self.constraint.get('crop'), "SEASON": self.constraint.get('season'), "DATE": self.constraint.get('date')}}
+        updateVals = {"$set":{"REGION": self.constraint.get("region"),"CROPNAME": self.constraint.get('crop'), "SEASON": self.constraint.get('season'), "DATE": self.constraint.get('date'), "CF_COLLECTION": self.constraint.get('cfCollection')}}
 
         constrainCollection.update_one(query,updateVals)
         for constraint in constrainCollection.find():
