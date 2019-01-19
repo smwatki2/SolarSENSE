@@ -7,6 +7,7 @@ from app import app
 from app.forms import HomeForm
 from app.modules import SoildDataCollection
 from app.modules import Notifications
+from app.modules import Reminders
 from flask import render_template, make_response
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -87,6 +88,19 @@ def notificationSave():
 def deleteNotification(id):
     notifications = Notifications()
     notifications.deleteNotification(id)
+
+    return make_response(jsonify('success'),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' End point for editing reminder frequency ''' 
+@app.route('/editReminder/<frequency>', methods=['GET'])
+@cross_origin()
+def editReminder():
+    reminders = Reminders()
+    reminders.editSettings(frequency)
 
     return make_response(jsonify('success'),200,{
         'Access-Control-Allow-Origin': '*',

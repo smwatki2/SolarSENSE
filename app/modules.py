@@ -154,7 +154,21 @@ class Reminders(object):
         self.checkReminders()
         return self.allReminders
 
-    def checkNewNotifications(self):
+    def editSettings(self, frequency):
+        try:
+            remindersettings = db.reminderSettings
+            result = remindersettings.find_one()
+            if result.count() > 0:
+                query = {'_id': result[0]['_id']}
+                remindersettings.update_one(query, {"$set": {"frequency": frequency}})
+            else:
+                remindersettings.insert_one({"frequency": frequency})
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+    def checkNewReminders(self):
         try:
             reminders = db.reminders
             newReminders = reminders.find()
@@ -162,6 +176,29 @@ class Reminders(object):
                 newReminder['_id'] = str(newReminder['_id'])
                 remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['type'])
                 self.allReminders.append(remind)
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+    """ method to save a new notification """
+    def saveNewReminder(self, content, timestamp):
+        try:
+            reminders = db.reminders
+            result = reminders.insert_one({'content': content, 'timestamp': timestamp})
+
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
+    """ method to delete a reminder """
+    def deleteReminder(self, id):
+        try:
+            reminders = db.reminders
+            query = {'_id': id}
+            result = reminders.delete_one(query)
+
         except Exception as e:
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())

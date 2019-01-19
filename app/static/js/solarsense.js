@@ -164,5 +164,6 @@ app.controller('RemindersCtrl', function($scope, $timeout, $http) {
 		}, function error(err){
 			console.log(err);
 		});
+		console.log($scope.reminderFrequency);
 	}
 });
