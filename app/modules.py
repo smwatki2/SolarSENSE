@@ -220,8 +220,13 @@ Constraint class
 
 class Constraint(object):
 
-    def __init__(self, constraintDict):
-        self.constraint = constraintDict
+    def __init__(self, constraintDict = None):
+        if constraintDict is not None:
+            self.constraint = constraintDict
+
+    def getConstraint(self):
+        constraintCollection = constraintsDb.SolarSENSEConstraint
+        return json.loads(constraintCollection.find({"ID":0}).to_json())
 
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -261,6 +266,53 @@ class RegionCollection(object):
     def getRegions(self):
         self.retrieveRegions()
         return self.regions
+
+class SoilAlgorithm(object):
+    """
+    My thinking is to leave this as generic as possible in case we switch to a more
+    complicated Algorith which may or may not still use some of these variables
+    """
+    def __init__(self,cropFactorCollection = None):
+        """ Let's figure out how to get the constaints that the user set"""
+        constrainCollection = constraintsDb.SolarSENSEConstraint
+        file = open("test_log.txt", "a")
+        for constraint in constrainCollection.find():
+            file.write(constraint)
+        file.close()
+        if cropFactorCollection is not None:
+            self.cfCollection = cropFactorCollection
+
+        self.cropfactors = {};
+        # grab historical data right away, in case sensor data is unavailable
+        # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
+        self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
+        self.mean_temp = 0 # In degrees celcius
+
+        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
+
+    def getMeanDaylight(self):
+        return self.mean_daily_percentage_daylight
+
+    def setMeanDaylight(self, light):
+        self.mean_daily_percentage_daylight = light
+
+    def getMeanTemp(self):
+        return self.mean_temp
+
+    def setMeanTemp(self, temp):
+        self.mean_temp = temp
+
+    def setCrops(self):
+        return ""
+
+    def getEvotransporation(self):
+        #recalculate the evotransporation, assuming 
+        # BLANEY-CRIDDLE equation comes from https://en.wikipedia.org/wiki/Blaney%E2%80%93Criddle_equation
+        # ET0 - Reference Crop Evapotraspiration
+        # For determining crop water need we use ET = Kc x ETo, where Kc is the crop factor and ET is the amount of water needed in (mm/day)
+        # @ref: http://www.fao.org/docrep/s2022e/s2022e07.htm#3.1.4%20calculation%20example%20blaney%20criddle
+        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+        return self.evotransporation
 
 
 

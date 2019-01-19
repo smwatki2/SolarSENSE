@@ -15,6 +15,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.notifications = [];
 
+	$scope.test = function(){
+		$scope.gettingAlgorithm();
+	}
+
 	$scope.startCollection = function () {
 		$window.location.href = "instant"; 
 	}
@@ -25,6 +29,23 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	
 	$scope.openConfig = function () {
 		$window.location.href = "config"; 
+	}
+
+	$scope.gettingAlgorithm = function() {
+		$http({
+			method:'GET',
+			// url:'http://11.11.11.11/testingAlgorithm',
+			url: 'http://localhost:5000/testingAlgorithm',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		}).then(function success(response){
+			console.log(response.data);
+		}, function error(err){
+			console.log(err);
+		})
 	}
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
@@ -160,8 +181,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
-			url: 'http://11.11.11.11/getRegions',
-			// url: 'http://localhost:5000/getRegions',
+			// url: 'http://11.11.11.11/getRegions',
+			url: 'http://localhost:5000/getRegions',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'GET',
@@ -198,8 +219,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			url: 'http://11.11.11.11/saveConstraints',
-			// url:'http://localhost:5000/saveConstraints',
+			// url: 'http://11.11.11.11/saveConstraints',
+			url:'http://localhost:5000/saveConstraints',
 			data: constraintObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',

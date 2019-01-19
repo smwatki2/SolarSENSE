@@ -6,6 +6,7 @@ from pathlib import Path
 from app import app
 from app.forms import HomeForm
 from app.modules import SoildDataCollection
+from app.modules import SoilAlgorithm
 from app.modules import Notifications
 from app.modules import CropFactor
 from app.modules import HistoricalData
@@ -157,6 +158,19 @@ def saveConstraints():
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         })
+
+@app.route('/testingAlgorithm', methods=['GET'])
+@cross_origin()
+def testingAlgorithm():
+    constraint = Constraint()
+    const = constraint.getConstraint()
+    print(const)
+    soilAlgo = SoilAlgorithm(const)
+    return make_response(jsonify("Test Response"), 200,{
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods' : 'PUT,GET',
+    'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+    })
 
 """ END POINTS END HERE """
 
