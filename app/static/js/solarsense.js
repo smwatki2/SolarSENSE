@@ -34,8 +34,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
-			// url:'http://11.11.11.11/testingAlgorithm',
-			url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/testingAlgorithm',
+			// url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -52,6 +52,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$http({
 			method:'GET',
 			url:'http://11.11.11.11/notifications',
+			// url: 'http://localhost:5000/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -181,8 +182,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
-			// url: 'http://11.11.11.11/getRegions',
-			url: 'http://localhost:5000/getRegions',
+			url: 'http://11.11.11.11/getRegions',
+			// url: 'http://localhost:5000/getRegions',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'GET',
@@ -219,8 +220,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			// url: 'http://11.11.11.11/saveConstraints',
-			url:'http://localhost:5000/saveConstraints',
+			url: 'http://11.11.11.11/saveConstraints',
+			// url:'http://localhost:5000/saveConstraints',
 			data: constraintObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',

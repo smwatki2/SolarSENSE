@@ -226,7 +226,7 @@ class Constraint(object):
 
     def getConstraint(self):
         constraintCollection = constraintsDb.SolarSENSEConstraint
-        return json.loads(constraintCollection.find({"ID":0}).to_json())
+        return constraintCollection.find({"ID":0})[0]
 
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -276,13 +276,13 @@ class SoilAlgorithm(object):
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
         file = open("test_log.txt", "a")
-        for constraint in constrainCollection.find():
-            file.write(constraint)
-        file.close()
+        # for constraint in constrainCollection.find():
+        #     file.write(constraint)
+        # file.close()
         if cropFactorCollection is not None:
             self.cfCollection = cropFactorCollection
 
-        self.cropfactors = {};
+        self.cropFactors = {};
         # grab historical data right away, in case sensor data is unavailable
         # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
@@ -302,8 +302,31 @@ class SoilAlgorithm(object):
     def setMeanTemp(self, temp):
         self.mean_temp = temp
 
-    def setCrops(self):
-        return ""
+    def setCropFactors(self):
+        cropID = ""
+        regionCrops = cropFactorDb[self.cfCollection["CF_COLLECTION"]]
+        cropFactors = cropFactorDb.CropFactors
+
+        crops = regionCrops.find()
+
+        for crop in crops:
+            if crop['CROPNAME'] == self.cfCollection['CROPNAME']:
+                print(crop['CROPNAME'])
+                print(crop['CROPID'])
+                cropID = crop['CROPID']
+                print("Crop ID " + cropID)
+
+        cfactors = cropFactors.find_one({'CROPID': cropID})
+        print(cfactors)
+        print(type(cfactors))
+
+        for x, y in cfactors.items():
+            if x != '_id':
+                self.cropFactors[x] = y;
+        print(self.cropFactors)
+
+    def getCropFactors(self):
+        return self.cropFactors;
 
     def getEvotransporation(self):
         #recalculate the evotransporation, assuming 
@@ -311,7 +334,13 @@ class SoilAlgorithm(object):
         # ET0 - Reference Crop Evapotraspiration
         # For determining crop water need we use ET = Kc x ETo, where Kc is the crop factor and ET is the amount of water needed in (mm/day)
         # @ref: http://www.fao.org/docrep/s2022e/s2022e07.htm#3.1.4%20calculation%20example%20blaney%20criddle
-        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+        # TODO: Need to Create mean daily percentage table from @ref site
+        # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+
+        # Test Values: Not real values
+        evoReference = 0.29 * (0.46 * 24.5 + 8)
+        self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        print(self.evotransporation)
         return self.evotransporation
 
 

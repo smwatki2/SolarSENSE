@@ -164,9 +164,10 @@ def saveConstraints():
 def testingAlgorithm():
     constraint = Constraint()
     const = constraint.getConstraint()
-    print(const)
     soilAlgo = SoilAlgorithm(const)
-    return make_response(jsonify("Test Response"), 200,{
+    soilAlgo.setCropFactors()
+    print(soilAlgo.getCropFactors())
+    return make_response(jsonify({"TestEVO": soilAlgo.getEvotransporation()}), 200,{
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods' : 'PUT,GET',
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
