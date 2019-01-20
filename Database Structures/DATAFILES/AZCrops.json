@@ -1,7 +1,7 @@
 {
 	"AZCrops":[
-		{"CROPID" : "ALF"},
-		{"CROPID" : "CTN"},
-		{"CROPID" : "WHT"}
+		{"CROPID" : "ALF", "CROPNAME": "Alfalfa"},
+		{"CROPID" : "CTN", "CROPNAME": "Cotton"},
+		{"CROPID" : "WHT", "CROPNAME": "Wheat"}
 	]
 }
