@@ -15,6 +15,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.notifications = [];
 
+	$scope.test = function(){
+		$scope.gettingAlgorithm();
+	}
+
 	$scope.startCollection = function () {
 		$window.location.href = "instant"; 
 	}
@@ -26,11 +30,29 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.openConfig = function () {
 		$window.location.href = "config"; 
 	}
+
+	$scope.gettingAlgorithm = function() {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/testingAlgorithm',
+			// url: 'http://localhost:5000/testingAlgorithm',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		}).then(function success(response){
+			console.log(response.data);
+		}, function error(err){
+			console.log(err);
+		})
+	}
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
 			method:'GET',
 			url:'http://11.11.11.11/notifications',
+			// url: 'http://localhost:5000/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -146,6 +168,17 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		$scope.saveSuccessful = false;
 	}
 
+	$scope.getRegionCFCollection = function(region) {
+
+		for(var i = 0; i < $scope.regions.length; i++){
+			if(region === $scope.regions[i].name){
+				console.log($scope.regions[i])
+				return $scope.regions[i].cfCollection;
+			}
+		}
+
+	}
+
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
@@ -179,7 +212,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			"region": region,
 			"season": season,
 			"crop": crop,
-			"date": date
+			"date": date,
+			"cfCollection" : $scope.getRegionCFCollection(region)
 		};
 
 		console.log(constraintObj);
