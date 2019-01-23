@@ -149,10 +149,10 @@ app.controller('RemindersCtrl', function($scope, $timeout, $http) {
 	$scope.saveReminders = function () {
 		$http({
 			method:'POST',
-			url:'http://11.11.11.11/editReminders',
+			url:'http://11.11.11.11/editReminderSettings',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
-        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Methods' : 'PUT,POST',
         		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
 			},
 			data: {

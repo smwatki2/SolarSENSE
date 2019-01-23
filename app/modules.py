@@ -157,10 +157,11 @@ class Reminders(object):
     def editSettings(self, frequency):
         try:
             remindersettings = db.reminderSettings
-            result = remindersettings.find_one()
-            if result.count() > 0:
-                query = {'_id': result[0]['_id']}
-                remindersettings.update_one(query, {"$set": {"frequency": frequency}})
+            result = remindersettings.find()
+            if result is not None and result.count() > 0:
+                for setting in result:
+                    query = {'_id': setting['_id']}
+                    remindersettings.update(query, {"$set": {"frequency": frequency}}, upsert=False, multi=False)
             else:
                 remindersettings.insert_one({"frequency": frequency})
         except Exception as e:
