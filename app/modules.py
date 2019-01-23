@@ -272,6 +272,7 @@ class SoilAlgorithm(object):
     My thinking is to leave this as generic as possible in case we switch to a more
     complicated Algorith which may or may not still use some of these variables
     """
+
     def __init__(self,cropFactorCollection = None):
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -283,6 +284,7 @@ class SoilAlgorithm(object):
             self.cfCollection = cropFactorCollection
 
         self.cropFactors = {};
+
         # grab historical data right away, in case sensor data is unavailable
         # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
@@ -342,6 +344,3 @@ class SoilAlgorithm(object):
         self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
         print(self.evotransporation)
         return self.evotransporation
-
-
-
