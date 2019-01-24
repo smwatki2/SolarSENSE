@@ -17,6 +17,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.test = function(){
 		$scope.gettingAlgorithm();
+		$scope.gettingAlgorithmFromSensors();
 	}
 
 	$scope.startCollection = function () {
@@ -36,6 +37,23 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			method:'GET',
 			url:'http://11.11.11.11/testingAlgorithm',
 			// url: 'http://localhost:5000/testingAlgorithm',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		}).then(function success(response){
+			console.log(response.data);
+		}, function error(err){
+			console.log(err);
+		})
+	}
+
+	$scope.gettingAlgorithmFromSensors = function() {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/testingAlgorithmFromSensors',
+			// url: 'http://localhost:5000/testingAlgorithmFromSensors',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',

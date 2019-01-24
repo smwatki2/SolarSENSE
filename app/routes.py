@@ -179,6 +179,13 @@ def testingAlgorithm():
 def testingAlgorithmFromSensors():
     constraint = Constraint()
     const = constraint.getConstraint()
+    sensorData = SoildDataCollection()
+    dataCollection = sensorData.getSoilCollection()
+    file = open("sensor_readings.txt", "a")
+    for dataPoint in dataCollection:
+        file.write(repr(dataPoint.getSoilData()['temperature']))
+        #debug each line to a file
+    file.close()
     soilAlgo = SoilAlgorithm(const)
     '''Eventually we will get this from the solarsensereports db, but lets test with a constant for now'''
     soilAlgo.setMeanTemp(5)
