@@ -174,6 +174,30 @@ def testingAlgorithm():
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
     })
 
+@app.route('/testingAlgorithmFromSensors', methods=['GET'])
+@cross_origin()
+def testingAlgorithmFromSensors():
+    constraint = Constraint()
+    const = constraint.getConstraint()
+    sensorData = SoildDataCollection()
+    dataCollection = sensorData.getSoilCollection()
+    file = open("sensor_readings.txt", "a")
+    for dataPoint in dataCollection:
+        file.write(repr(dataPoint.getSoilData()['temperature']))
+        #debug each line to a file
+    file.close()
+    soilAlgo = SoilAlgorithm(const)
+    '''Eventually we will get this from the solarsensereports db, but lets test with a constant for now'''
+    soilAlgo.setMeanTemp(5)
+    '''Eventually we will get this from the solarsensereports db, but lets test with a constant for now'''
+    soilAlgo.setMeanDaylight(.4)
+    print(soilAlgo.getCropFactors())
+    return make_response(jsonify({"TestEVOFromSensors": soilAlgo.getEvotransporation()}), 200,{
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods' : 'PUT,GET',
+    'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+    })
+
 """ END POINTS END HERE """
 
 
