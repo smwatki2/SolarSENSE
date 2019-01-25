@@ -4,3 +4,9 @@ uwsgi_config.ini
 __pycache__/
 errorlog.txt
 .AppleDouble/*
+data/
+opt/
+venv/
+run.sublime-workspace
+sensorReportData.txt
+
