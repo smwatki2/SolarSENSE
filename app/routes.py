@@ -166,9 +166,7 @@ def testingAlgorithm():
     constraint = Constraint()
     const = constraint.getConstraint()
     soilAlgo = SoilAlgorithm(const)
-    # soilAlgo.setMeanTemp()
-    # soilAlgo.setCropFactors()
-    return make_response(jsonify({"TestEVO": soilAlgo.getEvotransporation()}), 200,{
+    return make_response(jsonify({"GoalEVO": soilAlgo.getGoalEvotransporation()}), 200,{
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods' : 'PUT,GET',
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        

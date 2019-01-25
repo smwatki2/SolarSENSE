@@ -7,6 +7,7 @@ import json
 import traceback
 import datetime
 
+
 client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
 db = client.solarsensereports
@@ -291,9 +292,11 @@ class SoilAlgorithm(object):
         # grab historical data right away, in case sensor data is unavailable
         # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
+        self.goal_mean_temp = 0
         self.mean_temp = 0 # In degrees celcius
 
         # self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
+        self.goalevotransporation = 0
         self.evotransporation = 0
 
     def getMeanDaylight(self):
@@ -305,15 +308,19 @@ class SoilAlgorithm(object):
     def setMeanDaylight(self, light):
         self.mean_daily_percentage_daylight = light
 
-    def setMeanTemp(self):
-        # self.mean_temp = temp
+    def setGoalMeanTemp(self):
+
+        date = datetime.datetime.today()
+        monthInt = date.month
+        daysInMonth = monthrange(2017, monthInt)[1]
+
         historyCol = historicalDb['mesaGatewayClimateData']
         maxTemp = []
         minTemp = []
 
-        for x in range(31):
+        for x in range(daysInMonth):
             tempArray = []
-            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,1,x + 1,0,0,0),'$lt':datetime.datetime(2017,1,x + 1,23,59,59)}})
+            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(2017,monthInt,x + 1,23,59,59)}})
             for item in histByDay:
                 if item['hourly_drybulb_temp'] == '':
                     continue
@@ -322,17 +329,11 @@ class SoilAlgorithm(object):
             minTemp.append(min(tempArray))
             tempArray.clear()
 
-        # print(len(maxTemp))
-        # print(len(minTemp))
-
-        meanMaxTemp = sum(maxTemp) / 31
-        meanMinTemp = sum(minTemp) / 31
-        # print(meanMaxTemp)
-        # print(meanMinTemp)
+        meanMaxTemp = sum(maxTemp) / daysInMonth
+        meanMinTemp = sum(minTemp) / daysInMonth
 
         meanTemp = (meanMaxTemp + meanMinTemp) / 2
-        # print(meanTemp)
-        self.mean_temp = meanTemp    
+        self.goal_mean_temp = meanTemp    
 
     def setCropFactors(self):
         cropID = ""
@@ -343,19 +344,36 @@ class SoilAlgorithm(object):
 
         for crop in crops:
             if crop['CROPNAME'] == self.cfCollection['CROPNAME']:
-                # print(crop['CROPNAME'])
-                # print(crop['CROPID'])
                 cropID = crop['CROPID']
-                # print("Crop ID " + cropID)
 
         cfactors = cropFactors.find_one({'CROPID': cropID})
-        # print(cfactors)
-        # print(type(cfactors))
 
         for x, y in cfactors.items():
             if x != '_id':
                 self.cropFactors[x] = y;
-        # print(self.cropFactors)
+
+    def getCropFactors(self):
+        return self.cropFactors
+
+    def setMeanTemp(self,temp):
+        self.mean_temp = temp
+
+    def getGoalEvotransporation(self):
+        #recalculate the evotransporation, assuming 
+        # BLANEY-CRIDDLE equation comes from https://en.wikipedia.org/wiki/Blaney%E2%80%93Criddle_equation
+        # ET0 - Reference Crop Evapotraspiration
+        # For determining crop water need we use ET = Kc x ETo, where Kc is the crop factor and ET is the amount of water needed in (mm/day)
+        # @ref: http://www.fao.org/docrep/s2022e/s2022e07.htm#3.1.4%20calculation%20example%20blaney%20criddle
+        # TODO: Need to Create mean daily percentage table from @ref site
+        # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+
+        self.setCropFactors()
+        self.setGoalMeanTemp()
+
+        # Test Values: Not real values
+        evoReference = self.dPercentofDaylight * (0.46 * self.goal_mean_temp + 8)
+        self.goalevotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        return self.goalevotransporation    
 
     def getEvotransporation(self):
         #recalculate the evotransporation, assuming 
@@ -367,7 +385,6 @@ class SoilAlgorithm(object):
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
         self.setCropFactors()
-        self.setMeanTemp()
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)
