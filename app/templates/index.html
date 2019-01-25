@@ -23,6 +23,12 @@
 				</ul>
 			</div>
 		</nav>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="reminder in reminders">
+			<strong><strong>{a reminder.content a}</strong>. Generated at {a notification.timestamp a}</small>
+			<button type="button" ng-click="deleteReminder(notification._id)" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
 		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="notification in notifications">
 			<strong>Hey farmer!</strong> Your crops need more water. Current level is <strong>{a notification.current a}</strong>. Goal is <strong>{a notification.goal a}.</strong> On
 			<small>{a notification.timestamp a}</small>

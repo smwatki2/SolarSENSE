@@ -109,6 +109,34 @@ def editReminderSettings():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
 
+    ''' End point for retrieving current reminders ''' 
+@app.route('/reminders', methods=['GET'])
+@cross_origin()
+def reminders():
+    newReminders = []
+    reminders = Reminders()
+    for newReminder in reminders.getReminders():
+        newReminders.append(newReminder.toString())
+
+    return make_response(jsonify(newReminders),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' End point for testing notification deletion ''' 
+@app.route('/deleteReminder/<id>', methods=['POST'])
+@cross_origin()
+def deleteReminder(id):
+    reminders = Reminders()
+    reminders.deleteReminder(id)
+
+    return make_response(jsonify('success'),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
 """ END POINTS END HERE """
 
 

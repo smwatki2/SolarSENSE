@@ -53,7 +53,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.checkReminders = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/getReminders',
+			url:'http://11.11.11.11/reminders',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -74,6 +74,30 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	};
 
 	//$scope.checkReminders();
+
+	// Function to delete a reminder
+	$scope.deleteReminder = function (reminderId) {
+		$http({
+			method:'POST',
+			url:'http://11.11.11.11/deleteReminder',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,POST',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			},
+			data: {
+				id: reminderId
+			}
+		})
+		.then(function success(response){
+			console.log(response.data);
+			$scope.reminders = [];
+			checkReminders()
+		}, function error(err){
+			console.log(err);
+		});
+		console.log($scope.reminderFrequency);
+	}
 
 	
 });
@@ -129,7 +153,6 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 		});
 
 	};
-
 });
 
 app.controller('ScanCtrl', function($scope, $timeout, $http) {
@@ -145,7 +168,7 @@ app.controller('RemindersCtrl', function($scope, $timeout, $http) {
 	$scope.reminders = [];
 	$scope.reminderFrequency = 8;
 
-	// Function to save remonders
+	// Function to save reminders
 	$scope.saveReminders = function () {
 		$http({
 			method:'POST',

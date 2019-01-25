@@ -154,6 +154,19 @@ class Reminders(object):
         self.checkReminders()
         return self.allReminders
 
+    def checkNewReminders(self):
+        try:
+            reminders = db.reminders
+            newReminders = reminders.find()
+            for newReminder in newReminders:
+                newReminder['_id'] = str(newReminder['_id'])
+                remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['type'])
+                self.allReminders.append(remind)
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+
     def editSettings(self, frequency):
         try:
             remindersettings = db.reminderSettings
@@ -164,19 +177,6 @@ class Reminders(object):
                     remindersettings.update(query, {"$set": {"frequency": frequency}}, upsert=False, multi=False)
             else:
                 remindersettings.insert_one({"frequency": frequency})
-        except Exception as e:
-            file = open("errorlog.txt", "a")
-            file.write(traceback.format_exc())
-            file.close()
-
-    def checkNewReminders(self):
-        try:
-            reminders = db.reminders
-            newReminders = reminders.find()
-            for newReminder in newReminders:
-                newReminder['_id'] = str(newReminder['_id'])
-                remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['type'])
-                self.allReminders.append(remind)
         except Exception as e:
             file = open("errorlog.txt", "a")
             file.write(traceback.format_exc())
