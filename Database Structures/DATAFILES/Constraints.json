@@ -3,6 +3,7 @@
 	{
 		"ID" : 0,
 		"REGION" : "",
+		"CF_COLLECTION": "",
 		"CROPNAME": "",
 		"SEASON" : "",
 		"DATE" : ""
