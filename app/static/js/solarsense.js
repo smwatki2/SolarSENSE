@@ -39,8 +39,6 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$window.location.href = "config";
 	}
 
-<<<<<<< HEAD
-=======
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
@@ -57,7 +55,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			console.log(err);
 		})
 	}
->>>>>>> cf1ff76c660d49f3edaa9055d4ecdbc87bf268c0
+
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
