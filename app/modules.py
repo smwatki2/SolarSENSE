@@ -48,7 +48,7 @@ class SoildDataCollection(object):
     def getLastData(self, number):
         try:
             reports = db.reports
-            jsonObj = reports.find().sort({_id:-1}).limit(number)
+            jsonObj = reports.find().sort("_id",-1).limit(number)
             for obj in jsonObj:
                 sdm = SoilDataModel(obj)
                 self.soilDataObjects.append(sdm)
