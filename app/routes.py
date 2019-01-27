@@ -178,17 +178,24 @@ def testingAlgorithmFromSensors():
     constraint = Constraint()
     const = constraint.getConstraint()
     sensorData = SoildDataCollection()
-    dataCollection = sensorData.getSoilCollection()
+    numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
+    dataCollection = sensorData.getLastData(numberOfReadings)
+    temp = 0
+    inSunLight = 0
     file = open("sensor_readings.txt", "a")
     for dataPoint in dataCollection:
+        temp += dataPoint.getSoilData()['temperature']
+        if (dataPoint.getSoilData()['light'] > 100):
+            inSunLight++
         file.write(repr(dataPoint.getSoilData()['temperature']))
+        file.write("||")
+        file.write(repr(dataPoint.getSoilData()['light']))
+        file.write("\n")
         #debug each line to a file
     file.close()
     soilAlgo = SoilAlgorithm(const)
-    '''Eventually we will get this from the solarsensereports db, but lets test with a constant for now'''
-    soilAlgo.setMeanTemp(5)
-    '''Eventually we will get this from the solarsensereports db, but lets test with a constant for now'''
-    soilAlgo.setMeanDaylight(.4)
+    soilAlgo.setMeanTemp(temp/numberOfReadings)
+    soilAlgo.setMeanDaylight(inSunLight/numberOfReadings)
     print(soilAlgo.getCropFactors())
     return make_response(jsonify({"TestEVOFromSensors": soilAlgo.getEvotransporation()}), 200,{
     'Access-Control-Allow-Origin': '*',

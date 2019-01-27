@@ -45,6 +45,19 @@ class SoildDataCollection(object):
         else:
             return False
 
+    def getLastData(self, number):
+        try:
+            reports = db.reports
+            jsonObj = reports.find().sort({_id:-1}).limit(number)
+            for obj in jsonObj:
+                sdm = SoilDataModel(obj)
+                self.soilDataObjects.append(sdm)
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+        return self.soilDataObjects
+
 
 class SoilDataModel(object):
 
