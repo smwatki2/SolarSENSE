@@ -182,21 +182,10 @@ def testingAlgorithmFromSensors():
     dataCollection = sensorData.getLastData(numberOfReadings)
     temp = 0
     inSunLight = 0
-    file = open("sensor_readings.txt", "a")
     for dataPoint in dataCollection:
         temp += dataPoint.getSoilData()['temperature']
         if dataPoint.getSoilData()['light'] > 100:
             inSunLight += 1
-        file.write(repr(dataPoint.getSoilData()['temperature']))
-        file.write("||")
-        file.write(repr(dataPoint.getSoilData()['light']))
-        file.write("||")
-        file.write(repr(temp))
-        file.write("||")
-        file.write(repr(inSunLight))
-        file.write("\n")
-        #debug each line to a file
-    file.close()
     soilAlgo = SoilAlgorithm(const)
     soilAlgo.setMeanTemp(temp/numberOfReadings)
     soilAlgo.setMeanDaylight(inSunLight/numberOfReadings)
