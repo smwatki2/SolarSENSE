@@ -9,40 +9,25 @@
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
 	<body ng-controller="HomeCtrl" ng-init="test()">
-		<nav class="navbar navbar-expand-lg navbar-light header">
-			<div class="logo pull-left"></div>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-				<i class="fas fa-bars white-icon"></i>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarToggler">
+		<nav class="navbar navbar-light header">
+			<div class="container">
+				<div class="logo pull-left"></div>
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 					<li class="nav-item active">
-						<a class="nav-link white-color" href="#">Library</a>
+						<a class="nav-link white-color" href="#"><h4 class="vertical">SolarSENSE</h4></a>
 					</li>
+				</ul>
+				<ul class="nav nav-pills navbar-left">
+					<li><button class="btn btn-block-nav" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button></li>
+					<li><button class="btn btn-block-nav" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan</button></li>
+					<li><button class="btn btn-block-nav" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button></li>
+					<li><button class="btn btn-block-nav" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button></li>
 				</ul>
 			</div>
 		</nav>
 		<div class="container">
 			<div class="row">
 				INSERT STATUS INFORMATION HERE
-			</div>
-		</div>
-		<hr>
-		<div class="container">
-			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button>
-				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan Sensors</button>
-				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button>
-				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button>
-				</div>
 			</div>
 		</div>
 

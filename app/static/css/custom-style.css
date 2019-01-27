@@ -36,6 +36,20 @@ button i {
 	color: #5ea0ca!important;
 	font-weight: bold;
 }
+.btn-block-nav {
+  height: 85px;
+  width: 75px;
+  border-width: 3px;
+  border-color: #69b2e1!important;
+  background-color: #5ea0ca!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+}
+.vertical{
+  padding-left: 10px;
+}
 
 @keyframes lds-ripple {
   0% {
