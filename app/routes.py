@@ -28,6 +28,7 @@ def instant():
 
 @app.route('/scan')
 def scan():
+    soil = SoilAlgorithm()
     return render_template('scan.html')
 
 @app.route('/config')
@@ -165,9 +166,31 @@ def testingAlgorithm():
     constraint = Constraint()
     const = constraint.getConstraint()
     soilAlgo = SoilAlgorithm(const)
-    soilAlgo.setCropFactors()
+    return make_response(jsonify({"GoalEVO": soilAlgo.getGoalEvotransporation()}), 200,{
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods' : 'PUT,GET',
+    'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+    })
+
+@app.route('/testingAlgorithmFromSensors', methods=['GET'])
+@cross_origin()
+def testingAlgorithmFromSensors():
+    constraint = Constraint()
+    const = constraint.getConstraint()
+    sensorData = SoildDataCollection()
+    numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
+    dataCollection = sensorData.getLastData(numberOfReadings)
+    temp = 0
+    inSunLight = 0
+    for dataPoint in dataCollection:
+        temp += dataPoint.getSoilData()['temperature']
+        if dataPoint.getSoilData()['light'] > 100:
+            inSunLight += 1
+    soilAlgo = SoilAlgorithm(const)
+    soilAlgo.setMeanTemp(temp/numberOfReadings)
+    soilAlgo.setMeanDaylight(inSunLight/numberOfReadings)
     print(soilAlgo.getCropFactors())
-    return make_response(jsonify({"TestEVO": soilAlgo.getEvotransporation()}), 200,{
+    return make_response(jsonify({"TestEVOFromSensors": soilAlgo.getEvotransporation()}), 200,{
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods' : 'PUT,GET',
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        

@@ -2,8 +2,11 @@ from pymongo import MongoClient
 from pprint import pprint
 from bson.json_util import dumps
 from flask import url_for
+from calendar import monthrange
 import json
 import traceback
+import datetime
+
 
 client = MongoClient("mongodb://0.0.0.0:27017")
 #client = MongoClient("mongodb://localhost:27017")
@@ -41,6 +44,19 @@ class SoildDataCollection(object):
             return True
         else:
             return False
+
+    def getLastData(self, number):
+        try:
+            reports = db.reports
+            jsonObj = reports.find().sort("_id",-1).limit(number)
+            for obj in jsonObj:
+                sdm = SoilDataModel(obj)
+                self.soilDataObjects.append(sdm)
+        except Exception as e:
+            file = open("errorlog.txt", "a")
+            file.write(traceback.format_exc())
+            file.close()
+        return self.soilDataObjects
 
 
 class SoilDataModel(object):
@@ -272,35 +288,65 @@ class SoilAlgorithm(object):
     My thinking is to leave this as generic as possible in case we switch to a more
     complicated Algorith which may or may not still use some of these variables
     """
+
     def __init__(self,cropFactorCollection = None):
+
+        # This value is a test value based in AZ, others will be added as a constraint
+        # TODO: Add a property to constraint or to Region db for lat value.
+        self.dPercentofDaylight = 0.23
+
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
-        file = open("test_log.txt", "a")
-        # for constraint in constrainCollection.find():
-        #     file.write(constraint)
-        # file.close()
         if cropFactorCollection is not None:
             self.cfCollection = cropFactorCollection
 
         self.cropFactors = {};
+
         # grab historical data right away, in case sensor data is unavailable
         # I'm not sure how to get the historical data quite yet, so I'll leave in 0s for now.
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
+        self.goal_mean_temp = 0
         self.mean_temp = 0 # In degrees celcius
 
-        self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
+        # self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
+        self.goalevotransporation = 0
+        self.evotransporation = 0
 
     def getMeanDaylight(self):
         return self.mean_daily_percentage_daylight
 
-    def setMeanDaylight(self, light):
-        self.mean_daily_percentage_daylight = light
-
     def getMeanTemp(self):
         return self.mean_temp
 
-    def setMeanTemp(self, temp):
-        self.mean_temp = temp
+    def setMeanDaylight(self, light):
+        self.mean_daily_percentage_daylight = light
+
+    def setGoalMeanTemp(self):
+
+        date = datetime.datetime.today()
+        monthInt = date.month
+        daysInMonth = monthrange(2017, monthInt)[1]
+
+        historyCol = historicalDb['mesaGatewayClimateData']
+        maxTemp = []
+        minTemp = []
+
+        for x in range(daysInMonth):
+            tempArray = []
+            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(2017,monthInt,x + 1,23,59,59)}})
+            for item in histByDay:
+                if item['hourly_drybulb_temp'] == '':
+                    continue
+                tempArray.append(int(item['hourly_drybulb_temp']))
+            maxTemp.append(max(tempArray))
+            minTemp.append(min(tempArray))
+            tempArray.clear()
+
+        meanMaxTemp = sum(maxTemp) / daysInMonth
+        meanMinTemp = sum(minTemp) / daysInMonth
+
+        meanTemp = (meanMaxTemp + meanMinTemp) / 2
+        self.goal_mean_temp = meanTemp    
 
     def setCropFactors(self):
         cropID = ""
@@ -311,22 +357,36 @@ class SoilAlgorithm(object):
 
         for crop in crops:
             if crop['CROPNAME'] == self.cfCollection['CROPNAME']:
-                print(crop['CROPNAME'])
-                print(crop['CROPID'])
                 cropID = crop['CROPID']
-                print("Crop ID " + cropID)
 
         cfactors = cropFactors.find_one({'CROPID': cropID})
-        print(cfactors)
-        print(type(cfactors))
 
         for x, y in cfactors.items():
             if x != '_id':
                 self.cropFactors[x] = y;
-        print(self.cropFactors)
 
     def getCropFactors(self):
-        return self.cropFactors;
+        return self.cropFactors
+
+    def setMeanTemp(self,temp):
+        self.mean_temp = temp
+
+    def getGoalEvotransporation(self):
+        #recalculate the evotransporation, assuming 
+        # BLANEY-CRIDDLE equation comes from https://en.wikipedia.org/wiki/Blaney%E2%80%93Criddle_equation
+        # ET0 - Reference Crop Evapotraspiration
+        # For determining crop water need we use ET = Kc x ETo, where Kc is the crop factor and ET is the amount of water needed in (mm/day)
+        # @ref: http://www.fao.org/docrep/s2022e/s2022e07.htm#3.1.4%20calculation%20example%20blaney%20criddle
+        # TODO: Need to Create mean daily percentage table from @ref site
+        # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
+
+        self.setCropFactors()
+        self.setGoalMeanTemp()
+
+        # Test Values: Not real values
+        evoReference = self.dPercentofDaylight * (0.46 * self.goal_mean_temp + 8)
+        self.goalevotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        return self.goalevotransporation    
 
     def getEvotransporation(self):
         #recalculate the evotransporation, assuming 
@@ -337,11 +397,10 @@ class SoilAlgorithm(object):
         # TODO: Need to Create mean daily percentage table from @ref site
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
+        self.setCropFactors()
+
         # Test Values: Not real values
-        evoReference = 0.29 * (0.46 * 24.5 + 8)
+        evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)
         self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
         print(self.evotransporation)
         return self.evotransporation
-
-
-
