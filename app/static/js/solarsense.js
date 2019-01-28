@@ -5,21 +5,60 @@
 */
 
 var app = angular.module('solarsenseApp', []);
+/*
+app.factory('linkFactory', ['$window', function($window) {
+    return {
+        status: function() {
+            $window.location.href = "/";
+        },
 
-app.config(['$interpolateProvider', function($interpolateProvider) {
-  $interpolateProvider.startSymbol('{a');
-  $interpolateProvider.endSymbol('a}');
+        collect: function() {
+            $window.location.href = "instant";
+        },
+
+        scan: function() {
+            $window.location.href = "scan";
+        },
+
+        learn: function() {
+            $window.location.href = "learn";
+        },
+
+        config: function() {
+            $window.location.href = "config";
+        }
+    };
 }]);
 
-app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+app.controller('MainCtrl', ['$scope', 'linkFactory', function($scope, linkFactory) {
+    $scope.goToFarmStatus = function() {
+        linkFactory.status();
+    };
 
-	$scope.notifications = [];
+    $scope.startCollection = function() {
+        linkFactory.collect();
+    };
 
-	$scope.test = function(){
-		$scope.gettingAlgorithm();
-	}
+    $scope.scanSensors = function() {
+        linkFactory.scan();
+    };
 
-	$scope.startCollection = function () {
+    $scope.goToLearn = function() {
+        linkFactory.learn();
+    };
+
+    $scope.openConfig = function() {
+        linkFactory.config();
+    };
+}]);
+*/
+app.config(['$interpolateProvider', function($interpolateProvider) {
+  	$interpolateProvider.startSymbol('{a');
+  	$interpolateProvider.endSymbol('a}');
+}]);
+
+app.controller('LinkCtrl', function($scope, $window) {
+  	$scope.startCollection = function () {
 		$window.location.href = "instant";
 	}
 
@@ -32,12 +71,17 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	}
 
 	$scope.goToFarmStatus = function () {
-		$window.location.href = "status";
+		$window.location.href = "/";
 	}
 
 	$scope.openConfig = function () {
 		$window.location.href = "config";
 	}
+});
+
+app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+
+	//$scope.notifications = [];
 
 	$scope.gettingAlgorithm = function() {
 		$http({
@@ -56,6 +100,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		})
 	}
 
+/*
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -82,7 +127,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	};
 
 	$scope.checkNotifications();
-
+*/
 	
 });
 
