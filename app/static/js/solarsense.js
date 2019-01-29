@@ -5,53 +5,7 @@
 */
 
 var app = angular.module('solarsenseApp', []);
-/*
-app.factory('linkFactory', ['$window', function($window) {
-    return {
-        status: function() {
-            $window.location.href = "/";
-        },
 
-        collect: function() {
-            $window.location.href = "instant";
-        },
-
-        scan: function() {
-            $window.location.href = "scan";
-        },
-
-        learn: function() {
-            $window.location.href = "learn";
-        },
-
-        config: function() {
-            $window.location.href = "config";
-        }
-    };
-}]);
-
-app.controller('MainCtrl', ['$scope', 'linkFactory', function($scope, linkFactory) {
-    $scope.goToFarmStatus = function() {
-        linkFactory.status();
-    };
-
-    $scope.startCollection = function() {
-        linkFactory.collect();
-    };
-
-    $scope.scanSensors = function() {
-        linkFactory.scan();
-    };
-
-    $scope.goToLearn = function() {
-        linkFactory.learn();
-    };
-
-    $scope.openConfig = function() {
-        linkFactory.config();
-    };
-}]);
-*/
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
@@ -82,6 +36,16 @@ app.controller('LinkCtrl', function($scope, $window) {
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	//$scope.notifications = [];
+	// Temporary Variables, until we properly pull from databases
+	$scope.cropName = "Corn";
+	$scope.temperatureStatus = 0; // OK (Green)
+	$scope.sunlightStatus = 1; // Caution (Yellow)
+	$scope.waterStatus = 2; // Warning (Red)
+
+	// Debug Values (Most likely not to be used in final product)
+	$scope.temperature = 70.0;
+	$scope.sunlightTime = 4.0;
+	$scope.waterAmount = 10000.0;
 
 	$scope.gettingAlgorithm = function() {
 		$http({
@@ -99,6 +63,19 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			console.log(err);
 		})
 	}
+
+	$scope.buttonStatus = function(status, link){
+		switch (status) {
+            case 0:
+                break;
+            case 1:
+            case 2:
+                $window.location.href = link;
+                break;
+            default:
+        }
+	}
+
 
 /*
 	// Function to check for notifications
