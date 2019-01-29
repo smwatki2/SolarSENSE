@@ -24,8 +24,7 @@ button i {
 	background-size: contain;
 }
 .menuButtonContainter {
-	width: 44%;
-	margin: 3%;
+	margin: 1%;
 	height: 120px;
 }
 .btn-block {
@@ -71,6 +70,46 @@ button i {
   position: absolute;
   bottom: 10px;
   right: 10px;
+}
+.btn-block-green {
+  height: 100%;
+  border-width: 3px;
+  border-color: #69e178!important;
+  background-color: #44bf4d!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 50px;
+}
+.btn-block-yellow {
+  height: 100%;
+  border-width: 3px;
+  border-color: #eef42e!important;
+  background-color: #ffe01c!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 50px;
+}
+.btn-block-red {
+  height: 100%;
+  border-width: 3px;
+  border-color: #ff5656!important;
+  background-color: #e52727!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 50px;
+}
+.btn-block-default {
+  height: 100%;
+  border-width: 3px;
+  border-color: #e0e0e0!important;
+  background-color: #808080!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 50px;
 }
 .vertical{
   padding-left: 10px;
