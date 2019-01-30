@@ -43,7 +43,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	//$scope.notifications = [];
 	// Temporary Variables, until we properly pull from databases
-	$scope.cropName = "Corn";
+	$scope.cropName = "";
 	$scope.temperatureStatus = 0; // OK (Green)
 	$scope.sunlightStatus = 1; // Caution (Yellow)
 	$scope.waterStatus = 2; // Warning (Red)
@@ -62,8 +62,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/testingAlgorithm',
-			// url: 'http://localhost:5000/testingAlgorithm',
+			// url:'http://11.11.11.11/testingAlgorithm',
+			url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -79,8 +79,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.gettingAlgorithmFromSensors = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/testingAlgorithmFromSensors',
-			// url: 'http://localhost:5000/testingAlgorithmFromSensors',
+			// url:'http://11.11.11.11/testingAlgorithmFromSensors',
+			url: 'http://localhost:5000/testingAlgorithmFromSensors',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -96,7 +96,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getFarmStatus = function () {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/getStatus',
+			// url:'http://11.11.11.11/getStatus',
+			url: 'http://localhost:5000/getStatus',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -104,14 +105,15 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			}
 		}).then(function success(response){
 			console.log(response.data);
-			var result = result.data,
+			var result = response.data,
 					temp = $scope.temperature,
 					sunlight = $scope.sunlightTime, /* Is this time (hours)?*/
 					water = $scope.waterAmount;
 					;
 
 			console.log(result);
-
+			$scope.cropName = result['CROPNAME'];
+			
 			if(result.temp) {
 				$scope.status.temp = result.temp;
 				temp = result.temp;

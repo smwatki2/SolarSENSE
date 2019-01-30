@@ -204,6 +204,17 @@ def testingAlgorithmFromSensors():
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
     })
 
+@app.route('/getStatus', methods=['GET'])
+@cross_origin()
+def getStatus():
+    constVals = {}
+    constraint = Constraint()
+    const = constraint.getConstraint()
+    for x,y in const.items():
+        if x != '_id':
+            constVals[x] = y
+    return response(constVals,200)
+
 """ END POINTS END HERE """
 
 
@@ -232,3 +243,16 @@ def resource_not_found(error):
     file.write(traceback.format_exc())
     file.close()
     return traceback.format_exc()
+
+def response(jsonObject, statusCode):
+    responseSettingObj = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With',
+        'Cache-Control': 'no-cache, no-store'
+    }
+    return make_response(jsonify(jsonObject),statusCode,responseSettingObj)
+
+
+
+
