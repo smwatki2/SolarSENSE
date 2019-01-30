@@ -110,7 +110,7 @@ def editReminderSettings():
         })
 
     ''' End point for retrieving current reminders ''' 
-@app.route('/reminders', methods=['GET'])
+@app.route('/getReminders', methods=['GET'])
 @cross_origin()
 def reminders():
     newReminders = []

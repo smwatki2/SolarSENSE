@@ -53,7 +53,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.checkReminders = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/reminders',
+			url:'http://11.11.11.11/getReminders',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -73,7 +73,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	};
 
-	//$scope.checkReminders();
+	$scope.checkReminders();
 
 	// Function to delete a reminder
 	$scope.deleteReminder = function (reminderId) {
