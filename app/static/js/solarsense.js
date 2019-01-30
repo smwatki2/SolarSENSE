@@ -47,6 +47,12 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.sunlightTime = 4.0;
 	$scope.waterAmount = 10000.0;
 
+	$scope.status = {
+		temp: 0,
+		sunlight: 0,
+		water: 0
+	};
+
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
@@ -62,6 +68,55 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		}, function error(err){
 			console.log(err);
 		})
+	}
+
+	$scope.getFarmStatus = function () {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/getStatus',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		}).then(function success(response){
+			var result = result.data,
+					temp = $scope.temperature,
+					sunlight = $scope.sunlightTime, /* Is this time (hours)?*/
+					water = $scope.waterAmount;
+					;
+
+			console.log(result);
+
+			if(result.temp) {
+				$scope.status.temp = result.temp;
+				temp = result.temp;
+			}
+			if(result.sunlight) {
+				$scope.status.sunlight = result.sunlight;
+				sunlight = result.sunlight
+			}
+			if(result.water) {
+				$scope.status.water = result.water;
+				water = result.water;
+			}
+			$scope.checkValues(temp, sunlight, water);
+		}, function error(err){
+			console.log(err);
+		})
+	}
+
+	$scope.checkValues = function (temp, sunlight, water) {
+
+	}
+
+	// Function to retrieve optimal values for a crop
+	$scope.getCropData = function () {
+
+	}
+
+	$scope.reload = function () {
+		$scope.getFarmStatus();
 	}
 
 	$scope.buttonStatus = function(status, link){
