@@ -31,6 +31,14 @@ def scan():
     soil = SoilAlgorithm()
     return render_template('scan.html')
 
+@app.route('/learn')
+def learn():
+    return render_template('learn.html')
+
+@app.route('/status')
+def status():
+    return render_template('status.html')
+
 @app.route('/config')
 def config():
     return render_template('config.html')

@@ -7,30 +7,57 @@
 var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
-  $interpolateProvider.startSymbol('{a');
-  $interpolateProvider.endSymbol('a}');
+  	$interpolateProvider.startSymbol('{a');
+  	$interpolateProvider.endSymbol('a}');
 }]);
 
-app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+app.controller('LinkCtrl', function($scope, $window) {
 
-	$scope.notifications = [];
+  	$scope.startCollection = function () {
+		$window.location.href = "instant";
+	}
 
 	$scope.test = function(){
 		$scope.gettingAlgorithm();
 		$scope.gettingAlgorithmFromSensors();
 	}
 
-	$scope.startCollection = function () {
-		$window.location.href = "instant"; 
+	$scope.scanSensors = function () {
+		$window.location.href = "scan";
 	}
 
-	$scope.scanSensors = function () {
-		$window.location.href = "scan"; 
+	$scope.goToLearn = function () {
+		$window.location.href = "learn";
 	}
-	
+
+	$scope.goToFarmStatus = function () {
+		$window.location.href = "/";
+	}
+
 	$scope.openConfig = function () {
-		$window.location.href = "config"; 
+		$window.location.href = "config";
 	}
+});
+
+app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+
+	//$scope.notifications = [];
+	// Temporary Variables, until we properly pull from databases
+	$scope.cropName = "Corn";
+	$scope.temperatureStatus = 0; // OK (Green)
+	$scope.sunlightStatus = 1; // Caution (Yellow)
+	$scope.waterStatus = 2; // Warning (Red)
+
+	// Debug Values (Most likely not to be used in final product)
+	$scope.temperature = 70.0;
+	$scope.sunlightTime = 4.0;
+	$scope.waterAmount = 10000.0;
+
+	$scope.status = {
+		temp: 0,
+		sunlight: 0,
+		water: 0
+	};
 
 	$scope.gettingAlgorithm = function() {
 		$http({
@@ -65,6 +92,72 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			console.log(err);
 		})
 	}
+
+	$scope.getFarmStatus = function () {
+		$http({
+			method:'GET',
+			url:'http://11.11.11.11/getStatus',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'PUT,GET',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		}).then(function success(response){
+			console.log(response.data);
+			var result = result.data,
+					temp = $scope.temperature,
+					sunlight = $scope.sunlightTime, /* Is this time (hours)?*/
+					water = $scope.waterAmount;
+					;
+
+			console.log(result);
+
+			if(result.temp) {
+				$scope.status.temp = result.temp;
+				temp = result.temp;
+			}
+			if(result.sunlight) {
+				$scope.status.sunlight = result.sunlight;
+				sunlight = result.sunlight
+			}
+			if(result.water) {
+				$scope.status.water = result.water;
+				water = result.water;
+			}
+			$scope.checkValues(temp, sunlight, water);
+
+		}, function error(err){
+			console.log(err);
+		})
+	}
+
+	$scope.checkValues = function (temp, sunlight, water) {
+
+	}
+
+	// Function to retrieve optimal values for a crop
+	$scope.getCropData = function () {
+
+	}
+
+	$scope.reload = function () {
+		$scope.getFarmStatus();
+	}
+
+	$scope.buttonStatus = function(status, link){
+		switch (status) {
+            case 0:
+                break;
+            case 1:
+            case 2:
+                $window.location.href = link;
+                break;
+            default:
+        }
+	}
+
+
+
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -157,6 +250,51 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
           $scope.percent+=10;
         }
       },1000);
+});
+
+app.controller('LearnCtrl', function($scope, $timeout, $http) {
+	$scope.goHome = function () {
+		$window.location.href = "/"; 
+	}
+});
+
+app.controller('StatusCtrl', function($scope, $timeout, $http) {
+	
+	$scope.soilData = [];
+	$scope.historicData = [];
+	$scope.percent = 0;
+
+	$scope.dataRequestSensor = function() {
+		console.log("Calling Sensor Data Object");
+		$http({
+			method:'GET',
+			// When using on development machine, use http://localhost:5000/data
+			// When using and deploying on pi, use http://11.11.11.11/data
+			//url:'http://11.11.11.11/data',
+			url: 'http://localhost:5000/data',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+	    		'Access-Control-Allow-Methods' : 'PUT,GET',
+	    		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
+		.then(function success(response){
+			$scope.response = response.data;
+			var percentVal = 100 / $scope.response.length;
+			for(var i = 0; i < $scope.response.length; i++){		
+				var soilObj = JSON.parse($scope.response[i]);
+				$scope.soilData.push(soilObj);
+			}
+
+			$timeout(function(){
+				for(var i = 0; i < 100; i++){
+					$scope.percent++;
+				}
+			},5000);
+		}, function error(response){
+			console.log("There was an error getting the Sensor data");
+		});
+	};
 });
 
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
@@ -257,5 +395,4 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			console.log('There was an error saving constraints');
 		});
 	};
-
 });
