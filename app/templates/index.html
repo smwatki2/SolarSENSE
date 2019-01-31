@@ -23,9 +23,9 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="reminder in reminders">
-			<strong><strong>{a reminder.content a}</strong>. Generated at {a notification.timestamp a}</small>
-			<button type="button" ng-click="deleteReminder(notification._id)" class="close" data-dismiss="alert" aria-label="Close">
+		<div class="alert alert-danger alert-dismissible fade show" role="alert" ng-repeat="reminder in reminders">
+			<strong><strong>{a reminder.content a} {a reminder.timestamp a}</small>
+			<button type="button" ng-click="deleteReminder(reminder.id)" class="close btn" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>

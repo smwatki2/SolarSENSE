@@ -61,7 +61,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			}
 		})
 		.then(function success(response){
-			console.log(response.data);
+			console.log(response);
 			for (var i = 0; i < response.data.length; i++) {
 				$scope.reminders.push(JSON.parse(response.data[i]));
 				console.log(response.data[i]);
@@ -92,11 +92,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		.then(function success(response){
 			console.log(response.data);
 			$scope.reminders = [];
-			checkReminders()
+			$scope.checkReminders();
 		}, function error(err){
 			console.log(err);
 		});
-		console.log($scope.reminderFrequency);
 	}
 
 	

@@ -100,7 +100,7 @@ def deleteNotification(id):
 @cross_origin()
 def editReminderSettings():
     frequency = request.get_json()
-    reminders = Reminders(frequency)
+    reminders = Reminders()
     reminders.editSettings(frequency)
 
     return make_response(jsonify('success'),200,{
@@ -112,7 +112,7 @@ def editReminderSettings():
     ''' End point for retrieving current reminders ''' 
 @app.route('/getReminders', methods=['GET'])
 @cross_origin()
-def reminders():
+def getReminders():
     newReminders = []
     reminders = Reminders()
     for newReminder in reminders.getReminders():
@@ -125,9 +125,10 @@ def reminders():
         })
 
     ''' End point for testing notification deletion ''' 
-@app.route('/deleteReminder/<id>', methods=['POST'])
+@app.route('/deleteReminder', methods=['POST'])
 @cross_origin()
-def deleteReminder(id):
+def deleteReminder():
+    id = request.get_json()
     reminders = Reminders()
     reminders.deleteReminder(id)
 

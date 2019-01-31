@@ -113,7 +113,7 @@ class Notifications(object):
     def deleteNotification(self, id):
         try:
             notifications = db.notifications
-            query = {'_id': id}
+            query = {'_id': ObjectId(str(id))}
             result = notifications.delete_one(query)
 
         except Exception as e:
@@ -126,10 +126,10 @@ Reminder class
 '''
 class Reminder(object):
     """ This is a class for a reminder """
-    def __init__(self, id, timestamp, type):
+    def __init__(self, id, timestamp, content):
         self.id = id
         self.timestamp = timestamp
-        self.type = type
+        self.content = content
     
     def toString(self):
         return json.dumps(self.__dict__)
@@ -141,17 +141,10 @@ class Reminders(object):
     """ This is a class for a reminders """
     def __init__(self):
         self.allReminders = []
-
-    def __init__(self, frequency):
-        self.frequency = frequency
-        self.allReminders = []
     
-    def toString(self):
-        return json.dumps(self.__dict__)
-
     """ method to get new reminders """
     def getReminders(self):
-        self.checkReminders()
+        self.checkNewReminders()
         return self.allReminders
 
     def checkNewReminders(self):
@@ -160,7 +153,7 @@ class Reminders(object):
             newReminders = reminders.find()
             for newReminder in newReminders:
                 newReminder['_id'] = str(newReminder['_id'])
-                remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['type'])
+                remind = Reminder(newReminder['_id'], newReminder['timestamp'], newReminder['content'])
                 self.allReminders.append(remind)
         except Exception as e:
             file = open("errorlog.txt", "a")
