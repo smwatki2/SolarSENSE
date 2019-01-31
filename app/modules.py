@@ -350,7 +350,7 @@ class SoilAlgorithm(object):
         # This value is a test value based in AZ, others will be added as a constraint
         # TODO: Add a property to constraint or to Region db for lat value.
         self.historical = HistoricalData('USA', 'AZ', datetime.datetime.today())
-        self.dPercentofDaylight = historical.monthlyAverageSunlight()
+        self.dPercentofDaylight = self.historical.monthlyAverageSunlight()
 
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
