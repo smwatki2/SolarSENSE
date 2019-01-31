@@ -259,28 +259,29 @@ class HistoricalData(object):
     def monthlyAverageSunlight(self):
         date = datetime.datetime.today()
         monthInt = date.month
-        daysInMonth = monthrange(2017, monthInt)[1]
+        yearInt = date.year
+        daysInMonth = monthrange(yearInt, monthInt)[1]
 
-        historyCol = historicalDb['mesaGatewayClimateData']
-        maxTemp = []
-        minTemp = []
-
+        # historyCol = historicalDb['mesaGatewayClimateData']
+        reportsCol = db['reports']
+        maxLight = []
+        minLight = []
         for x in range(daysInMonth):
             tempArray = []
-            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(2017,monthInt,x + 1,23,59,59)}})
+            histByDay = reportsCol.find({'timestamp':{'$gte':datetime.datetime(yearInt,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(yearInt,monthInt,x + 1,23,59,59)}})
+            if(histByDay.count() == 0):
+                continue
             for item in histByDay:
-                if item['hourly_drybulb_temp'] == '':
-                    continue
-                tempArray.append(int(item['hourly_drybulb_temp']))
-            maxTemp.append(max(tempArray))
-            minTemp.append(min(tempArray))
+                tempArray.append(item['light'])
+            maxLight.append(max(tempArray))
+            minLight.append(min(tempArray))
             tempArray.clear()
 
-        meanMaxTemp = sum(maxTemp) / daysInMonth
-        meanMinTemp = sum(minTemp) / daysInMonth
+        meanMaxLight = sum(maxLight) / daysInMonth
+        meanMinLight = sum(minLight) / daysInMonth
 
-        meanTemp = (meanMaxTemp + meanMinTemp) / 2
-        return meanTemp
+        meanLight = (meanMaxLight + meanMinLight) / 2
+        return meanLight
 
 '''
 Constraint class
@@ -350,7 +351,9 @@ class SoilAlgorithm(object):
         # This value is a test value based in AZ, others will be added as a constraint
         # TODO: Add a property to constraint or to Region db for lat value.
         self.historical = HistoricalData('USA', 'AZ', datetime.datetime.today())
-        self.dPercentofDaylight = self.historical.monthlyAverageSunlight()
+
+        # This value is derived from a table based on lat and lon, not calculated
+        self.dPercentofDaylight = 0.23
 
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -410,7 +413,7 @@ class SoilAlgorithm(object):
         return self.mean_temp
 
     def getLightMeanActual(self):
-        return self.mean_daily_percentage_daylight
+        return self.historical.monthlyAverageSunlight()
 
     # def setMeanTemp(self,temp):
     #     self.mean_temp = temp
