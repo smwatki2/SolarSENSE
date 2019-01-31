@@ -64,8 +64,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
-			// url:'http://11.11.11.11/testingAlgorithm',
-			url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/testingAlgorithm',
+			// url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
