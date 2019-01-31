@@ -180,40 +180,43 @@ def testingAlgorithm():
     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
     })
 
-@app.route('/testingAlgorithmFromSensors', methods=['GET'])
-@cross_origin()
-def testingAlgorithmFromSensors():
-    constraint = Constraint()
-    const = constraint.getConstraint()
-    sensorData = SoildDataCollection()
-    numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
-    dataCollection = sensorData.getLastData(numberOfReadings)
-    temp = 0
-    inSunLight = 0
-    for dataPoint in dataCollection:
-        temp += dataPoint.getSoilData()['temperature']
-        if dataPoint.getSoilData()['light'] > 100:
-            inSunLight += 1
-    soilAlgo = SoilAlgorithm(const)
-    soilAlgo.setMeanTemp(temp/numberOfReadings)
-    soilAlgo.setMeanDaylight(inSunLight/numberOfReadings)
-    print(soilAlgo.getCropFactors())
-    return make_response(jsonify({"TestEVOFromSensors": soilAlgo.getEvotransporation()}), 200,{
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods' : 'PUT,GET',
-    'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-    })
+# @app.route('/testingAlgorithmFromSensors', methods=['GET'])
+# @cross_origin()
+# def testingAlgorithmFromSensors():
+#     constraint = Constraint()
+#     const = constraint.getConstraint()
+#     sensorData = SoildDataCollection()
+#     numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
+#     dataCollection = sensorData.getLastData(numberOfReadings)
+#     temp = 0
+#     inSunLight = 0
+#     for dataPoint in dataCollection:
+#         temp += dataPoint.getSoilData()['temperature']
+#         if dataPoint.getSoilData()['light'] > 100:
+#             inSunLight += 1
+#     soilAlgo = SoilAlgorithm(const)
+#     soilAlgo.setMeanTemp(temp/numberOfReadings)
+#     soilAlgo.setMeanDaylight(inSunLight/numberOfReadings)
+#     print(soilAlgo.getCropFactors())
+#     return make_response(jsonify({"TestEVOFromSensors": soilAlgo.getEvotransporation()}), 200,{
+#     'Access-Control-Allow-Origin': '*',
+#     'Access-Control-Allow-Methods' : 'PUT,GET',
+#     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+#     })
 
-@app.route('/getStatus', methods=['GET'])
+@app.route('/getActualValues', methods=['GET'])
 @cross_origin()
-def getStatus():
-    constVals = {}
+def getActualValues():
     constraint = Constraint()
-    const = constraint.getConstraint()
-    for x,y in const.items():
-        if x != '_id':
-            constVals[x] = y
-    return response(constVals,200)
+    soilAlgo = SoilAlgorithm(constraint.getConstraint())
+    actualWater = soilAlgo.getEvotransporation()
+    responseObj = {
+        'CropName' : soilAlgo.getCropName(),
+        "WaterActual" : actualWater,
+        "LightActual" : soilAlgo.getLightMeanActual(),
+        "TempActual" : soilAlgo.getTempMeanActual()
+    }
+    return response(responseObj, 200)
 
 """ END POINTS END HERE """
 
@@ -252,7 +255,4 @@ def response(jsonObject, statusCode):
         'Cache-Control': 'no-cache, no-store'
     }
     return make_response(jsonify(jsonObject),statusCode,responseSettingObj)
-
-
-
 

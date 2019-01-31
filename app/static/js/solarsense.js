@@ -53,6 +53,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.sunlightTime = 4.0;
 	$scope.waterAmount = 10000.0;
 
+	$scope.actualValues = {};
+
 	$scope.status = {
 		temp: 0,
 		sunlight: 0,
@@ -62,8 +64,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.gettingAlgorithm = function() {
 		$http({
 			method:'GET',
-			// url:'http://11.11.11.11/testingAlgorithm',
-			url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/testingAlgorithm',
+			// url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -76,61 +78,47 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		})
 	}
 
-	$scope.gettingAlgorithmFromSensors = function() {
+	// $scope.gettingAlgorithmFromSensors = function() {
+	// 	$http({
+	// 		method:'GET',
+	// 		// url:'http://11.11.11.11/testingAlgorithmFromSensors',
+	// 		url: 'http://localhost:5000/testingAlgorithmFromSensors',
+	// 		headers: {
+	// 			'Access-Control-Allow-Origin': '*',
+ //        		'Access-Control-Allow-Methods' : 'PUT,GET',
+ //        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+	// 		}
+	// 	}).then(function success(response){
+	// 		console.log(response.data);
+	// 	}, function error(err){
+	// 		console.log(err);
+	// 	})
+	// }
+
+	$scope.getActualValues = function() {
 		$http({
-			method:'GET',
-			// url:'http://11.11.11.11/testingAlgorithmFromSensors',
-			url: 'http://localhost:5000/testingAlgorithmFromSensors',
-			headers: {
+			method: 'GET',
+			url: 'http://11.11.11.11/getActualValues',
+			// url: 'http://localhost:5000/getActualValues',
+			headers:{
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
-        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'				
 			}
 		}).then(function success(response){
-			console.log(response.data);
+			// console.log(response.data);
+			$scope.actualValues = response.data;
+			console.log($scope.actualValues);
+			$scope.getFarmStatus()
 		}, function error(err){
 			console.log(err);
-		})
-	}
+		});
 
-	$scope.getFarmStatus = function () {
-		$http({
-			method:'GET',
-			// url:'http://11.11.11.11/getStatus',
-			url: 'http://localhost:5000/getStatus',
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-        		'Access-Control-Allow-Methods' : 'PUT,GET',
-        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-			}
-		}).then(function success(response){
-			console.log(response.data);
-			var result = response.data,
-					temp = $scope.temperature,
-					sunlight = $scope.sunlightTime, /* Is this time (hours)?*/
-					water = $scope.waterAmount;
-					;
 
-			console.log(result);
-			$scope.cropName = result['CROPNAME'];
-			
-			if(result.temp) {
-				$scope.status.temp = result.temp;
-				temp = result.temp;
-			}
-			if(result.sunlight) {
-				$scope.status.sunlight = result.sunlight;
-				sunlight = result.sunlight
-			}
-			if(result.water) {
-				$scope.status.water = result.water;
-				water = result.water;
-			}
-			$scope.checkValues(temp, sunlight, water);
+	};
 
-		}, function error(err){
-			console.log(err);
-		})
+	$scope.getFarmStatus = function() {
+		$scope.cropName = $scope.actualValues['CropName'];
 	}
 
 	$scope.checkValues = function (temp, sunlight, water) {
@@ -272,8 +260,8 @@ app.controller('StatusCtrl', function($scope, $timeout, $http) {
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			//url:'http://11.11.11.11/data',
-			url: 'http://localhost:5000/data',
+			url:'http://11.11.11.11/data',
+			// url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 	    		'Access-Control-Allow-Methods' : 'PUT,GET',

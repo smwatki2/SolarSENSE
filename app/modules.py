@@ -242,7 +242,11 @@ class Constraint(object):
 
     def getConstraint(self):
         constraintCollection = constraintsDb.SolarSENSEConstraint
-        return constraintCollection.find({"ID":0})[0]
+        constraint = constraintCollection.find({"ID":0})[0]
+        for x,y in constraint.items():
+            if x != '_id':
+                constraint[x] = y        
+        return constraint
 
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -368,8 +372,30 @@ class SoilAlgorithm(object):
     def getCropFactors(self):
         return self.cropFactors
 
-    def setMeanTemp(self,temp):
-        self.mean_temp = temp
+    def getCropName(self):
+        return self.cfCollection['CROPNAME']
+
+    def getTempMeanActual(self):
+        return self.mean_temp
+
+    def getLightMeanActual(self):
+        return self.mean_daily_percentage_daylight
+
+    # def setMeanTemp(self,temp):
+    #     self.mean_temp = temp
+
+    def setMeanActual(self):
+        sensorData = SoildDataCollection()
+        numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
+        dataCollection = sensorData.getLastData(numberOfReadings)
+        temp = 0
+        inSunLight = 0
+        for dataPoint in dataCollection:
+            temp += dataPoint.getSoilData()['temperature']
+            if dataPoint.getSoilData()['light'] > 100:
+                inSunLight += 1
+        self.mean_temp = temp / numberOfReadings
+        self.mean_daily_percentage_daylight = inSunLight / numberOfReadings
 
     def getGoalEvotransporation(self):
         #recalculate the evotransporation, assuming 
@@ -398,6 +424,7 @@ class SoilAlgorithm(object):
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
         self.setCropFactors()
+        self.setMeanActual()
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)
