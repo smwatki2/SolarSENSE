@@ -22,7 +22,7 @@ reports = db['reports']
 
 dateCheck = reports.find_one()
 
-if isinstance(dateCheck['date'],datetime.datetime):
+if isinstance(dateCheck['timestamp'],datetime.datetime):
 	print("Date is already of ISODate Object")
 	client.close()
 	exit(0)
