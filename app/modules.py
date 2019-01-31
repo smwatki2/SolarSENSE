@@ -257,31 +257,7 @@ class HistoricalData(object):
         return meanTemp
 
     def monthlyAverageSunlight(self):
-        date = datetime.datetime.today()
-        monthInt = date.month
-        yearInt = date.year
-        daysInMonth = monthrange(yearInt, monthInt)[1]
-
-        # historyCol = historicalDb['mesaGatewayClimateData']
-        reportsCol = db['reports']
-        maxLight = []
-        minLight = []
-        for x in range(daysInMonth):
-            tempArray = []
-            histByDay = reportsCol.find({'timestamp':{'$gte':datetime.datetime(yearInt,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(yearInt,monthInt,x + 1,23,59,59)}})
-            if(histByDay.count() == 0):
-                continue
-            for item in histByDay:
-                tempArray.append(item['light'])
-            maxLight.append(max(tempArray))
-            minLight.append(min(tempArray))
-            tempArray.clear()
-
-        meanMaxLight = sum(maxLight) / daysInMonth
-        meanMinLight = sum(minLight) / daysInMonth
-
-        meanLight = (meanMaxLight + meanMinLight) / 2
-        return meanLight
+        return 0.23
 
 '''
 Constraint class
