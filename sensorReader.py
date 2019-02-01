@@ -29,6 +29,9 @@ def on_message(client, data, message):
     jsonData = message.payload.decode("utf-8", "ignore")
     reading = json.loads(jsonData) 
 
+    timestamp = reading['timestamp']
+    isoTimestamp = datetime.datetime.strptime(timestamp,'%Y-%m-%d %H:%M:%S')
+    reading['timestamp'] = isoTimestamp
     # Write Sensor Data and Date to file
     file.write(jsonData+"\n")
     # Save sensor data to database
