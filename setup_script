@@ -61,6 +61,11 @@ mongo solarsensereports --eval 'db.reports.find()'
 #the line above won't print anything meaningful out, but will make sure 
 #  solarsensereports db exists
 
+# Setup the Historical Climate Database
+cd ./Database\ Structures
+python3 historicalDataDB.py
+python3 convertToISO.py mesaGatewayClimateData
+
 echo "Setting up the miflora part"
 #miflora setup
 cd /opt/miflora-mqtt-daemon
