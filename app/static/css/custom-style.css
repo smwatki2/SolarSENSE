@@ -224,3 +224,7 @@ button i {
 }
 .dropdown a:hover {background-color: #ddd;}
 .show {display: block;}
+.toggleButtons {
+  width: 50%;
+}
+.dataViewToggle { width: 100%; align-items: center; justify-content: center; }

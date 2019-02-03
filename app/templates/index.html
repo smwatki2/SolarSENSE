@@ -8,7 +8,8 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
-	<body ng-controller="HomeCtrl" ng-init="test(); gettingAlgorithm(); getActualValues();">
+	<!--<body ng-controller="HomeCtrl" ng-init="test(); gettingAlgorithm(); getActualValues();">-->
+		<body ng-controller="HomeCtrl">
 		<nav class="navbar navbar-light header">
 			<div class="container">
 				<div class="logo pull-left"></div>
@@ -30,50 +31,50 @@
 			<br/>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="btn-group btn-group-toggle" data-toggle="buttons">
-						<label class="btn btn-info active">
-							<input type="radio" name="statuses" id="statuses" autocomplete="off" checked="" ng-click="viewStatuses()"> Status
+					<div class="btn-group btn-group-toggle dataViewToggle" data-toggle="buttons">
+						<label class="btn btn-info active toggleButtons" style="background-color: #5cb85c;border-color: #5cb85c;">
+							<input type="radio" name="statuses" id="statuses" autocomplete="off" checked="checked" ng-click="viewStatuses()"> Status
 						</label>
-						<label class="btn btn-secondary active">
-							<input type="radio" name="data" id="data" autocomplete="off" checked=""  ng-click="viewData()"> Data
+						<label class="btn btn-secondary active toggleButtons"  style="background-color: #5bc0de;border-color: #5bc0de;">
+							<input type="radio" name="data" id="data" autocomplete="off" ng-click="viewData()"> Data
 						</label>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12" ng-show="showStatuses">
-					<
+					<div class="row">
+						<div class="menuButtonContainter">
+							<div ng-switch on="'{a temperatureStatus a}'">
+				    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
+				    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
+				    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
+			    				<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
+			    			</div>
+			    		</div>
+			    		<div class="menuButtonContainter">
+			    			<div ng-switch on="'{a sunlightStatus a}'">
+				    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
+				    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
+				    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
+			    				<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
+			    			</div>
+			    		</div>
+			    		<div class="menuButtonContainter">
+			    			<div ng-switch on="'{a waterStatus a}'">
+				    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
+				    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
+				    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
+			    				<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
+			    			</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-12" ng-show="!showStatuses">
-					
+				<div class="col-md-12" ng-hide="showStatuses">
+					Here goes the data in numbers
 				</div>
 			</div>
-			<div class="row">
-				<div class="menuButtonContainter">
-					<div ng-switch on="'{a temperatureStatus a}'">
-		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
-		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
-		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
-	    				<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Temperature<br/>{a temperature a} {a temperatureUnits a}</button>
-	    			</div>
-	    		</div>
-	    		<div class="menuButtonContainter">
-	    			<div ng-switch on="'{a sunlightStatus a}'">
-		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
-		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
-		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
-	    				<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Sunlight<br/>{a sunlightTime a} {a sunlightTimeUnits a}</button>
-	    			</div>
-	    		</div>
-	    		<div class="menuButtonContainter">
-	    			<div ng-switch on="'{a waterStatus a}'">
-		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
-		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
-		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
-	    				<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Water<br/>{a waterAmount a} {a waterAmountUnits a}</button>
-	    			</div>
-				</div>
-			</div>
+
 			<div class="row">
 				<div class="col-md-12">
 					<div class="menuButtonContainter">
