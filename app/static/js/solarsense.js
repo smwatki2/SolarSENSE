@@ -42,17 +42,26 @@ app.controller('LinkCtrl', function($scope, $window) {
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	showStatuses = true;
 
-	//$scope.notifications = [];
+	angular.element(document).ready(function() {
+		$scope.getValues();
+	})
+
+	$scope.notifications = [];
 	// Temporary Variables, until we properly pull from databases
+	$scope.statusWarnings = {
+		"OK" : 0,
+		"Caution" : 1,
+		"Warning" : 2
+	}
 	$scope.cropName = "";
 	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 1; // Caution (Yellow)
-	$scope.waterStatus = 2; // Warning (Red)
+	$scope.sunlightStatus = 2; // Caution (Yellow)
+	$scope.waterStatus = 0; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	$scope.temperature = 70.0;
-	$scope.sunlightTime = 4.0;
-	$scope.waterAmount = 10000.0;
+	// $scope.temperature = 70.0;
+	// $scope.sunlightTime = 4.0;
+	// $scope.waterAmount = 10000.0;
 
 	// Units for data, TODO: add option to toggle unit type
 	$scope.temperatureUnits = "°C";
@@ -60,14 +69,9 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.waterAmountUnits = "mm/Day";
 
 	$scope.actualValues = {};
+	$scope.goalValues = {};
 
-	$scope.status = {
-		temp: 0,
-		sunlight: 0,
-		water: 0
-	};
-
-	$scope.gettingAlgorithm = function() {
+	$scope.getValues = function() {
 		$http({
 			method:'GET',
 			//url:'http://11.11.11.11/testingAlgorithm',
@@ -79,9 +83,14 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			}
 		}).then(function success(response){
 			console.log(response.data);
+			var resObj = response.data;
+			$scope.cropName = resObj['CropName'];
+			$scope.actualValues = resObj['ActualObj'];
+			$scope.goalValues = resObj['GoalObj'];
+			$scope.getFarmStatus();			
 		}, function error(err){
 			console.log(err);
-		})
+		})		
 	}
 
 	// $scope.gettingAlgorithmFromSensors = function() {
@@ -124,20 +133,43 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	};
 
 	$scope.getFarmStatus = function() {
-		$scope.cropName = $scope.actualValues['CropName'];
+		$scope.compareWater();
+		$scope.compareTemp();
 	}
 
-	$scope.checkValues = function (temp, sunlight, water) {
+	$scope.compareWater = function(){
 
+		var waterVal = $scope.actualValues['WaterActual'];
+		var waterGoal = $scope.goalValues['GoalEvo'];
+
+		// If actual water values in a +- 0.1 range we can be considered good
+		if (waterVal > waterGoal + 0.1 &&
+			waterGoal < waterGoal - 0.1){
+				$scope.waterStatus = $scope.statusWarnings['OK'];
+		} else if (waterVal > waterGoal + 0.5 &&
+			waterGoal < waterGoal - 0.5) {
+			$scope.waterStatus = $scope.statusWarnings['Caution'];
+		} else if (waterVal > waterGoal + 1.0 &&
+			waterVal < waterGoal - 1.0) {
+			$scope.waterStatus = $scope.statusWarnings['Warning'];
+		}
 	}
 
-	// Function to retrieve optimal values for a crop
-	$scope.getCropData = function () {
+	$scope.compareTemp = function() {
+		var tempMin = $scope.goalValues['GoalTempRange'][0];
+		var tempMax = $scope.goalValues['GoalTempRange'][1];
+		var tempActual = $scope.actualValues['TempActual'];
 
-	}
-
-	$scope.reload = function () {
-		$scope.getFarmStatus();
+		if(tempActual > tempMin &&
+			tempActual < tempMax) {
+			$scope.temperatureStatus = $scope.statusWarnings['OK'];
+		} else if(tempActual - tempMin  <= 3 ||  
+			tempMax - tempActual <= 3){
+			$scope.temperatureStatus = $scope.statusWarnings['Caution'];
+		} else if(tempActual - tempMin  > 5 ||  
+			tempMax - tempActual > 5){
+			$scope.temperatureStatus = $scope.statusWarnings['Warning'];
+		} 
 	}
 
 	$scope.buttonStatus = function(status, link){

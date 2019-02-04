@@ -385,6 +385,10 @@ class SoilAlgorithm(object):
     def getCropName(self):
         return self.cfCollection['CROPNAME']
 
+    def goalTempRange(self):
+        tempRange = [20,25]
+        return tempRange;
+
     def getTempMeanActual(self):
         return self.mean_temp
 
