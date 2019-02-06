@@ -137,6 +137,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getFarmStatus = function() {
 		$scope.compareWater();
 		$scope.compareTemp();
+		$scope.compareSunlight();
 	}
 
 	$scope.compareWater = function(){
@@ -175,7 +176,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	}
 
 	// TODO: temporary dummy function, replace with actual calculations later
-	$scope.compareTemp = function() {
+	$scope.compareSunlight = function() {
 		$scope.temperatureStatus = $scope.statusWarnings['OK'];
 	}
 
