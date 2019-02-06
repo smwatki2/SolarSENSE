@@ -66,6 +66,9 @@ cd ./Database\ Structures
 python3 historicalDataDB.py
 python3 convertToISO.py mesaGatewayClimateData
 
+# Setup the Regions Database
+python3 regionDB.py
+
 echo "Setting up the miflora part"
 #miflora setup
 cd /opt/miflora-mqtt-daemon
