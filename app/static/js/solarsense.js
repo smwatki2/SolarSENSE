@@ -56,14 +56,14 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		"Warning" : 2
 	}
 	$scope.cropName = "";
-	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 2; // Caution (Yellow)
-	$scope.waterStatus = 0; // Warning (Red)
+	//$scope.temperatureStatus = 0; // OK (Green)
+	//$scope.sunlightStatus = 1; // Caution (Yellow)
+	//$scope.waterStatus = 2; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	// $scope.temperature = 70.0;
-	// $scope.sunlightTime = 4.0;
-	// $scope.waterAmount = 10000.0;
+	$scope.temperature = 70.0;
+	$scope.sunlightTime = 4.0;
+	$scope.waterAmount = 10000.0;
 
 	// Units for data, TODO: add option to toggle unit type
 	$scope.temperatureUnits = "°C";
@@ -171,15 +171,20 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		} else if(tempActual - tempMin  > 5 ||  
 			tempMax - tempActual > 5){
 			$scope.temperatureStatus = $scope.statusWarnings['Warning'];
-		} 
+		}
+	}
+
+	// TODO: temporary dummy function, replace with actual calculations later
+	$scope.compareTemp = function() {
+		$scope.temperatureStatus = $scope.statusWarnings['OK'];
 	}
 
 	$scope.buttonStatus = function(status, link){
 		switch (status) {
-            case 0:
+            case statusWarnings.OK:
                 break;
-            case 1:
-            case 2:
+            case statusWarnings.Caution:
+            case statusWarnings.Warning:
                 $window.location.href = link;
                 break;
             default:
