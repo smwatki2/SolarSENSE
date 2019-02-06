@@ -31,18 +31,18 @@
 			<br/>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="btn-group btn-group-toggle dataViewToggle" data-toggle="buttons">
-						<label class="btn btn-info active toggleButtons" style="background-color: #5cb85c;border-color: #5cb85c;">
-							<input type="radio" name="statuses" id="statuses" autocomplete="off" checked="checked" ng-click="viewStatuses()"> Status
+					<div class="btn-group" style="width: 100%;">
+						<label class="btn btn-info toggleButtons" style="background-color: #5cb85c;border-color: #5cb85c;" ng-model="showStatuses" uib-btn-radio="status">
+							 Status
 						</label>
-						<label class="btn btn-secondary active toggleButtons"  style="background-color: #5bc0de;border-color: #5bc0de;">
-							<input type="radio" name="data" id="data" autocomplete="off" ng-click="viewData()"> Data
+						<label class="btn btn-secondary toggleButtons"  style="background-color: #5bc0de;border-color: #5bc0de;" ng-model="showStatuses" uib-btn-radio="data">
+							 Data
 						</label>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12" ng-show="showStatuses">
+				<div class="col-md-12" ng-show="showStatuses==status">
 					<div class="row">
 						<div class="menuButtonContainter">
 							<div ng-switch on="'{a temperatureStatus a}'">
@@ -70,16 +70,31 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12" ng-hide="showStatuses">
+				<div class="col-md-12" ng-show="showStatuses==data">
 					Here goes the data in numbers
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<center><strong>Plant Growth Phase</strong></center>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="btn-group" style="width: 100%;">
+						<label class="btn btn-info" style="background-color: #f9f9f9;border-color: #f9f9f9; width: 25%;" ng-model="growthStage" uib-btn-radio="seed">
+							 Seed
+						</label>
+						<label class="btn btn-secondary"  style="background-color: #5bc0de;border-color: #5bc0de; width: 50%;" ng-model="growthStage" uib-btn-radio="germination">
+							 Germination
+						</label>
+						<label class="btn btn-secondary"  style="background-color: #5cb85c;border-color: #5cb85c; width: 25%;" ng-model="growthStage" uib-btn-radio="growth">
+							 Growth
+						</label>
+					</div>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="menuButtonContainter">
 						<button class="btn btn-info" ng-click="reload()">Refresh</button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -90,6 +105,7 @@
 	<script type="text/javascript" src="../static/js/angular.min.js"></script>
 	<script type="text/javascript" src="../static/js/angular-route.js"></script>
 	<script type="text/javascript" src="../static/js/angular-animate.js"></script>
+	<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
 	<script type="text/javascript" src="../static/js/solarsense.js"></script>
 	</body>
 </html>	

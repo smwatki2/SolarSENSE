@@ -4,7 +4,7 @@
 	Description: Controllers for Handling UI data binding and REST request
 */
 
-var app = angular.module('solarsenseApp', []);
+var app = angular.module('solarsenseApp', ['ui.bootstrap']);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
@@ -40,7 +40,9 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
-	showStatuses = true;
+	$scope.showStatuses = "status";
+	$scope.growthStage = "seed";
+
 
 	angular.element(document).ready(function() {
 		$scope.getValues();
@@ -213,18 +215,18 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.checkNotifications();
 
-	$scope.viewStatuses = function () {
-		$scope.$apply(function() {
-			showStatuses = true;
-			console.log($scope.showStatuses);	
-		});
-	}
-	$scope.viewData = function () {
-		$scope.$apply(function() {
-			showStatuses = true;	
-			console.log($scope.showStatuses);
-		});
-	}
+	// $scope.viewStatuses = function () {
+	// 	$scope.$apply(function() {
+	// 		showStatuses = true;
+	// 		console.log($scope.showStatuses);	
+	// 	});
+	// }
+	// $scope.viewData = function () {
+	// 	$scope.$apply(function() {
+	// 		showStatuses = true;	
+	// 		console.log($scope.showStatuses);
+	// 	});
+	// }
 });
 
 app.controller('InstantCtrl', function($scope,$http,$timeout){
