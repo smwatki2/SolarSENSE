@@ -138,6 +138,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$scope.compareWater();
 		$scope.compareTemp();
 		$scope.compareSunlight();
+
+		$scope.temperature = $scope.actualValues['TempActual'];
+		$scope.sunlightTime = 4.0; // temporary
+		$scope.waterAmount = $scope.actualValues['WaterActual'];
 	}
 
 	$scope.compareWater = function(){
@@ -177,7 +181,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	// TODO: temporary dummy function, replace with actual calculations later
 	$scope.compareSunlight = function() {
-		$scope.temperatureStatus = $scope.statusWarnings['OK'];
+		$scope.temperatureStatus = $scope.statusWarnings.OK;
 	}
 
 	$scope.buttonStatus = function(status, link){
