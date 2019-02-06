@@ -61,9 +61,9 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	//$scope.waterStatus = 2; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	$scope.temperature = 70.0;
-	$scope.sunlightTime = 4.0;
-	$scope.waterAmount = 10000.0;
+	//$scope.temperature = 70.0;
+	//$scope.sunlightTime = 4.0;
+	//$scope.waterAmount = 10000.0;
 
 	// Units for data, TODO: add option to toggle unit type
 	$scope.temperatureUnits = "°C";
@@ -181,15 +181,15 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	// TODO: temporary dummy function, replace with actual calculations later
 	$scope.compareSunlight = function() {
-		$scope.temperatureStatus = $scope.statusWarnings.OK;
+		$scope.temperatureStatus = $scope.statusWarnings["OK"];
 	}
 
 	$scope.buttonStatus = function(status, link){
 		switch (status) {
-            case statusWarnings.OK:
+            case status.statusWarnings.OK:
                 break;
-            case statusWarnings.Caution:
-            case statusWarnings.Warning:
+            case status.statusWarnings.Caution:
+            case status.statusWarnings.Warning:
                 $window.location.href = link;
                 break;
             default:
