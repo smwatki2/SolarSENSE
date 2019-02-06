@@ -40,7 +40,9 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
-	showStatuses = "status";
+	$scope.showStatuses = "status";
+	$scope.growthStage = "seed";
+
 
 	//$scope.notifications = [];
 	// Temporary Variables, until we properly pull from databases

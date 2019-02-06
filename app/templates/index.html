@@ -74,12 +74,27 @@
 					Here goes the data in numbers
 				</div>
 			</div>
+			<div class="clearfix"></div>
+			<center><strong>Plant Growth Phase</strong></center>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="btn-group" style="width: 100%;">
+						<label class="btn btn-info" style="background-color: #f9f9f9;border-color: #f9f9f9; width: 25%;" ng-model="growthStage" uib-btn-radio="seed">
+							 Seed
+						</label>
+						<label class="btn btn-secondary"  style="background-color: #5bc0de;border-color: #5bc0de; width: 50%;" ng-model="growthStage" uib-btn-radio="germination">
+							 Germination
+						</label>
+						<label class="btn btn-secondary"  style="background-color: #5cb85c;border-color: #5cb85c; width: 25%;" ng-model="growthStage" uib-btn-radio="growth">
+							 Growth
+						</label>
+					</div>
+				</div>
+			</div>
 
 			<div class="row">
 				<div class="col-md-12">
-					<div class="menuButtonContainter">
 						<button class="btn btn-info" ng-click="reload()">Refresh</button>
-					</div>
 				</div>
 			</div>
 		</div>
