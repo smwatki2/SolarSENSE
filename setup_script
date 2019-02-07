@@ -69,6 +69,9 @@ python3 convertToISO.py mesaGatewayClimateData
 # Setup the Regions Database
 python3 regionDB.py
 
+# Setup the Constraints Database
+python3 constraintDB.py
+
 echo "Setting up the miflora part"
 #miflora setup
 cd /opt/miflora-mqtt-daemon
