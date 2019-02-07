@@ -72,6 +72,11 @@ python3 regionDB.py
 # Setup the Constraints Database
 python3 constraintDB.py
 
+# Setup the Crop Factor Database
+python3 cropfactordb.py CropFactor AZCrops AZCrops.json
+python3 cropfactordb.py CropFactor CropFactors Crops.json
+
+
 echo "Setting up the miflora part"
 #miflora setup
 cd /opt/miflora-mqtt-daemon
