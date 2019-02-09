@@ -1,0 +1,25 @@
+echo "Destroying All Databases"
+mongo solarsensereports --eval 'db.dropDatabase()'
+mongo Constraint --eval 'db.dropDatabase()'
+mongo CropFactor --eval 'db.dropDatabase()'
+mongo HistoricalClimateData --eval 'db.dropDatabase()'
+mongo Regions --eval 'db.dropDatabase()'
+
+echo "Setting Up Databases"
+# Setup the SolarSenseReports database
+mongo solarsensereports --eval 'db.reports.find()'
+
+python3 historicalDataDB.py
+python3 convertToISO.py mesaGatewayClimateData
+
+# Setup the Regions Database
+python3 regionDB.py
+
+# Setup the Constraints Database
+python3 constraintDB.py
+
+# Setup the Crop Factor Database
+python3 cropfactordb.py CropFactor AZCrops AZCrops.json
+python3 cropfactordb.py CropFactor CropFactors Crops.json
+
+echo "Finished!"
