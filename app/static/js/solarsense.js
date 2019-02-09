@@ -61,9 +61,9 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	//$scope.waterStatus = 2; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	//$scope.temperature = 70.0;
-	//$scope.sunlightTime = 4.0;
-	//$scope.waterAmount = 10000.0;
+	$scope.temperature;
+	$scope.sunlightTime;
+	$scope.waterAmount;
 
 	// Units for data, TODO: add option to toggle unit type
 	$scope.temperatureUnits = "°C";
@@ -76,8 +76,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getValues = function() {
 		$http({
 			method:'GET',
-			//url:'http://11.11.11.11/testingAlgorithm',
-			url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/testingAlgorithm',
+			//url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -115,8 +115,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getActualValues = function() {
 		$http({
 			method: 'GET',
-			//url: 'http://11.11.11.11/getActualValues',
-			url: 'http://localhost:5000/getActualValues',
+			url: 'http://11.11.11.11/getActualValues',
+			//url: 'http://localhost:5000/getActualValues',
 			headers:{
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -126,7 +126,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			// console.log(response.data);
 			$scope.actualValues = response.data;
 			console.log($scope.actualValues);
-			$scope.getFarmStatus()
+			$scope.getFarmStatus($scope.actualValues)
 		}, function error(err){
 			console.log(err);
 		});
@@ -202,8 +202,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.checkNotifications = function() {
 		$http({
 			method:'GET',
-			//url:'http://11.11.11.11/notifications',
-			url: 'http://localhost:5000/notifications',
+			url:'http://11.11.11.11/notifications',
+			//url: 'http://localhost:5000/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -265,8 +265,8 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			//url:'http://11.11.11.11/data',
-			url: 'http://localhost:5000/data',
+			url:'http://11.11.11.11/data',
+			//url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -321,8 +321,8 @@ app.controller('StatusCtrl', function($scope, $timeout, $http) {
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			//url:'http://11.11.11.11/data',
-			url: 'http://localhost:5000/data',
+			url:'http://11.11.11.11/data',
+			//url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 	    		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -389,8 +389,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
-			//url: 'http://11.11.11.11/getRegions',
-			url: 'http://localhost:5000/getRegions',
+			url: 'http://11.11.11.11/getRegions',
+			//url: 'http://localhost:5000/getRegions',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'GET',
@@ -427,8 +427,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			//url: 'http://11.11.11.11/saveConstraints',
-			url:'http://localhost:5000/saveConstraints',
+			url: 'http://11.11.11.11/saveConstraints',
+			//url:'http://localhost:5000/saveConstraints',
 			data: constraintObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
