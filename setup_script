@@ -25,6 +25,7 @@ sudo cp $DIR/setup/dhcpcd.conf /etc/dhcpcd.conf
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 sudo cp $DIR/setup/dnsmasq.conf /etc/dnsmasq.conf
 sudo cp $DIR/setup/hostapd.conf /etc/hostapd/hostapd.conf
+sudo cp $DIR/setup/uwsgi_config $DIR/uwsgi_config.ini
 sudo iwconfig wlan0 channel 1
 sudo cp $DIR/setup/hostapd /etc/default/hostapd
 sudo cp $DIR/setup/wifistart /usr/local/bin/wifistart
