@@ -139,7 +139,9 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	}
 
 	$scope.reload = function () {
-		$scope.getFarmStatus();
+		//$scope.getFarmStatus();
+		console.log($scope.growthStage);
+		console.log($scope.showStatuses);
 	}
 
 	$scope.buttonStatus = function(status, link){
@@ -195,6 +197,18 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	// 		console.log($scope.showStatuses);
 	// 	});
 	// }
+
+	// Function to switch between crop growth phases
+	$scope.changeStage = function (stage) {
+		$scope.growthStage = stage;
+		console.log($scope.growthStage);
+	}
+
+	// Function to switch between different views
+	$scope.changeView = function (view) {
+		$scope.showStatuses = view;
+		console.log($scope.showStatuses);
+	}
 });
 
 app.controller('InstantCtrl', function($scope,$http,$timeout){

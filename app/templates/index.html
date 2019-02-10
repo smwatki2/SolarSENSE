@@ -32,11 +32,11 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="btn-group" style="width: 100%;">
-						<label class="btn btn-info toggleButtons" style="background-color: #5cb85c;border-color: #5cb85c;" ng-model="showStatuses" uib-btn-radio="status">
-							 Status
+						<label class="btn btn-info toggleButtons" ng-click="changeView('status')" style="background-color: #5cb85c;border-color: #5cb85c;" ng-model="showStatuses" uib-btn-radio="status">
+							 <input type="radio" name="showStatuses" id="status" autocomplete="off" checked> Status
 						</label>
-						<label class="btn btn-secondary toggleButtons"  style="background-color: #5bc0de;border-color: #5bc0de;" ng-model="showStatuses" uib-btn-radio="data">
-							 Data
+						<label class="btn btn-secondary toggleButtons" ng-click="changeView('data')" style="background-color: #5bc0de;border-color: #5bc0de;" ng-model="showStatuses" uib-btn-radio="data">
+							 <input type="radio" name="showStatuses" id="data" autocomplete="off"> Data
 						</label>
 					</div>
 				</div>
@@ -79,14 +79,14 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="btn-group" style="width: 100%;">
-						<label class="btn btn-info" style="background-color: #f9f9f9;border-color: #f9f9f9; width: 25%;" ng-model="growthStage" uib-btn-radio="seed">
-							 Seed
+						<label class="btn btn-info" ng-click="changeStage('seed')" style="background-color: #ffd871;border-color: #ffd871; width: 25%;" ng-model="growthStage" uib-btn-radio="seed">
+							<input type="radio" name="growthStage" id="seed" autocomplete="off" checked> Seed
 						</label>
-						<label class="btn btn-secondary"  style="background-color: #5bc0de;border-color: #5bc0de; width: 50%;" ng-model="growthStage" uib-btn-radio="germination">
-							 Germination
+						<label class="btn btn-secondary" ng-click="changeStage('germination')" style="background-color: #5bc0de;border-color: #5bc0de; width: 50%;" ng-model="growthStage" uib-btn-radio="germination">
+							 <input type="radio" name="growthStage" id="germination" autocomplete="off"> Germination
 						</label>
-						<label class="btn btn-secondary"  style="background-color: #5cb85c;border-color: #5cb85c; width: 25%;" ng-model="growthStage" uib-btn-radio="growth">
-							 Growth
+						<label class="btn btn-secondary" ng-click="changeStage('growth')" style="background-color: #5cb85c;border-color: #5cb85c; width: 25%;" ng-model="growthStage" uib-btn-radio="growth">
+							 <input type="radio" name="growthStage" id="growth" autocomplete="off"> Growth
 						</label>
 					</div>
 				</div>
