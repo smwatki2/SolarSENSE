@@ -179,10 +179,19 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		}
 	}
 
+	// Add all calls to initialization functions and data resets here
 	$scope.reload = function () {
 		//$scope.getFarmStatus();
 		console.log($scope.growthStage);
 		console.log($scope.showStatuses);
+
+			$scope.showStatuses = "status";
+			$scope.growthStage = "seed";
+			$scope.actualValues = {};
+			$scope.goalValues = {};
+
+			$scope.getValues();
+	}
 	// TODO: temporary dummy function, replace with actual calculations later
 	$scope.compareSunlight = function() {
 		$scope.temperatureStatus = $scope.statusWarnings["OK"];
