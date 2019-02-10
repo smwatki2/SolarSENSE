@@ -44,17 +44,26 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.growthStage = "seed";
 
 
-	//$scope.notifications = [];
+	angular.element(document).ready(function() {
+		$scope.getValues();
+	})
+
+	$scope.notifications = [];
 	// Temporary Variables, until we properly pull from databases
+	$scope.statusWarnings = {
+		"OK" : 0,
+		"Caution" : 1,
+		"Warning" : 2
+	}
 	$scope.cropName = "";
-	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 1; // Caution (Yellow)
-	$scope.waterStatus = 2; // Warning (Red)
+	//$scope.temperatureStatus = 0; // OK (Green)
+	//$scope.sunlightStatus = 1; // Caution (Yellow)
+	//$scope.waterStatus = 2; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	$scope.temperature = 70.0;
-	$scope.sunlightTime = 4.0;
-	$scope.waterAmount = 10000.0;
+	$scope.temperature;
+	$scope.sunlightTime;
+	$scope.waterAmount;
 
 	// Units for data, TODO: add option to toggle unit type
 	$scope.temperatureUnits = "°C";
@@ -62,18 +71,13 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.waterAmountUnits = "mm/Day";
 
 	$scope.actualValues = {};
+	$scope.goalValues = {};
 
-	$scope.status = {
-		temp: 0,
-		sunlight: 0,
-		water: 0
-	};
-
-	$scope.gettingAlgorithm = function() {
+	$scope.getValues = function() {
 		$http({
 			method:'GET',
-			//url:'http://11.11.11.11/testingAlgorithm',
-			url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/testingAlgorithm',
+			//url: 'http://localhost:5000/testingAlgorithm',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -81,9 +85,14 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			}
 		}).then(function success(response){
 			console.log(response.data);
+			var resObj = response.data;
+			$scope.cropName = resObj['CropName'];
+			$scope.actualValues = resObj['ActualObj'];
+			$scope.goalValues = resObj['GoalObj'];
+			$scope.getFarmStatus();			
 		}, function error(err){
 			console.log(err);
-		})
+		})		
 	}
 
 	// $scope.gettingAlgorithmFromSensors = function() {
@@ -106,8 +115,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getActualValues = function() {
 		$http({
 			method: 'GET',
-			//url: 'http://11.11.11.11/getActualValues',
-			url: 'http://localhost:5000/getActualValues',
+			url: 'http://11.11.11.11/getActualValues',
+			//url: 'http://localhost:5000/getActualValues',
 			headers:{
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -117,7 +126,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			// console.log(response.data);
 			$scope.actualValues = response.data;
 			console.log($scope.actualValues);
-			$scope.getFarmStatus()
+			$scope.getFarmStatus($scope.actualValues)
 		}, function error(err){
 			console.log(err);
 		});
@@ -126,30 +135,65 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	};
 
 	$scope.getFarmStatus = function() {
-		$scope.cropName = $scope.actualValues['CropName'];
+		$scope.compareWater();
+		$scope.compareTemp();
+		$scope.compareSunlight();
+
+		$scope.temperature = $scope.actualValues['TempActual'];
+		$scope.sunlightTime = 4.0; // temporary
+		$scope.waterAmount = $scope.actualValues['WaterActual'];
 	}
 
-	$scope.checkValues = function (temp, sunlight, water) {
+	$scope.compareWater = function(){
 
+		var waterVal = $scope.actualValues['WaterActual'];
+		var waterGoal = $scope.goalValues['GoalEvo'];
+
+		// If actual water values in a +- 0.1 range we can be considered good
+		if (waterVal > waterGoal + 0.1 &&
+			waterGoal < waterGoal - 0.1){
+				$scope.waterStatus = $scope.statusWarnings['OK'];
+		} else if (waterVal > waterGoal + 0.5 &&
+			waterGoal < waterGoal - 0.5) {
+			$scope.waterStatus = $scope.statusWarnings['Caution'];
+		} else if (waterVal > waterGoal + 1.0 &&
+			waterVal < waterGoal - 1.0) {
+			$scope.waterStatus = $scope.statusWarnings['Warning'];
+		}
 	}
 
-	// Function to retrieve optimal values for a crop
-	$scope.getCropData = function () {
+	$scope.compareTemp = function() {
+		var tempMin = $scope.goalValues['GoalTempRange'][0];
+		var tempMax = $scope.goalValues['GoalTempRange'][1];
+		var tempActual = $scope.actualValues['TempActual'];
 
+		if(tempActual > tempMin &&
+			tempActual < tempMax) {
+			$scope.temperatureStatus = $scope.statusWarnings['OK'];
+		} else if(tempActual - tempMin  <= 3 ||  
+			tempMax - tempActual <= 3){
+			$scope.temperatureStatus = $scope.statusWarnings['Caution'];
+		} else if(tempActual - tempMin  > 5 ||  
+			tempMax - tempActual > 5){
+			$scope.temperatureStatus = $scope.statusWarnings['Warning'];
+		}
 	}
 
 	$scope.reload = function () {
 		//$scope.getFarmStatus();
 		console.log($scope.growthStage);
 		console.log($scope.showStatuses);
+	// TODO: temporary dummy function, replace with actual calculations later
+	$scope.compareSunlight = function() {
+		$scope.temperatureStatus = $scope.statusWarnings["OK"];
 	}
 
 	$scope.buttonStatus = function(status, link){
 		switch (status) {
-            case 0:
+            case status.statusWarnings.OK:
                 break;
-            case 1:
-            case 2:
+            case status.statusWarnings.Caution:
+            case status.statusWarnings.Warning:
                 $window.location.href = link;
                 break;
             default:
@@ -162,8 +206,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.checkNotifications = function() {
 		$http({
 			method:'GET',
-			//url:'http://11.11.11.11/notifications',
-			url: 'http://localhost:5000/notifications',
+			url:'http://11.11.11.11/notifications',
+			//url: 'http://localhost:5000/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -237,8 +281,8 @@ app.controller('InstantCtrl', function($scope,$http,$timeout){
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			//url:'http://11.11.11.11/data',
-			url: 'http://localhost:5000/data',
+			url:'http://11.11.11.11/data',
+			//url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -293,8 +337,8 @@ app.controller('StatusCtrl', function($scope, $timeout, $http) {
 			method:'GET',
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
-			//url:'http://11.11.11.11/data',
-			url: 'http://localhost:5000/data',
+			url:'http://11.11.11.11/data',
+			//url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 	    		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -361,8 +405,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
-			//url: 'http://11.11.11.11/getRegions',
-			url: 'http://localhost:5000/getRegions',
+			url: 'http://11.11.11.11/getRegions',
+			//url: 'http://localhost:5000/getRegions',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'GET',
@@ -399,8 +443,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			//url: 'http://11.11.11.11/saveConstraints',
-			url:'http://localhost:5000/saveConstraints',
+			url: 'http://11.11.11.11/saveConstraints',
+			//url:'http://localhost:5000/saveConstraints',
 			data: constraintObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
