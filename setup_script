@@ -62,10 +62,15 @@ mongo solarsensereports --eval 'db.reports.find()'
 #the line above won't print anything meaningful out, but will make sure 
 #  solarsensereports db exists
 
+# Just in case, we will remove any sensor data that does not have a date,
+# and also convert any string dates into ISO date format for easy comparison
+mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : false } })'
+python3 convertSensorToISO.py reports
+
 # Setup the Historical Climate Database
 cd ./Database\ Structures
 python3 historicalDataDB.py
-python3 convertToISO.py mesaGatewayClimateData
+python3 convertHistoricalToISO.py mesaGatewayClimateData
 
 # Setup the Regions Database
 python3 regionDB.py
