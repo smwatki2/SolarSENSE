@@ -70,7 +70,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.sunlightTimeUnits = "Hours";
 	$scope.waterAmountUnits = "mm/Day";
 
-	$scope.actualValues = {};
+	$scope.actualValues = {
+		'WaterActual': 0,
+		'TempActual': 0
+	};
 	$scope.goalValues = {};
 
 	$scope.getValues = function() {
