@@ -6,6 +6,8 @@
 		"CF_COLLECTION": "",
 		"CROPNAME": "",
 		"SEASON" : "",
-		"DATE" : ""
+		"DATE" : "",
+		"LAT_DIR" : "",
+		"DEG" : 0
 	}]
 }
