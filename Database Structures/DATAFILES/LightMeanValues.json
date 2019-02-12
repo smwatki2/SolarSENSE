@@ -1,4 +1,9 @@
-
+// @ref: http://www.fao.org/docrep/S2022E/s2022e07.htm
+// These values were taken from the provided link above found in Table 4
+// If this link does not work try the next link
+// @ref:https://bmsit.ac.in/system/study_materials/documents/000/000/014/original/infiltration.pdf?1477068026
+// The first link gave me problems from time to time, making it not accessible, the second link
+// has the same table from the first link, which can be found on the pdf page 10
 {
 	"NORTH": [
 		{

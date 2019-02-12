@@ -359,9 +359,6 @@ class SoilAlgorithm(object):
         # TODO: Add a property to constraint or to Region db for lat value.
         self.historical = HistoricalData('USA', 'AZ', datetime.datetime.today())
 
-        # This value is derived from a table based on lat and lon, not calculated
-        self.dPercentofDaylight = 0
-
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
         if cropFactorCollection is not None:
@@ -374,6 +371,9 @@ class SoilAlgorithm(object):
         self.mean_daily_percentage_daylight = 0 #percentage between 0 and 1 (ex: 25% == 0.25)
         self.goal_mean_temp = 0
         self.mean_temp = 0 # In degrees celcius
+
+        # This value is derived from a table based on lat and lon, not calculated
+        self.dPercentofDaylight = self.setConstMeanPercentDayLight()        
 
         # self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
         self.goalevotransporation = 0
@@ -397,7 +397,7 @@ class SoilAlgorithm(object):
         monthMeanValues = lightCollection.getMeanValues(direction, degree)
 
         # We have to - 1 for array indexing
-        self.dPercentofDaylight = monthMeanValues[monthInt - 1]
+        return monthMeanValues[monthInt - 1]
 
 
     def setMeanDaylight(self, light):
@@ -466,7 +466,7 @@ class SoilAlgorithm(object):
         # TODO: Need to Create mean daily percentage table from @ref site
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
-        self.setConstMeanPercentDayLight()
+        # self.setConstMeanPercentDayLight()
         self.setCropFactors()
         self.setGoalMeanTemp()
 
