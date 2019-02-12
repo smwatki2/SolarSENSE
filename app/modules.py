@@ -230,6 +230,35 @@ class HistoricalData(object):
             file.write(traceback.format_exc())
             file.close()
 
+    def monthlyAverageTemperature(self):
+        date = datetime.datetime.today()
+        monthInt = date.month
+        daysInMonth = monthrange(2017, monthInt)[1]
+
+        historyCol = historicalDb['mesaGatewayClimateData']
+        maxTemp = []
+        minTemp = []
+
+        for x in range(daysInMonth):
+            tempArray = []
+            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(2017,monthInt,x + 1,23,59,59)}})
+            for item in histByDay:
+                if item['hourly_drybulb_temp'] == '':
+                    continue
+                tempArray.append(int(item['hourly_drybulb_temp']))
+            maxTemp.append(max(tempArray))
+            minTemp.append(min(tempArray))
+            tempArray.clear()
+
+        meanMaxTemp = sum(maxTemp) / daysInMonth
+        meanMinTemp = sum(minTemp) / daysInMonth
+
+        meanTemp = (meanMaxTemp + meanMinTemp) / 2
+        return meanTemp
+
+    def monthlyAverageSunlight(self):
+        return 0.23
+
 '''
 Constraint class
 '''
@@ -242,7 +271,11 @@ class Constraint(object):
 
     def getConstraint(self):
         constraintCollection = constraintsDb.SolarSENSEConstraint
-        return constraintCollection.find({"ID":0})[0]
+        constraint = constraintCollection.find({"ID":0})[0]
+        for x,y in constraint.items():
+            if x != '_id':
+                constraint[x] = y        
+        return constraint
 
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
@@ -293,6 +326,9 @@ class SoilAlgorithm(object):
 
         # This value is a test value based in AZ, others will be added as a constraint
         # TODO: Add a property to constraint or to Region db for lat value.
+        self.historical = HistoricalData('USA', 'AZ', datetime.datetime.today())
+
+        # This value is derived from a table based on lat and lon, not calculated
         self.dPercentofDaylight = 0.23
 
         """ Let's figure out how to get the constaints that the user set"""
@@ -323,29 +359,7 @@ class SoilAlgorithm(object):
 
     def setGoalMeanTemp(self):
 
-        date = datetime.datetime.today()
-        monthInt = date.month
-        daysInMonth = monthrange(2017, monthInt)[1]
-
-        historyCol = historicalDb['mesaGatewayClimateData']
-        maxTemp = []
-        minTemp = []
-
-        for x in range(daysInMonth):
-            tempArray = []
-            histByDay = historyCol.find({'date':{'$gte':datetime.datetime(2017,monthInt,x + 1,0,0,0),'$lt':datetime.datetime(2017,monthInt,x + 1,23,59,59)}})
-            for item in histByDay:
-                if item['hourly_drybulb_temp'] == '':
-                    continue
-                tempArray.append(int(item['hourly_drybulb_temp']))
-            maxTemp.append(max(tempArray))
-            minTemp.append(min(tempArray))
-            tempArray.clear()
-
-        meanMaxTemp = sum(maxTemp) / daysInMonth
-        meanMinTemp = sum(minTemp) / daysInMonth
-
-        meanTemp = (meanMaxTemp + meanMinTemp) / 2
+        meanTemp = self.historical.monthlyAverageTemperature()
         self.goal_mean_temp = meanTemp    
 
     def setCropFactors(self):
@@ -368,8 +382,34 @@ class SoilAlgorithm(object):
     def getCropFactors(self):
         return self.cropFactors
 
-    def setMeanTemp(self,temp):
-        self.mean_temp = temp
+    def getCropName(self):
+        return self.cfCollection['CROPNAME']
+
+    def goalTempRange(self):
+        tempRange = [20,25]
+        return tempRange;
+
+    def getTempMeanActual(self):
+        return self.mean_temp
+
+    def getLightMeanActual(self):
+        return self.historical.monthlyAverageSunlight()
+
+    # def setMeanTemp(self,temp):
+    #     self.mean_temp = temp
+
+    def setMeanActual(self):
+        sensorData = SoildDataCollection()
+        numberOfReadings = 24 #Maybe if we collect once every hour, we get the last day of readings
+        dataCollection = sensorData.getLastData(numberOfReadings)
+        temp = 0
+        inSunLight = 0
+        for dataPoint in dataCollection:
+            temp += dataPoint.getSoilData()['temperature']
+            if dataPoint.getSoilData()['light'] > 100:
+                inSunLight += 1
+        self.mean_temp = temp / numberOfReadings
+        self.mean_daily_percentage_daylight = inSunLight / numberOfReadings
 
     def getGoalEvotransporation(self):
         #recalculate the evotransporation, assuming 
@@ -398,6 +438,7 @@ class SoilAlgorithm(object):
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
         self.setCropFactors()
+        self.setMeanActual()
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)

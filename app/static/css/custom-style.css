@@ -24,9 +24,10 @@ button i {
 	background-size: contain;
 }
 .menuButtonContainter {
-	width: 44%;
-	margin: 3%;
+	margin: 1.5%;
 	height: 120px;
+  width: 30%;
+  text-align: center;
 }
 .btn-block {
 	height: 100%;
@@ -35,6 +36,89 @@ button i {
 	background-color: transparent!important;
 	color: #5ea0ca!important;
 	font-weight: bold;
+}
+.btn-block-nav {
+  height: 85px;
+  width: 75px;
+  border-width: 3px;
+  border-color: #69b2e1!important;
+  background-color: #5ea0ca!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+}
+.btn-block-nav-select {
+  height: 85px;
+  width: 75px;
+  border-width: 3px;
+  border-color: #69b2e1!important;
+  background-color: #5ea0ca!important;
+  color: #69b2e1!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+}
+.btn-block-back {
+  height: 85px;
+  width: 75px;
+  border-width: 3px;
+  border-color: #69b2e1!important;
+  background-color: #FFFFFF!important;
+  color: #5ea0ca!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.btn-block-green {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #69e178!important;
+  background-color: #44bf4d!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-yellow {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #eef42e!important;
+  background-color: #ffe01c!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-red {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #ff5656!important;
+  background-color: #e52727!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-default {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #e0e0e0!important;
+  background-color: #808080!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.vertical{
+  padding-left: 10px;
 }
 
 @keyframes lds-ripple {
@@ -101,6 +185,12 @@ button i {
 }
 .modal-footer {
 	padding-bottom: 0px!important;
+}
+.video {
+  margin-top: 20px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .dropbtn {
     background-color: #69b2e1;
