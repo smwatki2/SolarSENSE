@@ -8,40 +8,57 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
-	<body ng-controller="HomeCtrl" ng-init="test()">
-		<nav class="navbar navbar-expand-lg navbar-light header">
-			<div class="logo pull-left"></div>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-				<i class="fas fa-bars white-icon"></i>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarToggler">
+	<body ng-controller="HomeCtrl" ng-init="test();">
+		<nav class="navbar navbar-light header">
+			<div class="container">
+				<div class="logo pull-left"></div>
 				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 					<li class="nav-item active">
-						<a class="nav-link white-color" href="#">Library</a>
+						<a class="nav-link white-color" href="#"><h4 class="vertical">SolarSENSE</h4></a>
 					</li>
+				</ul>
+				<ul class="nav nav-pills navbar-left" ng-controller="LinkCtrl">
+					<li><button class="btn btn-block-nav" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button></li>
+					<li><button class="btn btn-block-nav" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan</button></li>
+					<li><button class="btn btn-block-nav" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button></li>
+					<li><button class="btn btn-block-nav" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button></li>
 				</ul>
 			</div>
 		</nav>
-		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-repeat="notification in notifications">
-			<strong>Hey farmer!</strong> Your crops need more water. Current level is <strong>{a notification.current a}</strong>. Goal is <strong>{a notification.goal a}.</strong> On
-			<small>{a notification.timestamp a}</small>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
 		<div class="container">
+			<h1 style="text-align: center;color: #69b2e1;"><big><strong>Farm Status</strong><br/>{a cropName a}</big></h1>
+			<br/>
 			<div class="row">
 				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button>
-				</div>
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan Sensors</button>
+					<div ng-switch on="'{a temperatureStatus a}'">
+		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Temperature</button>
+		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Temperature</button>
+		    			<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Temperature</button>
+	    				<button ng-click="buttonStatus(temperatureStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Temperature</button>
+	    			</div>
+	    		</div>
+	    		<div class="menuButtonContainter">
+	    			<div ng-switch on="'{a sunlightStatus a}'">
+		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Sunlight</button>
+		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Sunlight</button>
+		    			<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Sunlight</button>
+	    				<button ng-click="buttonStatus(sunlightStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Sunlight</button>
+	    			</div>
+	    		</div>
+	    		<div class="menuButtonContainter">
+	    			<div ng-switch on="'{a waterStatus a}'">
+		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-green" ng-switch-when="0"><i class="fas fa-check-circle"></i><br>Water</button>
+		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-yellow" ng-switch-when="1"><i class="fas fa-exclamation-triangle"></i><br>Water</button>
+		    			<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-red" ng-switch-when="2"><i class="fas fa-exclamation-circle"></i><br>Water</button>
+	    				<button ng-click="buttonStatus(waterStatus, 'learn')" class="btn btn-block-default" ng-switch-default><i class="fas fa-question-circle"></i><br>Water</button>
+	    			</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="menuButtonContainter">
-					<button class="btn btn-block" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button>
+				<div class="col-md-12">
+					<div class="menuButtonContainter">
+						<button class="btn btn-info" ng-click="reload()">Refresh</button>
+					</div>
 				</div>
 			</div>
 		</div>

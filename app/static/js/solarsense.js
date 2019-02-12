@@ -7,36 +7,69 @@
 var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
-  $interpolateProvider.startSymbol('{a');
-  $interpolateProvider.endSymbol('a}');
+  	$interpolateProvider.startSymbol('{a');
+  	$interpolateProvider.endSymbol('a}');
 }]);
 
-app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+app.controller('LinkCtrl', function($scope, $window) {
 
-	$scope.notifications = [];
+  	$scope.startCollection = function () {
+		$window.location.href = "instant";
+	}
 
 	$scope.test = function(){
 		$scope.gettingAlgorithm();
 		$scope.gettingAlgorithmFromSensors();
 	}
 
-	$scope.startCollection = function () {
-		$window.location.href = "instant"; 
-	}
-
 	$scope.scanSensors = function () {
-		$window.location.href = "scan"; 
+		$window.location.href = "scan";
 	}
-	
+
+	$scope.goToLearn = function () {
+		$window.location.href = "learn";
+	}
+
+	$scope.goToFarmStatus = function () {
+		$window.location.href = "/";
+	}
+
 	$scope.openConfig = function () {
-		$window.location.href = "config"; 
+		$window.location.href = "config";
 	}
+});
 
-	$scope.gettingAlgorithm = function() {
+app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+
+	angular.element(document).ready(function() {
+		$scope.getValues();
+	})
+
+	$scope.notifications = [];
+	// Temporary Variables, until we properly pull from databases
+	$scope.statusWarnings = {
+		"OK" : 0,
+		"Caution" : 1,
+		"Warning" : 2
+	}
+	$scope.cropName = "";
+	$scope.temperatureStatus = 0; // OK (Green)
+	$scope.sunlightStatus = 2; // Caution (Yellow)
+	$scope.waterStatus = 0; // Warning (Red)
+
+	// Debug Values (Most likely not to be used in final product)
+	// $scope.temperature = 70.0;
+	// $scope.sunlightTime = 4.0;
+	// $scope.waterAmount = 10000.0;
+
+	$scope.actualValues = {};
+	$scope.goalValues = {};
+
+	$scope.getValues = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/testingAlgorithm',
-			// url: 'http://localhost:5000/testingAlgorithm',
+			url:'http://11.11.11.11/getValues',
+			// url: 'http://localhost:5000/getValues',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -44,27 +77,70 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			}
 		}).then(function success(response){
 			console.log(response.data);
+			var resObj = response.data;
+			$scope.cropName = resObj['CropName'];
+			$scope.actualValues = resObj['ActualObj'];
+			$scope.goalValues = resObj['GoalObj'];
+			$scope.getFarmStatus();			
 		}, function error(err){
 			console.log(err);
-		})
+		})		
 	}
 
-	$scope.gettingAlgorithmFromSensors = function() {
-		$http({
-			method:'GET',
-			url:'http://11.11.11.11/testingAlgorithmFromSensors',
-			// url: 'http://localhost:5000/testingAlgorithmFromSensors',
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-        		'Access-Control-Allow-Methods' : 'PUT,GET',
-        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-			}
-		}).then(function success(response){
-			console.log(response.data);
-		}, function error(err){
-			console.log(err);
-		})
+	$scope.getFarmStatus = function() {
+		$scope.compareWater();
+		$scope.compareTemp();
 	}
+
+	$scope.compareWater = function(){
+
+		var waterVal = $scope.actualValues['WaterActual'];
+		var waterGoal = $scope.goalValues['GoalEvo'];
+
+		// If actual water values in a +- 0.1 range we can be considered good
+		if (waterVal > waterGoal + 0.1 &&
+			waterGoal < waterGoal - 0.1){
+				$scope.waterStatus = $scope.statusWarnings['OK'];
+		} else if (waterVal > waterGoal + 0.5 &&
+			waterGoal < waterGoal - 0.5) {
+			$scope.waterStatus = $scope.statusWarnings['Caution'];
+		} else if (waterVal > waterGoal + 1.0 &&
+			waterVal < waterGoal - 1.0) {
+			$scope.waterStatus = $scope.statusWarnings['Warning'];
+		}
+	}
+
+	$scope.compareTemp = function() {
+		var tempMin = $scope.goalValues['GoalTempRange'][0];
+		var tempMax = $scope.goalValues['GoalTempRange'][1];
+		var tempActual = $scope.actualValues['TempActual'];
+
+		if(tempActual > tempMin &&
+			tempActual < tempMax) {
+			$scope.temperatureStatus = $scope.statusWarnings['OK'];
+		} else if(tempActual - tempMin  <= 3 ||  
+			tempMax - tempActual <= 3){
+			$scope.temperatureStatus = $scope.statusWarnings['Caution'];
+		} else if(tempActual - tempMin  > 5 ||  
+			tempMax - tempActual > 5){
+			$scope.temperatureStatus = $scope.statusWarnings['Warning'];
+		} 
+	}
+
+	$scope.buttonStatus = function(status, link){
+		switch (status) {
+            case 0:
+                break;
+            case 1:
+            case 2:
+                $window.location.href = link;
+                break;
+            default:
+        }
+	}
+
+
+
 	// Function to check for notifications
 	$scope.checkNotifications = function() {
 		$http({
@@ -157,6 +233,51 @@ app.controller('ScanCtrl', function($scope, $timeout, $http) {
           $scope.percent+=10;
         }
       },1000);
+});
+
+app.controller('LearnCtrl', function($scope, $timeout, $http) {
+	$scope.goHome = function () {
+		$window.location.href = "/"; 
+	}
+});
+
+app.controller('StatusCtrl', function($scope, $timeout, $http) {
+	
+	$scope.soilData = [];
+	$scope.historicData = [];
+	$scope.percent = 0;
+
+	$scope.dataRequestSensor = function() {
+		console.log("Calling Sensor Data Object");
+		$http({
+			method:'GET',
+			// When using on development machine, use http://localhost:5000/data
+			// When using and deploying on pi, use http://11.11.11.11/data
+			url:'http://11.11.11.11/data',
+			// url: 'http://localhost:5000/data',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+	    		'Access-Control-Allow-Methods' : 'PUT,GET',
+	    		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			}
+		})
+		.then(function success(response){
+			$scope.response = response.data;
+			var percentVal = 100 / $scope.response.length;
+			for(var i = 0; i < $scope.response.length; i++){		
+				var soilObj = JSON.parse($scope.response[i]);
+				$scope.soilData.push(soilObj);
+			}
+
+			$timeout(function(){
+				for(var i = 0; i < 100; i++){
+					$scope.percent++;
+				}
+			},5000);
+		}, function error(response){
+			console.log("There was an error getting the Sensor data");
+		});
+	};
 });
 
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
@@ -257,5 +378,4 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			console.log('There was an error saving constraints');
 		});
 	};
-
 });

@@ -15,7 +15,7 @@ else:
 	print("Improper Usage:")
 	print("This script is mostly with the HistoricalClimateData Mongo DB")
 	print("This is run by the following commands")
-	print("python3 convertToISO.py [collection_name")
+	print("python3 convertHistoricalToISO.py [collection_name]")
 	client.close()
 	exit(0)
 
@@ -33,10 +33,7 @@ else:
 	print("Running...")
 	for item in history:
 		origDate = item['date']
-		date = origDate.split(" ")
-		dateArray = date[0].split("/")
-		timeArray = date[1].split(":")
-		isoDate = datetime.datetime(int(dateArray[2]), int(dateArray[0]), int(dateArray[1]), int(timeArray[0]), int(timeArray[1]))
+		isoDate = datetime.datetime.strptime(item['date'], '%m/%d/%Y %H:%M')
 		query = {'date': origDate}
 		update = {'$set' : {'date' : isoDate}}
 		historyCollection.update_one(query, update)
