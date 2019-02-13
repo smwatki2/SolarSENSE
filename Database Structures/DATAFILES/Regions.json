@@ -2,14 +2,20 @@
 	"Regions":[
 		{
 			"REGION_NAME" : "AZ Test Data",
-			"CF_COLLECTION": "AZCrops"
+			"CF_COLLECTION": "AZCrops",
+			"LAT_DIR" : "N",
+			"DEG" : 35
 		},{
 			"REGION_NAME" : "Hawaii",
-			"CF_COLLECTION": "TODO"
+			"CF_COLLECTION": "TODO",
+			"LAT_DIR" : "N",
+			"DEG" : 20
 		},
 		{
 			"REGION_NAME" : "Rwanda",
-			"CF_COLLECTION": "TODO"
+			"CF_COLLECTION": "TODO",
+			"LAT_DIR" : "S",
+			"DEG" : 0
 		}
 	]
 }

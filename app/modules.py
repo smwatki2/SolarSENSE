@@ -15,6 +15,8 @@ historicalDb = client.HistoricalClimateData
 cropFactorDb = client.CropFactor
 constraintsDb = client.Constraint
 regionDB = client.Regions
+lightMeandb = client.MeanLightValues
+
 
 class SoildDataCollection(object):
 
@@ -137,6 +139,24 @@ class Notifications(object):
             file.write(traceback.format_exc())
             file.close()
 
+
+class LightMeanCollection(object):
+
+    def getMeanValues(self, lat_direction, degree):
+        northSouthValues = lightMeandb.NorthSouthLatValues
+        nsLatObj = {}
+        direction = ""
+
+        if lat_direction == "N":
+            direction = "DEG_N"
+        else:
+            direction = "DEG_S"
+
+        query = {
+            direction : degree
+        }
+        nsLatObj = northSouthValues.find_one(query)
+        return nsLatObj['MONTH_VALS']
 
 '''
 Factors class
@@ -280,12 +300,21 @@ class Constraint(object):
     def updateConstraint(self):
         constrainCollection = constraintsDb.SolarSENSEConstraint
         query = { "ID" : 0 }
-        updateVals = {"$set":{"REGION": self.constraint.get("region"),"CROPNAME": self.constraint.get('crop'), "SEASON": self.constraint.get('season'), "DATE": self.constraint.get('date'), "CF_COLLECTION": self.constraint.get('cfCollection')}}
+        updateVals = {"$set":{
+            "REGION": self.constraint.get("region"),
+            "CROPNAME": self.constraint.get('crop'), 
+            "SEASON": self.constraint.get('season'), 
+            "DATE": datetime.datetime.strptime(self.constraint.get('date'), '%Y-%m-%d'), 
+            "CF_COLLECTION": self.constraint.get('cfCollection'),
+            "LAT_DIR" : self.constraint.get('latDir'),
+            "DEG" : self.constraint.get('deg')
+            }
+        }
 
         constrainCollection.update_one(query,updateVals)
         for constraint in constrainCollection.find():
             print(constraint)
-        
+
 
 '''
 Region Class
@@ -293,9 +322,11 @@ Region Class
 
 class Region(object):
 
-    def __init__(self, name, cropFactorCollection):
+    def __init__(self, name, cropFactorCollection, latDir, degrees):
         self.name = name
         self.cfCollection = cropFactorCollection
+        self.lat_direction = latDir
+        self.degree = degrees
 
     def toString(self):
         return json.dumps(self.__dict__)
@@ -309,7 +340,7 @@ class RegionCollection(object):
         regionInfoCollection = regionDB.RegionInfo
         regionInfo = regionInfoCollection.find()
         for info in regionInfo:
-            rInfo = Region(info['REGION_NAME'],info['CF_COLLECTION'])
+            rInfo = Region(info['REGION_NAME'],info['CF_COLLECTION'],info['LAT_DIR'],info['DEG'])
             self.regions.append(rInfo)
 
     def getRegions(self):
@@ -328,9 +359,6 @@ class SoilAlgorithm(object):
         # TODO: Add a property to constraint or to Region db for lat value.
         self.historical = HistoricalData('USA', 'AZ', datetime.datetime.today())
 
-        # This value is derived from a table based on lat and lon, not calculated
-        self.dPercentofDaylight = 0.23
-
         """ Let's figure out how to get the constaints that the user set"""
         constrainCollection = constraintsDb.SolarSENSEConstraint
         if cropFactorCollection is not None:
@@ -344,6 +372,9 @@ class SoilAlgorithm(object):
         self.goal_mean_temp = 0
         self.mean_temp = 0 # In degrees celcius
 
+        # This value is derived from a table based on lat and lon, not calculated
+        self.dPercentofDaylight = self.setConstMeanPercentDayLight()        
+
         # self.evotransporation = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128) # mm per day
         self.goalevotransporation = 0
         self.evotransporation = 0
@@ -353,6 +384,21 @@ class SoilAlgorithm(object):
 
     def getMeanTemp(self):
         return self.mean_temp
+
+    def setConstMeanPercentDayLight(self):
+        date = datetime.datetime.today()
+        monthInt = date.month
+        degree = self.cfCollection['DEG']
+        direction = self.cfCollection['LAT_DIR']
+        lightCollection = LightMeanCollection()
+
+        # This array is setup to hold the mean daily percentage values
+        # by month where January = 0 and December = 11
+        monthMeanValues = lightCollection.getMeanValues(direction, degree)
+
+        # We have to - 1 for array indexing
+        return monthMeanValues[monthInt - 1]
+
 
     def setMeanDaylight(self, light):
         self.mean_daily_percentage_daylight = light
@@ -393,7 +439,7 @@ class SoilAlgorithm(object):
         return self.mean_temp
 
     def getLightMeanActual(self):
-        return self.historical.monthlyAverageSunlight()
+        return self.mean_daily_percentage_daylight
 
     # def setMeanTemp(self,temp):
     #     self.mean_temp = temp
@@ -420,6 +466,7 @@ class SoilAlgorithm(object):
         # TODO: Need to Create mean daily percentage table from @ref site
         # evoReference = self.mean_daily_percentage_daylight * (0.457 * self.mean_temp + 8.128)
 
+        # self.setConstMeanPercentDayLight()
         self.setCropFactors()
         self.setGoalMeanTemp()
 
