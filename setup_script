@@ -82,6 +82,9 @@ python3 constraintDB.py
 python3 cropfactordb.py CropFactor AZCrops AZCrops.json
 python3 cropfactordb.py CropFactor CropFactors Crops.json
 
+# Setup the Mean Light Values 
+python3 lightMeandb.py
+
 
 echo "Setting up the miflora part"
 #miflora setup

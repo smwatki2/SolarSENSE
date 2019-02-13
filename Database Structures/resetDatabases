@@ -4,6 +4,7 @@ mongo Constraint --eval 'db.dropDatabase()'
 mongo CropFactor --eval 'db.dropDatabase()'
 mongo HistoricalClimateData --eval 'db.dropDatabase()'
 mongo Regions --eval 'db.dropDatabase()'
+mongo MeanLightValues --eval 'db.dropDatabase()'
 
 echo "Setting Up Databases"
 # Setup the SolarSenseReports database
@@ -21,5 +22,8 @@ python3 constraintDB.py
 # Setup the Crop Factor Database
 python3 cropfactordb.py CropFactor AZCrops AZCrops.json
 python3 cropfactordb.py CropFactor CropFactors Crops.json
+
+# Setup the Mean Light Values 
+python3 lightMeandb.py
 
 echo "Finished!"
