@@ -173,6 +173,7 @@ def saveConstraints():
 def getValues():
     constraint = Constraint()
     soilAlgo = SoilAlgorithm(constraint.getConstraint())
+    soilAlgo.setCropStage()
     goalObj = {
         "GoalTempRange" : soilAlgo.goalTempRange(),
         "GoalEvo" : soilAlgo.getGoalEvotransporation()
@@ -189,6 +190,34 @@ def getValues():
     }
 
     return response(responseObj, 200)
+
+@app.route("/changeStage", methods=['POST'])
+@cross_origin()
+def changeStage():
+
+    stageObj = request.get_json()
+    print(stageObj)
+
+    constraint = Constraint()
+    soilAlgo = SoilAlgorithm(constraint.getConstraint())
+    soilAlgo.setCropStage(stageObj)
+    goalObj = {
+        "GoalTempRange" : soilAlgo.goalTempRange(),
+        "GoalEvo" : soilAlgo.getGoalEvotransporation()
+    }
+    actualObj = {
+        "WaterActual" : soilAlgo.getEvotransporation(),
+        "LightActual" : soilAlgo.getLightMeanActual(),
+        "TempActual" : soilAlgo.getTempMeanActual()       
+    }
+    responseObj = {
+        'CropName' : soilAlgo.getCropName(),
+        "GoalObj" : goalObj,
+        "ActualObj" : actualObj
+    }
+
+    return response(responseObj, 200)
+
 
 """ END POINTS END HERE """
 

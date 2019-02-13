@@ -348,6 +348,9 @@ class SoilAlgorithm(object):
         self.goalevotransporation = 0
         self.evotransporation = 0
 
+        # Default stage for crop factor
+        self.cropStage = ""
+
     def getMeanDaylight(self):
         return self.mean_daily_percentage_daylight
 
@@ -378,6 +381,23 @@ class SoilAlgorithm(object):
         for x, y in cfactors.items():
             if x != '_id':
                 self.cropFactors[x] = y;
+
+    def setCropStage(self,stageObj = None):
+
+        if stageObj is not None:
+            stageName = stageObj['stage']
+
+            switcher = {
+                'midSeason' : 'CROPCO_MID',
+                'harvest' : 'CROPCO_HARV'
+            }
+
+            self.cropStage = switcher.get(stageName, "CROPCO_G")
+
+        else:
+            self.cropStage = 'CROPCO_G'
+
+        print("[DEBUG] SoilAlgorithm: " + self.cropStage)
 
     def getCropFactors(self):
         return self.cropFactors
@@ -425,7 +445,7 @@ class SoilAlgorithm(object):
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.goal_mean_temp + 8)
-        self.goalevotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        self.goalevotransporation = self.cropFactors[self.cropStage] * evoReference
         return self.goalevotransporation    
 
     def getEvotransporation(self):
@@ -442,6 +462,6 @@ class SoilAlgorithm(object):
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)
-        self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        self.evotransporation = self.cropFactors[self.cropStage] * evoReference
         print(self.evotransporation)
         return self.evotransporation
