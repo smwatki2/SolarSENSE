@@ -119,8 +119,6 @@ class Notifications(object):
     def saveNewNotification(self, current, goal, timestamp):
         try:
             notifications = db.notifications
-            #newNotification = Notification(current, goal, timestamp)
-            #toJson = json.loads(newNotification.toString()) 
             result = notifications.insert_one({'timestamp': timestamp, 'current': current, 'goal': goal})
 
         except Exception as e:
