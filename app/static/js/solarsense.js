@@ -46,21 +46,15 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	})
 
 	$scope.notifications = [];
-	// Temporary Variables, until we properly pull from databases
 	$scope.statusWarnings = {
 		"OK" : 0,
 		"Caution" : 1,
 		"Warning" : 2
 	}
 	$scope.cropName = "";
-	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 2; // Caution (Yellow)
-	$scope.waterStatus = 0; // Warning (Red)
-
-	// Debug Values (Most likely not to be used in final product)
-	// $scope.temperature = 70.0;
-	// $scope.sunlightTime = 4.0;
-	// $scope.waterAmount = 10000.0;
+	$scope.temperatureStatus = 1;
+	$scope.sunlightStatus = 2;
+	$scope.waterStatus = 1;
 
 	$scope.actualValues = {};
 	$scope.goalValues = {};
@@ -282,7 +276,6 @@ app.controller('StatusCtrl', function($scope, $timeout, $http) {
 
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
-	// $scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
 	$scope.regions = []
 	$scope.seasons = ['Spring', 'Summer', 'Winter', 'Fall'];
 	$scope.regionCrops = ['Cotton', 'Wheat', 'Alfalfa'];
