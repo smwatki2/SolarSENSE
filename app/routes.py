@@ -5,13 +5,15 @@ import json
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
-from app.modules import SoildDataCollection
-from app.modules import SoilAlgorithm
-from app.modules import Notifications
-from app.modules import CropFactor
-from app.modules import HistoricalData
-from app.modules import Constraint
-from app.modules import RegionCollection
+# from app.modules import SoildDataCollection
+# from app.modules import SoilAlgorithm
+from app.modules.soilmodels import * # Holds SoilDataCollection & SoilDataModel
+# from app.oldmodules import Notifications
+from app.modules.notificationmodels import *
+from app.oldmodules import CropFactor
+from app.oldmodules import HistoricalData
+from app.oldmodules import Constraint
+from app.oldmodules import RegionCollection
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -75,6 +77,8 @@ def notifications():
     notifications = Notifications()
     for newNotification in notifications.getNewNotifications():
         newNotifications.append(newNotification.toString())
+
+    notifications.close()
 
     return make_response(jsonify(newNotifications),200,{
         'Access-Control-Allow-Origin': '*',
