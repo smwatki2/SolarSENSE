@@ -9,6 +9,7 @@ mongo MeanLightValues --eval 'db.dropDatabase()'
 echo "Setting Up Databases"
 # Setup the SolarSenseReports database
 mongo solarsensereports --eval 'db.reports.find()'
+mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
 
 python3 historicalDataDB.py
 python3 convertToISO.py mesaGatewayClimateData

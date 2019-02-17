@@ -58,7 +58,9 @@ echo "Setting up MongoDB"
 sudo mkdir -p /data/db/
 sudo chown -R `id -un` /data/db/
 sudo service mongodb start
+cd ./Database_Structures
 mongo solarsensereports --eval 'db.reports.find()'
+mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
 #the line above won't print anything meaningful out, but will make sure 
 #  solarsensereports db exists
 
@@ -68,7 +70,6 @@ mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : 
 python3 convertSensorToISO.py reports
 
 # Setup the Historical Climate Database
-cd ./Database\ Structures
 python3 historicalDataDB.py
 python3 convertHistoricalToISO.py mesaGatewayClimateData
 
