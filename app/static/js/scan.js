@@ -10,3 +10,12 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
 }]);
+
+app.controller('ScanCtrl', function($scope, $timeout, $http) {
+  $scope.percent = 0;
+  $timeout(function(){
+        for(var i = 0; i < 100; i++){
+          $scope.percent+=10;
+        }
+      },1000);
+});

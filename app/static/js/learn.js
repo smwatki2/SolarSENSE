@@ -10,3 +10,9 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
 }]);
+
+app.controller('LearnCtrl', function($scope, $timeout, $http) {
+	$scope.goHome = function () {
+		$window.location.href = "/"; 
+	}
+});
