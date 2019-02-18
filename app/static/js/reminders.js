@@ -11,6 +11,34 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.endSymbol('a}');
 }]);
 
+app.controller('LinkCtrl', function($scope, $window) {
+
+  	$scope.startCollection = function () {
+		$window.location.href = "instant";
+	}
+
+	$scope.test = function(){
+		$scope.gettingAlgorithm();
+		$scope.gettingAlgorithmFromSensors();
+	}
+
+	$scope.scanSensors = function () {
+		$window.location.href = "scan";
+	}
+
+	$scope.goToLearn = function () {
+		$window.location.href = "learn";
+	}
+
+	$scope.goToFarmStatus = function () {
+		$window.location.href = "/";
+	}
+
+	$scope.openConfig = function () {
+		$window.location.href = "config";
+	}
+});
+
 app.controller('RemindersCtrl', function($scope, $timeout, $http) {
 	$scope.goHome = function () {
 		$window.location.href = "/"; 
