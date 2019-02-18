@@ -1,4 +1,5 @@
 import json
+import traceback
 from pymongo import MongoClient
 
 class SoildDataCollection(object):
@@ -45,6 +46,9 @@ class SoildDataCollection(object):
             file.close()
         return self.soilDataObjects
 
+    def close(self):
+        self.client.close()
+
 
 class SoilDataModel(object):
 
@@ -53,6 +57,8 @@ class SoilDataModel(object):
         for x,y in dictionary.items():
             if x != '_id':
                 self.__dataValues[x] = y
+                if(type(y) == datetime.datetime):
+                    self.__dataValues[x] = y.isoformat()
 
     def getSoilData(self):
         return self.__dataValues

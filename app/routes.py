@@ -5,15 +5,13 @@ import json
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
-# from app.modules import SoildDataCollection
-# from app.modules import SoilAlgorithm
-from app.modules.soilmodels import * # Holds SoilDataCollection & SoilDataModel
-# from app.oldmodules import Notifications
+from app.modules.soilalgomodel import *
+from app.modules.soilmodels import * 
 from app.modules.notificationmodels import *
-from app.oldmodules import CropFactor
-from app.oldmodules import HistoricalData
-from app.oldmodules import Constraint
-from app.oldmodules import RegionCollection
+from app.modules.cropfactormodels import *
+from app.modules.historicalmodels import *
+from app.modules.constraintmodel import *
+from app.modules.regionmodel import *
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -58,6 +56,8 @@ def data():
         jsonString = json.dumps(soilObj.getSoilData())
         jsonArray.append(jsonString)
         print(jsonString)
+
+    sdc.close()
 
     print(make_response(jsonify(jsonArray),200,{
         'Access-Control-Allow-Origin': '*',
@@ -121,6 +121,8 @@ def cropfactor(name):
     for cropfactor in AllFactors.getCropFactor():
         factors.append(cropfactor.toString())
 
+    AllFactors.close()
+
     return make_response(jsonify(factors),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -135,6 +137,8 @@ def history(country, location, datetime):
     AllReports = HistoricalData(country, location, datetime)
     for report in AllReports.getHistoricalData():
         history.append(report.toString())
+
+    AllReports.close()
 
     return make_response(jsonify(history),200,{
         'Access-Control-Allow-Origin': '*',
@@ -153,6 +157,7 @@ def getRegions():
         print(region.toString())
         regions.append(region.toString())
     print("Reqest was received")
+    regionCollection.close()
     return make_response(jsonify(regions), 200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -166,6 +171,7 @@ def saveConstraints():
     constraint = Constraint(request.get_json())
     constraint.updateConstraint()
     print("Save Successful")
+    constraint.close()
     return make_response(jsonify("Test Response"), 200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -192,6 +198,8 @@ def getValues():
         "GoalObj" : goalObj,
         "ActualObj" : actualObj
     }
+    constraint.close()
+    soilAlgo.close()
 
     return response(responseObj, 200)
 
@@ -219,6 +227,8 @@ def changeStage():
         "GoalObj" : goalObj,
         "ActualObj" : actualObj
     }
+    constraint.close()
+    soilAlgo.close()
 
     return response(responseObj, 200)
 
