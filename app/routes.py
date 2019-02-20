@@ -28,7 +28,8 @@ def instant():
 
 @app.route('/scan')
 def scan():
-    soil = SoilAlgorithm()
+    constraint = Constraint()
+    soil = SoilAlgorithm(constraint.getConstraint())
     return render_template('scan.html')
 
 @app.route('/learn')
@@ -233,7 +234,6 @@ def internal_error(error):
     file = open("errorlog.txt", "a")
     file.write(traceback.format_exc())
     file.close()
-    #return traceback.format_exc()
     return make_response(jsonify({'error': error}),500,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'GET',

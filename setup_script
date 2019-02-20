@@ -25,6 +25,7 @@ sudo cp $DIR/setup/dhcpcd.conf /etc/dhcpcd.conf
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 sudo cp $DIR/setup/dnsmasq.conf /etc/dnsmasq.conf
 sudo cp $DIR/setup/hostapd.conf /etc/hostapd/hostapd.conf
+sudo cp $DIR/setup/uwsgi_config $DIR/uwsgi_config.ini
 sudo iwconfig wlan0 channel 1
 sudo cp $DIR/setup/hostapd /etc/default/hostapd
 sudo cp $DIR/setup/wifistart /usr/local/bin/wifistart
@@ -57,9 +58,34 @@ echo "Setting up MongoDB"
 sudo mkdir -p /data/db/
 sudo chown -R `id -un` /data/db/
 sudo service mongodb start
+cd ./Database_Structures
 mongo solarsensereports --eval 'db.reports.find()'
+mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
 #the line above won't print anything meaningful out, but will make sure 
 #  solarsensereports db exists
+
+# Just in case, we will remove any sensor data that does not have a date,
+# and also convert any string dates into ISO date format for easy comparison
+mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : false } })'
+python3 convertSensorToISO.py reports
+
+# Setup the Historical Climate Database
+python3 historicalDataDB.py
+python3 convertHistoricalToISO.py mesaGatewayClimateData
+
+# Setup the Regions Database
+python3 regionDB.py
+
+# Setup the Constraints Database
+python3 constraintDB.py
+
+# Setup the Crop Factor Database
+python3 cropfactordb.py CropFactor AZCrops AZCrops.json
+python3 cropfactordb.py CropFactor CropFactors Crops.json
+
+# Setup the Mean Light Values 
+python3 lightMeandb.py
+
 
 echo "Setting up the miflora part"
 #miflora setup

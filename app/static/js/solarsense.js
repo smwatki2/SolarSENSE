@@ -414,6 +414,22 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 	}
 
+	$scope.getLat = function(region) {
+		for(var i = 0; i < $scope.regions.length; i++){
+			if(region === $scope.regions[i].name){
+				return $scope.regions[i].lat_direction;
+			}
+		}
+	}
+
+	$scope.getDegree = function(region) {
+		for(var i = 0; i < $scope.regions.length; i++){
+			if(region === $scope.regions[i].name){
+				return $scope.regions[i].degree;
+			}
+		}
+	}
+
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
@@ -448,7 +464,9 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			"season": season,
 			"crop": crop,
 			"date": date,
-			"cfCollection" : $scope.getRegionCFCollection(region)
+			"cfCollection" : $scope.getRegionCFCollection(region),
+			"latDir" : $scope.getLat(region),
+			"deg" : $scope.getDegree(region)
 		};
 
 		console.log(constraintObj);
