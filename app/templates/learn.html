@@ -9,22 +9,36 @@
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
 	<body ng-controller="LearnCtrl">
-		<nav class="navbar navbar-light header">
+		<div class="header">
 			<div class="container">
-				<div class="logo pull-left"></div>
-				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-					<li class="nav-item active">
-						<a class="nav-link white-color" href="/"><h4 class="vertical">SolarSENSE</h4></a>
+				<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="container">
+				<ul class="nav nav-tabs nav-justified topButtons" ng-controller="LinkCtrl">
+					<li class="nav-item topButton">
+						<a class="nav-link" ng-click="startCollection()">
+							<i class="fas fa-adjust"></i><br>Collect
+						</a>
+					</li>
+					<li class="nav-item topButton">
+						<a class="nav-link" ng-click="scanSensors()">
+							<i class="fas fa-qrcode"></i><br>Scan
+						</a>
+					</li>
+					<li class="nav-item topButton">
+						<a class="nav-link active" ng-click="goToLearn()">
+							<i class="fas fa-chalkboard-teacher"></i><br>Learn
+						</a>
+					</li>
+					<li class="nav-item topButton">
+						<a class="nav-link" ng-click="openConfig()">
+							<i class="fas fa-wrench"></i><br>Settings
+						</a>
 					</li>
 				</ul>
-				<ul class="nav nav-pills navbar-left" ng-controller="LinkCtrl">
-					<li><button class="btn btn-block-nav" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button></li>
-					<li><button class="btn btn-block-nav" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan</button></li>
-					<li><button class="btn btn-block-nav-select" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button></li>
-					<li><button class="btn btn-block-nav" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button></li>
-				</ul>
 			</div>
-		</nav>
+		</div>
 		<div class="container">
 			<div class="video">
 				<video width="320" height="240" controls>

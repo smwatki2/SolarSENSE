@@ -6,6 +6,8 @@ button i {
 }
 .header {
 	width: 100%;
+  padding-top: 10px;
+  padding-bottom: 0px;
 	background-color: #69b2e1!important;
 }
 .white-icon {
@@ -38,9 +40,6 @@ button i {
 	font-weight: bold;
 }
 .btn-block-nav {
-  height: 85px;
-  width: 75px;
-  border-width: 3px;
   border-color: #69b2e1!important;
   background-color: #5ea0ca!important;
   color: #FFFFFF!important;
@@ -60,9 +59,6 @@ button i {
   padding: 0px 0px;
 }
 .btn-block-back {
-  height: 85px;
-  width: 75px;
-  border-width: 3px;
   border-color: #69b2e1!important;
   background-color: #FFFFFF!important;
   color: #5ea0ca!important;
@@ -224,3 +220,11 @@ button i {
 }
 .dropdown a:hover {background-color: #ddd;}
 .show {display: block;}
+.topButtons {
+  width: 100%;
+  margin-top: 10px;
+}
+.topButton {
+  width: 25%;
+  color: #FFF;
+}
