@@ -68,7 +68,9 @@ class SoilDataModel(object):
         for x,y in dictionary.items():
             if x != '_id':
                 self.__dataValues[x] = y
-
+                if(type(y) == datetime.datetime):
+                    self.__dataValues[x] = y.isoformat()
+                    
     def getSoilData(self):
         return self.__dataValues
 
@@ -377,6 +379,9 @@ class SoilAlgorithm(object):
         self.goalevotransporation = 0
         self.evotransporation = 0
 
+        # Default stage for crop factor
+        self.cropStage = ""
+
     def getMeanDaylight(self):
         return self.mean_daily_percentage_daylight
 
@@ -392,6 +397,12 @@ class SoilAlgorithm(object):
 
         # This array is setup to hold the mean daily percentage values
         # by month where January = 0 and December = 11
+        # @ref: http://www.fao.org/docrep/S2022E/s2022e07.htm
+        # These values were taken from the provided link above found in Table 4
+        # If this link does not work try the next link
+        # @ref:https://bmsit.ac.in/system/study_materials/documents/000/000/014/original/infiltration.pdf?1477068026
+        # The first link gave me problems from time to time, making it not accessible, the second link
+        # has the same table from the first link, which can be found on the pdf page 10
         monthMeanValues = lightCollection.getMeanValues(direction, degree)
 
         # We have to - 1 for array indexing
@@ -422,6 +433,23 @@ class SoilAlgorithm(object):
         for x, y in cfactors.items():
             if x != '_id':
                 self.cropFactors[x] = y;
+
+    def setCropStage(self,stageObj = None):
+
+        if stageObj is not None:
+            stageName = stageObj['stage']
+
+            switcher = {
+                'midSeason' : 'CROPCO_MID',
+                'harvest' : 'CROPCO_HARV'
+            }
+
+            self.cropStage = switcher.get(stageName, "CROPCO_G")
+
+        else:
+            self.cropStage = 'CROPCO_G'
+
+        print("[DEBUG] SoilAlgorithm: " + self.cropStage)
 
     def getCropFactors(self):
         return self.cropFactors
@@ -470,7 +498,7 @@ class SoilAlgorithm(object):
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.goal_mean_temp + 8)
-        self.goalevotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        self.goalevotransporation = self.cropFactors[self.cropStage] * evoReference
         return self.goalevotransporation    
 
     def getEvotransporation(self):
@@ -487,6 +515,6 @@ class SoilAlgorithm(object):
 
         # Test Values: Not real values
         evoReference = self.dPercentofDaylight * (0.46 * self.mean_temp + 8)
-        self.evotransporation = self.cropFactors['CROPCO_G'] * evoReference
+        self.evotransporation = self.cropFactors[self.cropStage] * evoReference
         print(self.evotransporation)
         return self.evotransporation
