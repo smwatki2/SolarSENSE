@@ -11,6 +11,10 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.endSymbol('a}');
 }]);
 
+app.run(function ($rootScope) {
+    $rootScope.URL = "11.11.11.11";
+});
+
 app.controller('LinkCtrl', function($scope, $window) {
 
   	$scope.startCollection = function () {

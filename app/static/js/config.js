@@ -96,8 +96,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.getRegion = function() {
 		$http({
 			method: 'GET',
-			url: 'http://11.11.11.11/getRegions',
-			// url: 'http://localhost:5000/getRegions',
+			//url: 'http://11.11.11.11/getRegions',
+			url: $scope.globalURL + '/getRegions',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'GET',
@@ -136,8 +136,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			url: 'http://11.11.11.11/saveConstraints',
-			// url:'http://localhost:5000/saveConstraints',
+			//url: 'http://11.11.11.11/saveConstraints',
+			url: $scope.globalURL + '/saveConstraints',
 			data: constraintObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',

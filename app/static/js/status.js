@@ -52,7 +52,7 @@ app.controller('StatusCtrl', function($scope, $timeout, $http) {
 			// When using on development machine, use http://localhost:5000/data
 			// When using and deploying on pi, use http://11.11.11.11/data
 			url:'http://11.11.11.11/data',
-			// url: 'http://localhost:5000/data',
+			//url: 'http://localhost:5000/data',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 	    		'Access-Control-Allow-Methods' : 'PUT,GET',

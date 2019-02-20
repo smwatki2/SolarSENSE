@@ -6,6 +6,10 @@
 
 var app = angular.module('solarsenseApp', []);
 
+//let data = require('./urlendpoint.json');
+import data from './urlendpoint.json';
+const urlendpoint = data.urlendpoint;
+
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
@@ -53,8 +57,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		"Warning" : 2
 	}
 	$scope.cropName = "";
-	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 2; // Caution (Yellow)
+	$scope.temperatureStatus = 2; // OK (Green)
+	$scope.sunlightStatus = 1; // Caution (Yellow)
 	$scope.waterStatus = 0; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
@@ -68,8 +72,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getValues = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/getValues',
-			// url: 'http://localhost:5000/getValues',
+			//url:'http://11.11.11.11/getValues',
+			url: urlendpoint + '/getValues',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -145,8 +149,8 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.checkNotifications = function() {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/notifications',
-			// url: 'http://localhost:5000/notifications',
+			//url:'http://11.11.11.11/notifications',
+			url: urlendpoint + '/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
