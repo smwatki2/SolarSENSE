@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" ng-app="solarsenseApp">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>SolarSENSE</title>
+		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
+		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
+	</head>
+	<body ng-controller="RemindersCtrl">
+		<nav class="navbar navbar-expand-lg navbar-light header">
+			<div class="logo pull-left"></div>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+				<i class="fas fa-bars white-icon"></i>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarToggler">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link white-color" href="/">Home</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container reminders">
+			<div class="row">
+				<div class="col-sm-12">
+					<center><strong>How often should I remind you?</strong></center>
+				</div>
+			</div>
+			<div class="col-sm-12">
+				  <div class="form-group">
+				    <label for="reminderLabel"><center><small>in hours</small></center></label>
+				    	<select class="form-control" id="reminderLabel" ng-model="reminderFrequency">
+				      		<option value="1">1</option>
+				      		<option value="2">2</option>
+				      		<option value="3">3</option>
+				      		<option value="4">4</option>
+				      		<option value="5">5</option>
+				      		<option value="6">6</option>
+				      		<option value="7">7</option>
+				      		<option value="8" selected="selected">8</option>
+				      		<option value="9">9</option>
+				      		<option value="10">10</option>
+				      		<option value="11">11</option>
+				      		<option value="12">12</option>
+				      		<option value="13">13</option>
+				      		<option value="14">14</option>
+				      		<option value="15">15</option>
+				      		<option value="16">16</option>
+				      		<option value="17">17</option>
+				      		<option value="18">18</option>
+				      		<option value="19">19</option>
+				      		<option value="20">20</option>
+				      		<option value="21">21</option>
+				      		<option value="22">22</option>
+				      		<option value="23">23</option>
+				      		<option value="24">24</option>
+				    	</select>
+				  	</div>
+				  	<div class="col-sm-12">
+				  		<button type="submit" class="btn btn-info mb-2 btn-block" ng-click="saveReminders()">Save</button>
+				  	</div>
+			</div>
+		</div>
+
+	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
+	<script type="text/javascript" src="../static/js/popper.min.js"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../static/js/angular.min.js"></script>
+	<script type="text/javascript" src="../static/js/angular-route.js"></script>
+	<script type="text/javascript" src="../static/js/angular-animate.js"></script>
+	<script type="text/javascript" src="../static/js/reminders.js"></script>
+	</body>
+</html>	
