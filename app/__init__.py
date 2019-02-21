@@ -1,10 +1,26 @@
+import logging
+import os
+from logging.handlers import RotatingFileHandler
+from flask.logging import default_handler
 from flask import Flask
 from config import Config
+from logging.config import dictConfig
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 app.config.from_object(Config)
+
+if not app.debug:
+	if not os.path.exists('logs'):
+		os.mkdir('logs')
+	# app.logger.removeHandler(default_handler)
+	file_handler = RotatingFileHandler('logs/error.log',maxBytes=10240,backupCount=10)
+	file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+	file_handler.setLevel(logging.INFO)
+	app.logger.addHandler(file_handler)
+	app.logger.setLevel(logging.INFO)
+	app.logger.info('SolarSENSE Startup')
 
 
 from app import routes

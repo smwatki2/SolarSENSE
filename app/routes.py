@@ -2,6 +2,7 @@ import subprocess
 import os
 import traceback
 import json
+import logging
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
@@ -16,6 +17,9 @@ from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
+
+logger = logging.getLogger("app.routes")
+logger.setLevel(logging.INFO)
 
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
