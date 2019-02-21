@@ -27,6 +27,7 @@ reminderFrequency = 8
 startTime = datetime.datetime.now();
 
 file = open("sensorReportData.txt", "a")
+config_file = open("/opt/miflora-mqtt-daemon/config.ini", "r")
 
 # Retrieve user set frequency from the database
 def getSetFrequency():
@@ -49,7 +50,11 @@ getSetFrequency()
 
 def on_connect(client, data, flags, rc):
     print("Connection to Blocker established "+str(rc))
-    client.subscribe("miflora/Flora-care")
+    numOfDevices = config_file.read().count("Flora-care")
+    for i in range(numOfDevices):
+        topic = "miflora/Flora-care" + str(i)
+        client.subscribe(topic)
+        print("Subscribed to " + str(topic))
 
 def on_message(client, data, message):
     jsonData = message.payload.decode("utf-8", "ignore")

@@ -14,14 +14,14 @@ kill -INT $pid
 wait $pid
 num=0
 #make sure we don't have the same sensor names that are already added to the config file
-while grep "sensor$num" /opt/miflora-mqtt-daemon/config.ini > /dev/null;
+while grep "Flora-care$num" /opt/miflora-mqtt-daemon/config.ini > /dev/null;
 do
   ((num++))
 done
 #make sure we don't already have the MAC address of the sensor before adding it to the config file
 cat bluetooth_devices.txt | grep -w "Flower care"| cut -c-17 | while read line
 do
-  sensor="Flora-care@sensor$num = $line"
+  sensor="Flora-care$num = $line"
   if grep -q "$line" /opt/miflora-mqtt-daemon/config.ini; then
     #the mac address of the sensor is already in
     echo "$line is already in the config.ini"
