@@ -17,13 +17,8 @@
 			<div class="container">
 				<ul class="nav nav-tabs nav-justified topButtons" ng-controller="LinkCtrl">
 					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="startCollection()">
-							<i class="fas fa-adjust"></i><br>Collect
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="scanSensors()">
-							<i class="fas fa-qrcode"></i><br>Scan
+						<a class="nav-link" ng-click="goToFarmStatus()">
+							<i class="fas fa-adjust"></i><br>Home
 						</a>
 					</li>
 					<li class="nav-item topButton">
@@ -45,12 +40,12 @@
   					<source src="movie.mp4" type="video/mp4">
 				</video>
 				<br/>
-				(Placeholder until we have access to SolarSPELL)
+				<center><small>(Placeholder until we have access to SolarSPELL)</small></center>
 			</div>
 		</div>
-		<div ng-controller="LinkCtrl">
+		<!--<div ng-controller="LinkCtrl">
 			<button class="btn btn-block-back" ng-click="goToFarmStatus()"><i class="fas fa-arrow-circle-left"></i><br>Back</button>
-		</div>
+		</div>-->
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="../static/js/popper.min.js"></script>
