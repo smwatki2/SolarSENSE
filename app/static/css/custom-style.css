@@ -31,14 +31,14 @@ button i {
   width: 30%;
   text-align: center;
 }
-.btn-block {
+/*.btn-block {
 	height: 100%;
 	border-width: 3px;
 	border-color: #69b2e1!important;
 	background-color: transparent!important;
 	color: #5ea0ca!important;
 	font-weight: bold;
-}
+}*/
 .btn-block-nav {
   border-color: #69b2e1!important;
   background-color: #5ea0ca!important;
@@ -227,4 +227,12 @@ button i {
 .topButton {
   width: 25%;
   color: #FFF;
+}
+.nav-link {
+  font-weight: normal;
+  color: #FFFFFF;
+}
+.nav-link .active {
+  font-weight: bold;
+  color: #69b2e1;
 }
