@@ -9,4 +9,4 @@ opt/
 venv/
 run.sublime-workspace
 sensorReportData.txt
-
+/uwsgi.log
