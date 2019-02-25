@@ -9,24 +9,34 @@
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
 	<body ng-controller="HomeCtrl" ng-init="test();">
-		<nav class="navbar navbar-light header">
+		<div class="header">
 			<div class="container">
-				<div class="logo pull-left"></div>
-				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-					<li class="nav-item active">
-						<a class="nav-link white-color" href="#"><h4 class="vertical">SolarSENSE</h4></a>
+				<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="container">
+				<ul class="nav nav-tabs nav-justified topButtons" ng-controller="LinkCtrl">
+					<li class="nav-item topButton">
+						<a class="nav-link active" ng-click="goToFarmStatus()">
+							<i class="fas fa-adjust"></i><br>Home
+						</a>
+					</li>
+					<li class="nav-item topButton">
+						<a class="nav-link" ng-click="goToLearn()">
+							<i class="fas fa-chalkboard-teacher"></i><br>Learn
+						</a>
+					</li>
+					<li class="nav-item topButton">
+						<a class="nav-link" ng-click="openConfig()">
+							<i class="fas fa-wrench"></i><br>Settings
+						</a>
 					</li>
 				</ul>
-				<ul class="nav nav-pills navbar-left" ng-controller="LinkCtrl">
-					<li><button class="btn btn-block-nav" ng-click="startCollection()"><i class="fas fa-adjust"></i><br>Collect</button></li>
-					<li><button class="btn btn-block-nav" ng-click="scanSensors()"><i class="fas fa-qrcode"></i><br>Scan</button></li>
-					<li><button class="btn btn-block-nav" ng-click="goToLearn()"><i class="fas fa-chalkboard-teacher"></i><br>Learn</button></li>
-					<li><button class="btn btn-block-nav" ng-click="openConfig()"><i class="fas fa-wrench"></i><br>Settings</button></li>
-				</ul>
 			</div>
-		</nav>
+		</div>
 		<div class="container">
-			<h1 style="text-align: center;color: #69b2e1;"><big><strong>Farm Status</strong><br/>{a cropName a}</big></h1>
+			<p>&nbsp;</p>
+			<p style="text-align: center;color: #69b2e1;"><strong>Farm Status</strong><br/>{a cropName a}</p>
 			<br/>
 			<div class="row">
 				<div class="col-md-12">
@@ -73,6 +83,13 @@
 					Here goes the data in numbers
 				</div>
 			</div>
+			<div class="clearfix">
+				<p>&nbsp;</p>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<button class="btn btn-info btn-block" ng-click="reload()">Refresh</button>
+<!--
 			<div class="clearfix"></div>
 			<center><strong>Plant Growth Phase</strong></center>
 			<div class="row">
@@ -87,13 +104,7 @@
 						<label class="btn btn-secondary" style="background-color: #5cb85c;border-color: #5cb85c; width: 25%;" ng-model="growthStage" uib-btn-radio="harvest">
 							 <input ng-click="changeStage('harvest')" type="radio" name="growthStage" id="harvest" autocomplete="off"> Harvest
 						</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-12">
-						<button class="btn btn-info" ng-click="reload()">Refresh</button>
+					</div>-->
 				</div>
 			</div>
 		</div>
@@ -105,6 +116,6 @@
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
-		<script type="text/javascript" src="../static/js/solarsense.js"></script>
+		<script type="text/javascript" src="../static/js/index.js"></script>
 	</body>
 </html>	
