@@ -220,6 +220,7 @@ button i {
 }
 .dropdown a:hover {background-color: #ddd;}
 .show {display: block;}
+<<<<<<< HEAD
 .topButtons {
   width: 100%;
   margin-top: 10px;
@@ -236,3 +237,7 @@ button i {
   font-weight: bold;
   color: #69b2e1;
 }
+.toggleButtons {
+  width: 50%;
+}
+.dataViewToggle { width: 100%; align-items: center; justify-content: center; }

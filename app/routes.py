@@ -28,7 +28,8 @@ def instant():
 
 @app.route('/scan')
 def scan():
-    soil = SoilAlgorithm()
+    constraint = Constraint()
+    soil = SoilAlgorithm(constraint.getConstraint())
     return render_template('scan.html')
 
 @app.route('/learn')
@@ -173,6 +174,7 @@ def saveConstraints():
 def getValues():
     constraint = Constraint()
     soilAlgo = SoilAlgorithm(constraint.getConstraint())
+    soilAlgo.setCropStage()
     goalObj = {
         "GoalTempRange" : soilAlgo.goalTempRange(),
         "GoalEvo" : soilAlgo.getGoalEvotransporation()
@@ -190,6 +192,34 @@ def getValues():
 
     return response(responseObj, 200)
 
+@app.route("/changeStage", methods=['POST'])
+@cross_origin()
+def changeStage():
+
+    stageObj = request.get_json()
+    print(stageObj)
+
+    constraint = Constraint()
+    soilAlgo = SoilAlgorithm(constraint.getConstraint())
+    soilAlgo.setCropStage(stageObj)
+    goalObj = {
+        "GoalTempRange" : soilAlgo.goalTempRange(),
+        "GoalEvo" : soilAlgo.getGoalEvotransporation()
+    }
+    actualObj = {
+        "WaterActual" : soilAlgo.getEvotransporation(),
+        "LightActual" : soilAlgo.getLightMeanActual(),
+        "TempActual" : soilAlgo.getTempMeanActual()       
+    }
+    responseObj = {
+        'CropName' : soilAlgo.getCropName(),
+        "GoalObj" : goalObj,
+        "ActualObj" : actualObj
+    }
+
+    return response(responseObj, 200)
+
+
 """ END POINTS END HERE """
 
 
@@ -204,7 +234,6 @@ def internal_error(error):
     file = open("errorlog.txt", "a")
     file.write(traceback.format_exc())
     file.close()
-    #return traceback.format_exc()
     return make_response(jsonify({'error': error}),500,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'GET',
