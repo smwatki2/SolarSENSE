@@ -1,6 +1,7 @@
 import subprocess
 import os
 import traceback
+import sys
 import json
 import logging
 from pathlib import Path
@@ -17,13 +18,24 @@ from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
+from logging.handlers import RotatingFileHandler
 
-logger = logging.getLogger("app.routes")
-logger.setLevel(logging.INFO)
+info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
+info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+info_logger = logging.getLogger("app")
+info_logger.addHandler(info_file_handler)
+info_logger.setLevel(logging.INFO)
+
+error_file_handler = RotatingFileHandler('logs/error.log',maxBytes=10240,backupCount=10)
+error_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+error_logger = logging.getLogger("app")
+error_logger.addHandler(error_file_handler)
+error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
 def home():
+    info_logger.info("/home")
     return render_template('index.html')
 
 @app.route('/instant')
@@ -261,9 +273,14 @@ def internal_error(error):
 
 @app.errorhandler(404)
 def resource_not_found(error):
-    file = open("errorlog.txt","a")
-    file.write(traceback.format_exc())
-    file.close()
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    # file = open("errorlog.txt","a")
+    # logger.warning(traceback.format_exception(exc_type, exc_value, exc_traceback))
+    # logger.warning(traceback.extract_stack())
+    error_logger.warning("404 Error Resource Not Found")
+
+    # file.write(traceback.format_exc())
+    # file.close()
     return traceback.format_exc()
 
 def response(jsonObject, statusCode):

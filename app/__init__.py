@@ -14,10 +14,15 @@ app.config.from_object(Config)
 if not app.debug:
 	if not os.path.exists('logs'):
 		os.mkdir('logs')
+	with open("logs/info.log",'w'):
+		pass
+	with open("logs/error.log", 'w'):
+		pass
+	
 	# app.logger.removeHandler(default_handler)
-	file_handler = RotatingFileHandler('logs/error.log',maxBytes=10240,backupCount=10)
+	file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 	file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
-	file_handler.setLevel(logging.INFO)
+	# file_handler.setLevel(logging.INFO)
 	app.logger.addHandler(file_handler)
 	app.logger.setLevel(logging.INFO)
 	app.logger.info('SolarSENSE Startup')
