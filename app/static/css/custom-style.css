@@ -240,3 +240,38 @@ button i {
   width: 50%;
 }
 .dataViewToggle { width: 100%; align-items: center; justify-content: center; }
+.loadingOverlay {
+  background-color: #FFFFFF; 
+  margin: 0px!important; 
+  width: 100%!important;
+  height: 100%!important;
+  position: fixed;
+  top: 0; 
+  left:0; 
+  right: 0; 
+  bottom: 0; 
+  z-index: 2; 
+  display: table;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
+}
+.loader {
+  border: 4px solid #69b2e1;
+  border-top: 4px solid #ffe01c;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  margin: auto;
+  margin-top: 220px;
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

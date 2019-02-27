@@ -9,6 +9,9 @@
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
 	<body ng-controller="HomeCtrl" ng-init="test();">
+		<div class="loadingOverlay" ng-show="showLoader">
+			<div class="loader"></div>
+		</div>
 		<div class="header">
 			<div class="container">
 				<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>

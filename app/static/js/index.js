@@ -40,6 +40,7 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+	$scope.showLoader = true;
 	$scope.showStatuses = "status";
 	$scope.growthStage = "germination";
 
@@ -93,8 +94,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			$scope.actualValues = resObj['ActualObj'];
 			$scope.goalValues = resObj['GoalObj'];
 			$scope.getFarmStatus();
+			$scope.showLoader = false;
 		}, function error(err){
 			console.log(err);
+			$scope.showLoader = false;
 		})	
 
 	}
