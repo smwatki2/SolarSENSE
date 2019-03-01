@@ -27,7 +27,7 @@ app.controller('LinkCtrl', function($scope, $window) {
 	}
 
 	$scope.goToLearn = function () {
-		$window.location.href = "learn";
+		$window.location.href = "http://localhost:5000/digital_library";
 	}
 
 	$scope.goToFarmStatus = function () {
@@ -80,7 +80,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$http({
 			method:'GET',
 			url:'http://11.11.11.11/getValues',
-			// url: 'http://localhost:5000/getValues',
+			//url: 'http://localhost:5000/getValues',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -193,7 +193,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$http({
 			method:'GET',
 			url:'http://11.11.11.11/notifications',
-			// url: 'http://localhost:5000/notifications',
+			//url: 'http://localhost:5000/notifications',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -239,7 +239,7 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		$http({
 			method: 'POST',
 			url: 'http://11.11.11.11/changeStage',
-			// url:'http://localhost:5000/changeStage',
+			//url:'http://localhost:5000/changeStage',
 			data: stage,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
