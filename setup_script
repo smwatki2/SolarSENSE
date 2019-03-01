@@ -51,6 +51,7 @@ sudo chown www-data $DIR
 sudo rm /etc/nginx/sites-enabled/default
 # set NGINX as a reverse proxy, serving the socket from uWSGI at port 80 instead
 sudo cp $DIR/setup/solarSENSE.conf /etc/nginx/sites-available/solarSENSE.conf
+sudo sed -i "s@DIRECTORY_HERE@$DIR@g" /etc/nginx/sites-available/solarSENSE.conf
 sudo ln -s /etc/nginx/sites-available/solarSENSE.conf /etc/nginx/sites-enabled
 
 echo "Setting up MongoDB"
@@ -59,6 +60,15 @@ sudo mkdir -p /data/db/
 sudo chown -R `id -un` /data/db/
 sudo service mongodb start
 cd ./Database_Structures
+
+echo "Destroying All Databases"
+mongo solarsensereports --eval 'db.dropDatabase()'
+mongo Constraint --eval 'db.dropDatabase()'
+mongo CropFactor --eval 'db.dropDatabase()'
+mongo HistoricalClimateData --eval 'db.dropDatabase()'
+mongo Regions --eval 'db.dropDatabase()'
+mongo MeanLightValues --eval 'db.dropDatabase()'
+echo "Recreating Databases"
 mongo solarsensereports --eval 'db.reports.find()'
 mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
 #the line above won't print anything meaningful out, but will make sure 
