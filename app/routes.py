@@ -35,7 +35,7 @@ error_logger.setLevel(logging.WARNING)
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    info_logger.info("/home")
+    # info_logger.info("/home")
     return render_template('index.html')
 
 @app.route('/instant')
@@ -198,6 +198,7 @@ def saveConstraints():
 @app.route('/getValues', methods=['GET'])
 @cross_origin()
 def getValues():
+
     constraint = Constraint()
     soilAlgo = SoilAlgorithm(constraint.getConstraint())
     soilAlgo.setCropStage()
@@ -217,6 +218,8 @@ def getValues():
     }
     constraint.close()
     soilAlgo.close()
+
+    info_logger.info(responseObj)
 
     return response(responseObj, 200)
 
@@ -261,19 +264,25 @@ def changeStage():
 """ ERROR HANDLERS START HERE """
 @app.errorhandler(500)
 def internal_error(error):
-    file = open("errorlog.txt", "a")
-    file.write(traceback.format_exc())
-    file.close()
-    return make_response(jsonify({'error': error}),500,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        })
+    # file = open("errorlog.txt", "a")
+    # file.write(traceback.format_exc())
+    # file.close()
+    # return make_response(jsonify({'error': error}),500,{
+    #     'Access-Control-Allow-Origin': '*',
+    #     'Access-Control-Allow-Methods' : 'GET',
+    #     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+    #     })
+    error_logger.warning("500 Internal Server Error")
+    errorObj = {
+        'status': error.code,
+        'error' : traceback.format_exc()
+    }
+    return response(errorObj,error.code)
 
 
 @app.errorhandler(404)
 def resource_not_found(error):
-    exc_type, exc_value, exc_traceback = sys.exc_info()
+    # exc_type, exc_value, exc_traceback = sys.exc_info()
     # file = open("errorlog.txt","a")
     # logger.warning(traceback.format_exception(exc_type, exc_value, exc_traceback))
     # logger.warning(traceback.extract_stack())
@@ -281,7 +290,12 @@ def resource_not_found(error):
 
     # file.write(traceback.format_exc())
     # file.close()
-    return traceback.format_exc()
+    errorObj = {
+        'status': error.code,
+        'error' : traceback.format_exc()
+    }
+    # return traceback.format_exc()
+    return response(errorObj, error.code)
 
 def response(jsonObject, statusCode):
     responseSettingObj = {
