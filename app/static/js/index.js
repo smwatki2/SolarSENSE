@@ -40,6 +40,12 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+	$scope.showStatuses = "status";
+	$scope.growthStage = "germination";
+
+	$scope.temperatureStatus = "";
+	$scope.waterStatus = "";
+
 
 	angular.element(document).ready(function() {
 		$scope.getValues();
@@ -48,19 +54,24 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 	$scope.notifications = [];
 	// Temporary Variables, until we properly pull from databases
 	$scope.statusWarnings = {
-		"OK" : 0,
-		"Caution" : 1,
-		"Warning" : 2
+		"OK" : "0",
+		"Caution" : "1",
+		"Warning" : "2"
 	}
 	$scope.cropName = "";
-	$scope.temperatureStatus = 0; // OK (Green)
-	$scope.sunlightStatus = 2; // Caution (Yellow)
-	$scope.waterStatus = 0; // Warning (Red)
+	//$scope.temperatureStatus = 0; // OK (Green)
+	//$scope.sunlightStatus = 1; // Caution (Yellow)
+	//$scope.waterStatus = 2; // Warning (Red)
 
 	// Debug Values (Most likely not to be used in final product)
-	// $scope.temperature = 70.0;
-	// $scope.sunlightTime = 4.0;
-	// $scope.waterAmount = 10000.0;
+	$scope.temperature;
+	$scope.sunlightTime;
+	$scope.waterAmount;
+
+	// Units for data, TODO: add option to toggle unit type
+	$scope.temperatureUnits = "°C";
+	$scope.sunlightTimeUnits = "Hours";
+	$scope.waterAmountUnits = "mm/Day";
 
 	$scope.actualValues = {};
 	$scope.goalValues = {};
@@ -81,33 +92,45 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			$scope.cropName = resObj['CropName'];
 			$scope.actualValues = resObj['ActualObj'];
 			$scope.goalValues = resObj['GoalObj'];
-			$scope.getFarmStatus();			
+			$scope.getFarmStatus();
 		}, function error(err){
 			console.log(err);
-		})		
+		})	
+
 	}
 
 	$scope.getFarmStatus = function() {
 		$scope.compareWater();
 		$scope.compareTemp();
+		// $scope.compareSunlight();
+
+		$scope.temperature = $scope.actualValues['TempActual'].toFixed(2);
+		$scope.sunlightTime = 4.0; // temporary
+		$scope.waterAmount = $scope.actualValues['WaterActual'].toFixed(2);
 	}
 
 	$scope.compareWater = function(){
 
 		var waterVal = $scope.actualValues['WaterActual'];
 		var waterGoal = $scope.goalValues['GoalEvo'];
+		var waterMax = waterGoal + 0.2;
+		var waterMin = waterGoal - 0.2;
+		var waringVal = "";
 
-		// If actual water values in a +- 0.1 range we can be considered good
-		if (waterVal > waterGoal + 0.1 &&
-			waterGoal < waterGoal - 0.1){
-				$scope.waterStatus = $scope.statusWarnings['OK'];
-		} else if (waterVal > waterGoal + 0.5 &&
-			waterGoal < waterGoal - 0.5) {
-			$scope.waterStatus = $scope.statusWarnings['Caution'];
-		} else if (waterVal > waterGoal + 1.0 &&
-			waterVal < waterGoal - 1.0) {
-			$scope.waterStatus = $scope.statusWarnings['Warning'];
+		if(waterVal > waterMin &&
+			waterVal < waterMax) {
+			waringVal = $scope.statusWarnings['OK'];
+		} else if (
+			waterVal - waterMin <= 0.3 ||
+			waterMax - waterVal > 0.3) {
+			waringVal = $scope.statusWarnings['Caution'];
+		} else {
+			waringVal = $scope.statusWarnings['Warning'];
 		}
+
+		$scope.waterStatus = waringVal;
+
+		console.log("Water Status: " + $scope.waterStatus);
 	}
 
 	$scope.compareTemp = function() {
@@ -115,24 +138,48 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 		var tempMax = $scope.goalValues['GoalTempRange'][1];
 		var tempActual = $scope.actualValues['TempActual'];
 
+		var waringVal = "";
+
 		if(tempActual > tempMin &&
 			tempActual < tempMax) {
-			$scope.temperatureStatus = $scope.statusWarnings['OK'];
+			waringVal = $scope.statusWarnings['OK'];
 		} else if(tempActual - tempMin  <= 3 ||  
 			tempMax - tempActual <= 3){
-			$scope.temperatureStatus = $scope.statusWarnings['Caution'];
+			waringVal= $scope.statusWarnings['Caution'];
 		} else if(tempActual - tempMin  > 5 ||  
 			tempMax - tempActual > 5){
-			$scope.temperatureStatus = $scope.statusWarnings['Warning'];
-		} 
+			waringVal = $scope.statusWarnings['Warning'];
+		}
+
+		$scope.temperatureStatus = waringVal;
+
+		console.log("Temp Status: " + $scope.temperatureStatus);
 	}
+
+	// Add all calls to initialization functions and data resets here
+	$scope.reload = function () {
+		//$scope.getFarmStatus();
+		console.log($scope.growthStage);
+		console.log($scope.showStatuses);
+
+			$scope.showStatuses = "status";
+			$scope.growthStage = "germination";
+			$scope.actualValues = {};
+			$scope.goalValues = {};
+
+			$scope.getValues();
+	}
+	// // TODO: temporary dummy function, replace with actual calculations later
+	// $scope.compareSunlight = function() {
+	// 	$scope.temperatureStatus = $scope.statusWarnings["OK"];
+	// }
 
 	$scope.buttonStatus = function(status, link){
 		switch (status) {
-            case 0:
+            case status.statusWarnings.OK:
                 break;
-            case 1:
-            case 2:
+            case status.statusWarnings.Caution:
+            case status.statusWarnings.Warning:
                 $window.location.href = link;
                 break;
             default:
@@ -168,5 +215,54 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.checkNotifications();
 
-	
+	// $scope.viewStatuses = function () {
+	// 	$scope.$apply(function() {
+	// 		showStatuses = true;
+	// 		console.log($scope.showStatuses);	
+	// 	});
+	// }
+	// $scope.viewData = function () {
+	// 	$scope.$apply(function() {
+	// 		showStatuses = true;	
+	// 		console.log($scope.showStatuses);
+	// 	});
+	// }
+
+	// Function to switch between crop growth phases
+	$scope.changeStage = function (stage) {
+		$scope.growthStage = stage;
+
+		var stage = {
+			'stage' : stage
+		}
+
+		$http({
+			method: 'POST',
+			url: 'http://11.11.11.11/changeStage',
+			// url:'http://localhost:5000/changeStage',
+			data: stage,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+        		'Access-Control-Allow-Methods' : 'POST',
+        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With',
+        		'Content-Type' : 'application/json'
+			}
+		}).then(function success(response){
+			var resObj = response.data;
+			$scope.cropName = resObj['CropName'];
+			$scope.actualValues = resObj['ActualObj'];
+			$scope.goalValues = resObj['GoalObj'];
+			$scope.getFarmStatus();	
+
+		}, function error(response){
+			console.log("There was an error changing state")
+		});
+		console.log($scope.growthStage);
+	}
+
+	// Function to switch between different views
+	$scope.changeView = function (view) {
+		$scope.showStatuses = view;
+		console.log($scope.showStatuses);
+	}
 });
