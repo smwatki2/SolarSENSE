@@ -2,12 +2,12 @@
 	"Constraints": [
 	{
 		"ID" : 0,
-		"REGION" : "",
-		"CF_COLLECTION": "",
-		"CROPNAME": "",
-		"SEASON" : "",
-		"DATE" : "",
-		"LAT_DIR" : "",
-		"DEG" : 0
+		"REGION" : "AZ Test Data",
+		"CF_COLLECTION": "AZCrops",
+		"CROPNAME": "Cotton",
+		"SEASON" : "Summer",
+		"DATE" : "2019-01-01",
+		"LAT_DIR" : "N",
+		"DEG" : 35
 	}]
 }
