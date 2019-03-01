@@ -262,16 +262,9 @@ def changeStage():
 
 
 """ ERROR HANDLERS START HERE """
+
 @app.errorhandler(500)
 def internal_error(error):
-    # file = open("errorlog.txt", "a")
-    # file.write(traceback.format_exc())
-    # file.close()
-    # return make_response(jsonify({'error': error}),500,{
-    #     'Access-Control-Allow-Origin': '*',
-    #     'Access-Control-Allow-Methods' : 'GET',
-    #     'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-    #     })
     error_logger.warning("500 Internal Server Error")
     errorObj = {
         'status': error.code,
@@ -282,19 +275,20 @@ def internal_error(error):
 
 @app.errorhandler(404)
 def resource_not_found(error):
-    # exc_type, exc_value, exc_traceback = sys.exc_info()
-    # file = open("errorlog.txt","a")
-    # logger.warning(traceback.format_exception(exc_type, exc_value, exc_traceback))
-    # logger.warning(traceback.extract_stack())
     error_logger.warning("404 Error Resource Not Found")
-
-    # file.write(traceback.format_exc())
-    # file.close()
     errorObj = {
         'status': error.code,
         'error' : traceback.format_exc()
     }
-    # return traceback.format_exc()
+    return response(errorObj, error.code)
+
+@app.errorhandler(405)
+def method_not_allowed(error):
+    error_logger.warning("405 Error: Method Nnot Allowed")
+    errorObj = {
+        'status' : error.code,
+        'error' : traceback.format_exc()
+    }
     return response(errorObj, error.code)
 
 def response(jsonObject, statusCode):
