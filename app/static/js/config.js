@@ -44,7 +44,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	// $scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
 	$scope.regions = []
 	$scope.seasons = ['Spring', 'Summer', 'Winter', 'Fall'];
-	$scope.regionCrops = ['Cotton', 'Wheat', 'Alfalfa'];
+	$scope.regionCrops = [];
 
 	$scope.saveSuccessful = false;
 	$scope.saveMessage = "";
@@ -122,6 +122,11 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		var crop = cropSelect.options[cropSelect.selectedIndex].value;
 		var date = document.getElementById('selected_date').value;
 
+		//If the user left one of the required fields blank, don't save
+		if (region == "" || season == "" || crop ==  "") {
+			return;
+		}
+
 		var constraintObj = {
 			"region": region,
 			"season": season,
@@ -155,4 +160,38 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			console.log('There was an error saving constraints');
 		});
 	};
+
+	$(function() {
+		var region_select = $('#region');
+		var crop_select = $('#crops');
+		region_select.on('change', function() {
+			console.log("Region has changed. Updating the Crop List.");
+			crop_select.attr('disabled', true);
+			crop_select.empty();
+			$http({
+				method:'GET',
+				url:'http://11.11.11.11/getCrops',
+				// url: 'http://localhost:5000/getCrops',
+				params: {'region': region_select.val()},
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+	        		'Access-Control-Allow-Methods' : 'PUT,GET',
+	        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+				}
+			}).then(function success(response){
+				console.log(response.data);
+				if (response.data.length == 0) {
+					crop_select.append($("<option value disabled selected></option>").text("No Crops Available for this Region"));
+				} else {
+					crop_select.append($("<option value disabled selected></option>").text("Select a Crop"));
+				}
+				response.data.forEach(function(element) {
+					crop_select.append($("<option></option>").attr("value",element).text(element)); 
+				});
+				crop_select.attr('disabled', false);
+			}, function error(err){
+				console.log(err);
+			})	
+		})
+	});
 });

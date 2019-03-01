@@ -251,7 +251,23 @@ def changeStage():
 
     return response(responseObj, 200)
 
-
+''' Given a Region name, return the crops associated with that Region '''
+@app.route("/getCrops", methods=['GET'])
+@cross_origin()
+def getCrops():
+    region = request.args.get('region', '')
+    client = MongoClient("mongodb://0.0.0.0:27017")
+    region_info = client.Regions.RegionInfo.find({"REGION_NAME": region})
+    crops = client.CropFactor[region_info[0]['CF_COLLECTION']].find()
+    crop_names = []
+    for crop in crops:
+        crop_names.append(crop['CROPNAME'])
+    client.close()
+    return make_response(jsonify(crop_names), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        })   
 """ END POINTS END HERE """
 
 
