@@ -9,6 +9,8 @@ button i {
   padding-top: 10px;
   padding-bottom: 0px;
 	background-color: #69b2e1!important;
+  z-index: 3;
+  position: relative;
 }
 .white-icon {
 	color: #FFFFFF;
@@ -264,7 +266,7 @@ button i {
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
   margin: auto;
-  margin-top: 220px;
+  margin-top: 300px;
 }
 
 @keyframes spin {
