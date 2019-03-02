@@ -176,10 +176,10 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 
 	$scope.buttonStatus = function(status, link){
 		switch (status) {
-            case status.statusWarnings.OK:
+            case $scope.statusWarnings.OK:
                 break;
-            case status.statusWarnings.Caution:
-            case status.statusWarnings.Warning:
+            case $scope.statusWarnings.Caution:
+            case $scope.statusWarnings.Warning:
                 $window.location.href = link;
                 break;
             default:
