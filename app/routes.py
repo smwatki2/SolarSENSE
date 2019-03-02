@@ -35,7 +35,6 @@ error_logger.setLevel(logging.WARNING)
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    # info_logger.info("/home")
     return render_template('index.html')
 
 @app.route('/instant')
