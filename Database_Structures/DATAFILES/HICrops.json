@@ -1,0 +1,7 @@
+{
+	"HICrops":[
+		{"CROPID" : "TMO", "CROPNAME": "Tomato"},
+		{"CROPID" : "ONI", "CROPNAME": "Onions"},
+		{"CROPID" : "BPP", "CROPNAME": "Bell Pepper"}
+	]
+}

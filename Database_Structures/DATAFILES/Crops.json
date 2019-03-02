@@ -20,6 +20,27 @@
 			"CROPCO_G" : 0.3,
 			"CROPCO_MID" : 1.15,
 			"CROPCO_HARV" : 0.4
+		},
+		{
+			"CROPID" : "TMO",
+			"CROPNAME" : "Tomato",
+			"CROPCO_G" : 0.6,
+			"CROPCO_MID" : 1.15,
+			"CROPCO_HARV" : 0.8
+		},
+		{
+			"CROPID" : "ONI",
+			"CROPNAME" : "Onions",
+			"CROPCO_G" : 0.7,
+			"CROPCO_MID" : 1.05,
+			"CROPCO_HARV" : 0.75
+		},
+		{
+			"CROPID" : "BPP",
+			"CROPNAME" : "Bell Pepper",
+			"CROPCO_G" : 0.6,
+			"CROPCO_MID" : 1.05,
+			"CROPCO_HARV" : 0.9
 		}
 	]
 }
