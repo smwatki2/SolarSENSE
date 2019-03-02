@@ -2,37 +2,34 @@
 
 html {
   font-family: sans-serif;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-background: #D9D6C5 ; 
 }
 .search-snippet > strong {color: red !important}
 ul.links.list-inline
 {
   display: none;
 }
-panels-ipe-sort-container{
+.panels-ipe-sort-container{
   background-color: #D9D6C5 ;
 }
 
-col-sm-9
+.col-sm-9
 {
-  min-height: 615px ; 
+/*  min-height: 615px ; */
 }
 .current a
 {
     color: orange !important;
 }
 .block-block-4{
-  width: 900px ;
+/*  width: 900px ;
 margin-left: auto;
-margin-right: auto;
+margin-right: auto;*/
 }
 
 body {
   margin: 0;
   background: #D9D6C5 ; 
-  background: #D9D6C5 url("../../../../default/files/bg.jpg") repeat-x;
+  background: #D9D6C5 url("../../../../default/files/bg.jpg");
 }
 article,
 aside,
