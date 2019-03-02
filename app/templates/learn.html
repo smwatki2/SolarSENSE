@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
+
 	</head>
 	<body ng-controller="LearnCtrl">
 		<div class="header">
@@ -34,14 +35,9 @@
 				</ul>
 			</div>
 		</div>
-		<div class="container">
-			<div class="video">
-				<video width="320" height="240" controls>
-  					<source src="movie.mp4" type="video/mp4">
-				</video>
-				<br/>
-				<center><small>(Placeholder until we have access to SolarSPELL)</small></center>
-			</div>
+		<div class="library-container" ng-init="getURL();">
+			<!--<iframe src="file:///C:/Users/Jimmy/OneDrive/SolarSENSE/SolarSENSE/digital_library/index.html" class="library"></iframe>-->
+			<iframe ng-src="{a url a}" class="library"></iframe>
 		</div>
 		<!--<div ng-controller="LinkCtrl">
 			<button class="btn btn-block-back" ng-click="goToFarmStatus()"><i class="fas fa-arrow-circle-left"></i><br>Back</button>
