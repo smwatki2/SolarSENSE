@@ -7,7 +7,7 @@
 			"DEG" : 35
 		},{
 			"REGION_NAME" : "Hawaii",
-			"CF_COLLECTION": "TODO",
+			"CF_COLLECTION": "HICrops",
 			"LAT_DIR" : "N",
 			"DEG" : 20
 		},

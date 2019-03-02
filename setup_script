@@ -91,6 +91,7 @@ python3 constraintDB.py
 
 # Setup the Crop Factor Database
 python3 cropfactordb.py CropFactor AZCrops AZCrops.json
+python3 cropfactordb.py CropFactor HICrops HICrops.json
 python3 cropfactordb.py CropFactor CropFactors Crops.json
 
 # Setup the Mean Light Values 
