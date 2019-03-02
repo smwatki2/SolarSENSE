@@ -27,7 +27,7 @@ app.controller('LinkCtrl', function($scope, $window) {
   }
 
   $scope.goToLearn = function () {
-    $window.location.href = "learn";
+    $window.location.href = "http://11.11.11.11/digital_library.html";
   }
 
   $scope.goToFarmStatus = function () {
