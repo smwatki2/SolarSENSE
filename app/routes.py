@@ -1,7 +1,9 @@
 import subprocess
 import os
 import traceback
+import sys
 import json
+import logging
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
@@ -16,6 +18,19 @@ from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
+from logging.handlers import RotatingFileHandler
+
+info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
+info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+info_logger = logging.getLogger("app")
+info_logger.addHandler(info_file_handler)
+info_logger.setLevel(logging.INFO)
+
+error_file_handler = RotatingFileHandler('logs/error.log',maxBytes=10240,backupCount=10)
+error_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+error_logger = logging.getLogger("app")
+error_logger.addHandler(error_file_handler)
+error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
@@ -182,6 +197,7 @@ def saveConstraints():
 @app.route('/getValues', methods=['GET'])
 @cross_origin()
 def getValues():
+
     constraint = Constraint()
     soilAlgo = SoilAlgorithm(constraint.getConstraint())
     soilAlgo.setCropStage()
@@ -201,6 +217,8 @@ def getValues():
     }
     constraint.close()
     soilAlgo.close()
+
+    info_logger.info(responseObj)
 
     return response(responseObj, 200)
 
@@ -243,24 +261,34 @@ def changeStage():
 
 
 """ ERROR HANDLERS START HERE """
+
 @app.errorhandler(500)
 def internal_error(error):
-    file = open("errorlog.txt", "a")
-    file.write(traceback.format_exc())
-    file.close()
-    return make_response(jsonify({'error': error}),500,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        })
+    error_logger.warning("500 Internal Server Error")
+    errorObj = {
+        'status': error.code,
+        'error' : traceback.format_exc()
+    }
+    return response(errorObj,error.code)
 
 
 @app.errorhandler(404)
 def resource_not_found(error):
-    file = open("errorlog.txt","a")
-    file.write(traceback.format_exc())
-    file.close()
-    return traceback.format_exc()
+    error_logger.warning("404 Error Resource Not Found")
+    errorObj = {
+        'status': error.code,
+        'error' : traceback.format_exc()
+    }
+    return response(errorObj, error.code)
+
+@app.errorhandler(405)
+def method_not_allowed(error):
+    error_logger.warning("405 Error: Method Nnot Allowed")
+    errorObj = {
+        'status' : error.code,
+        'error' : traceback.format_exc()
+    }
+    return response(errorObj, error.code)
 
 def response(jsonObject, statusCode):
     responseSettingObj = {
