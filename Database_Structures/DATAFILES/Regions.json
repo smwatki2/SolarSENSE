@@ -16,6 +16,12 @@
 			"CF_COLLECTION": "TODO",
 			"LAT_DIR" : "S",
 			"DEG" : 0
+		},
+		{
+			"REGION_NAME" : "All Crops",
+			"CF_COLLECTION": "ALLCrops",
+			"LAT_DIR" : "N",
+			"DEG" : 20
 		}
 	]
 }

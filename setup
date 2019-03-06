@@ -123,8 +123,8 @@ if [ "$databases_flag" = true ]; then
   python3 convertSensorToISO.py reports
 
   # Setup the Historical Climate Database
-  python3 historicalDataDB.py
-  python3 convertHistoricalToISO.py mesaGatewayClimateData
+  #python3 historicalDataDB.py
+  #python3 convertHistoricalToISO.py mesaGatewayClimateData
 
   # Setup the Regions Database
   python3 regionDB.py
@@ -135,6 +135,7 @@ if [ "$databases_flag" = true ]; then
   # Setup the Crop Factor Database
   python3 cropfactordb.py CropFactor AZCrops AZCrops.json
   python3 cropfactordb.py CropFactor HICrops HICrops.json
+  python3 cropfactordb.py CropFactor ALLCrops ALLCrops.json
   python3 cropfactordb.py CropFactor CropFactors Crops.json
 
   # Setup the Mean Light Values 
