@@ -69,9 +69,13 @@ class SoilAlgorithm(object):
         for crop in crops:
             if crop['CROPNAME'] == self.cfCollection['CROPNAME']:
                 cropID = crop['CROPID']
+        file = open("errorthing.txt", "a")
+        file.write(str(cropID))
 
         cfactors = cropFactors.find_one({'CROPID': cropID})
 
+        file.write(str(cfactors))
+        file.close()
         for x, y in cfactors.items():
             if x != '_id':
                 self.cropFactors[x] = y;
