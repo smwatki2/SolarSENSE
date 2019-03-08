@@ -12,7 +12,7 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 }]);
 
 app.controller('LinkCtrl', function($scope, $window) {
-
+	
   	$scope.startCollection = function () {
 		$window.location.href = "instant";
 	}
@@ -26,7 +26,7 @@ app.controller('LinkCtrl', function($scope, $window) {
 		$window.location.href = "scan";
 	}
 
-	$scope.goToFieldStatus = function () {
+	$scope.goToField = function () {
 		$window.location.href = "field";
 	}
 
@@ -43,13 +43,15 @@ app.controller('LinkCtrl', function($scope, $window) {
 	}
 });
 
-app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
+app.controller('FieldCtrl', function($scope, $timeout, $http, $window) {
 	$scope.showLoader = true;
 	$scope.showStatuses = "status";
 	$scope.growthStage = "germination";
 
 	$scope.temperatureStatus = "";
 	$scope.waterStatus = "";
+	$scope.field_num = 0;
+	$scope.fields = [];
 
 
 	angular.element(document).ready(function() {
@@ -104,6 +106,15 @@ app.controller('HomeCtrl', function($scope, $timeout, $http, $window) {
 			$scope.showLoader = false;
 		})	
 
+	}
+
+	$scope.getFields = function() {
+		$scope.fields = [];
+		$scope.field_num;
+		for (var i = 0; i < $scope.field_num; i++) {
+			console.log($scope.fields);
+			$scope.fields.push(i);
+		}
 	}
 
 	$scope.getFarmStatus = function() {

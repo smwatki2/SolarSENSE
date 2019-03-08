@@ -34,6 +34,11 @@ app.controller('LinkCtrl', function($scope, $window) {
 		$window.location.href = "/";
 	}
 
+	$scope.goToFieldStatus = function () {
+		$window.location.href = "field";
+	}
+
+
 	$scope.openConfig = function () {
 		$window.location.href = "config";
 	}

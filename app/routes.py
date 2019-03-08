@@ -58,6 +58,10 @@ def status():
 @app.route('/config')
 def config():
     return render_template('config.html')
+
+@app.route('/field')
+def field():
+    return render_template('field.html')
 """ ROUTES END HERE """
 
 
