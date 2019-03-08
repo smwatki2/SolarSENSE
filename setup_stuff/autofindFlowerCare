@@ -27,6 +27,7 @@ do
     echo "$line is already in the config.ini"
   else
     #append the config.ini file with the new mac address
+    #TODO: Write tto the mongo database instead of the config.ini file
     sudo echo $sensor >> /opt/miflora-mqtt-daemon/config.ini
     ((num++))
   fi

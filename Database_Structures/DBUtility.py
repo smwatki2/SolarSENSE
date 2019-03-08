@@ -38,11 +38,13 @@ class DBUtility(object):
 		col = db[collectionName]
 		with open(jsonFilePath) as jsonFile:
 			jsonObj = json.load(jsonFile)
+                # TODO Rename crop in for loop to be generic
 		for (k,v) in jsonObj.items():
 			for crop in v:
 				col.insert_one(crop)
 		col.delete_one({"id" : 0}) # Removes dummy value from the collection
-		
+
+# TODO: Can keep read_csv if we want, but we won't need to be reading any more csv files for the DB		
 	def read_csv(self, dbName, collectionName, csvFilePath):
 		db = self.mongoClient[dbName]
 		col = db[collectionName]

@@ -1,6 +1,8 @@
 import pymongo
 from DBUtility import DBUtility
 
+# TODO No longer need this file: constraintDB.py
+# TODO Remove the constrint DB from Mongo
 dbName = "Constraint"
 collectionName = "SolarSENSEConstraint"
 

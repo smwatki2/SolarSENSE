@@ -12,6 +12,7 @@ from pymongo import MongoClient
 import json
 import datetime
 
+## TODO: Change db to new FieldData db
 # declare mongo client on port 27017
 mongoClient = MongoClient('localhost', 27017)
 # declare databse object for database 'solarsensereports'
@@ -45,12 +46,12 @@ def getSetFrequency():
         file = open("errorlog.txt", "a")
         file.write(traceback.format_exc())
         file.close()
-            
 getSetFrequency()
 
 def on_connect(client, data, flags, rc):
     print("Connection to Blocker established "+str(rc))
     numOfDevices = config_file.read().count("Flora-care")
+    #TODO: Read from mongo db
     for i in range(numOfDevices):
         topic = "miflora/Flora-care" + str(i)
         client.subscribe(topic)
@@ -66,11 +67,13 @@ def on_message(client, data, message):
     # Write Sensor Data and Date to file
     file.write(jsonData+"\n")
     # Save sensor data to database
+    # TODO: Change reports to fieldData
     result = reports.insert_one(reading)
     scheduleReminder()
     print("Reading from topic: "+message.topic+"\n")
     print("Moisture: {} \nConductivity {}\nLight: {}\nTemperature: {} \nBattery: {}\n Sensor: {}\n Time: {}\n MAC ADDRESS: {}\n".format(reading["moisture"],reading["conductivity"], reading["light"], reading["temperature"], reading["battery"], reading["name_pretty"], reading["timestamp"], reading["mac"]))
 
+# TODO: remove reminders
 # Check if enough time has passed to issue a reminder
 def scheduleReminder():
     global startTime
@@ -90,6 +93,7 @@ def scheduleReminder():
         # startTime = datetime.datetime.now()
         # sendReminder(startTime)
 
+# TODO: remove reminders
 # Schedule a reminder and save it in database
 def sendReminder(time):      
     try:

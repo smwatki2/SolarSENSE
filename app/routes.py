@@ -37,10 +37,12 @@ error_logger.setLevel(logging.WARNING)
 def home():
     return render_template('index.html')
 
+# TODO: Remove unused route
 @app.route('/instant')
 def instant():
     return render_template('instant.html')
 
+# TODO: Remove unused route
 @app.route('/scan')
 def scan():
     constraint = Constraint()
@@ -51,6 +53,7 @@ def scan():
 def learn():
     return render_template('learn.html')
 
+# TODO: Remove unused route
 @app.route('/status')
 def status():
     return render_template('status.html')
@@ -64,7 +67,7 @@ def field():
     return render_template('field.html')
 """ ROUTES END HERE """
 
-
+# TODO: Refactor which data we need to be reading from the db
 """ END POINTS START HERE """
 @app.route('/data', methods=['GET'])
 @cross_origin()
@@ -92,6 +95,7 @@ def data():
     ''' End point for retrieving current notifications ''' 
 @app.route('/notifications', methods=['GET'])
 @cross_origin()
+# TODO: remove notifications
 def notifications():
     newNotifications = []
     notifications = Notifications()
@@ -109,6 +113,7 @@ def notifications():
     ''' End point for testing saving a notification ''' 
 @app.route('/notificationSave', methods=['GET'])
 @cross_origin()
+#TODO: remove notifications
 def notificationSave():
     notifications = Notifications()
     notifications.saveNewNotification(12, 15, '2018-11-16 04:43:59')
@@ -122,6 +127,7 @@ def notificationSave():
     ''' End point for testing notification deletion ''' 
 @app.route('/deleteNotification/<id>', methods=['GET'])
 @cross_origin()
+# TODO: Remove notifcations
 def deleteNotification(id):
     notifications = Notifications()
     notifications.deleteNotification(id)
@@ -132,7 +138,8 @@ def deleteNotification(id):
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
 
-    ''' End point for testing getting crop factor ''' 
+    ''' End point for testing getting crop factor '''
+# TODO: Remove crop factor db 
 @app.route('/cropfactor/<name>', methods=['GET'])
 @cross_origin()
 def cropfactor(name):
@@ -152,6 +159,7 @@ def cropfactor(name):
     ''' End point for testing getting crop factor ''' 
 @app.route('/history/<country>/<location>/<datetime>', methods=['GET'])
 @cross_origin()
+# TODO: remove historical route if it's decided that it's unneeded
 def history(country, location, datetime):
     history = []
     AllReports = HistoricalData(country, location, datetime)
@@ -168,6 +176,7 @@ def history(country, location, datetime):
 
     ''' Enpoint for getting regions '''
 
+# TODO: remove getRegions route
 @app.route("/getRegions", methods=['GET'])
 @cross_origin()
 def getRegions():
@@ -198,6 +207,7 @@ def saveConstraints():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         })
 
+#TODO: update after refactor
 @app.route('/getValues', methods=['GET'])
 @cross_origin()
 def getValues():
@@ -226,6 +236,7 @@ def getValues():
 
     return response(responseObj, 200)
 
+# TODO: update after refactor
 @app.route("/changeStage", methods=['POST'])
 @cross_origin()
 def changeStage():
@@ -256,6 +267,7 @@ def changeStage():
     return response(responseObj, 200)
 
 ''' Given a Region name, return the crops associated with that Region '''
+# TODO: remove getCrops route
 @app.route("/getCrops", methods=['GET'])
 @cross_origin()
 def getCrops():
@@ -303,7 +315,7 @@ def resource_not_found(error):
 
 @app.errorhandler(405)
 def method_not_allowed(error):
-    error_logger.warning("405 Error: Method Nnot Allowed")
+    error_logger.warning("405 Error: Method Not Allowed")
     errorObj = {
         'status' : error.code,
         'error' : traceback.format_exc()

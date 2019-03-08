@@ -1,0 +1,18 @@
+Some notes thats cannot be entered into their own file
+TODO: Add a log folder and point all logs to that directory
+TODO: Restructure the directories to make sense again. Things have gotten out of control
+TODO: Inspect the SolarSENSE/apps/modules folder to see if we still need any of these files
+TODO: Remove any unused imports in routes.py after refactor
+TODO: Inspect the SolarSENSE/apps/static/js directory to remove unused files
+TODO: Possible refactor to move all js controllers back to a single file for controllers shared between pages
+TODO Database_Structures: Remove constraintDB.py
+TODO Database_Structures: No longer need the Historical DB
+TODO Database_Structures: Keep the convertSensorToISO.py
+TODO Database_Structures: Give the ban hammer to cropFactorDB.py, historicalDataDB.py, lightmeanDB, notifications.json, regionDB.py
+TODO: Make a uwsgi folder for to keep that info together
+TODO: Remove unused CSS styles
+TODO: Add a button in the library that takes the user back to 11.11.11.11
+TODO: In the setup documentation, describe what someone needs to do in order to change the WiFi ssid
+TODO: rename the folder setup_stuff to setup_fles
+TODO: remove all of the files in app/modules except: soilmodels.py
+TODO: Combine js files into one so that creating new html files is easier. Wedon't have to make a change to 4 files to update a single function

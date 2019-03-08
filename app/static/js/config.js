@@ -1,3 +1,4 @@
+
 /*
 	Author: ASU CAPSTONE TEAM 2018
 	Date: 11.08.2018
@@ -44,6 +45,7 @@ app.controller('LinkCtrl', function($scope, $window) {
 	}
 });
 
+// TODO: refactor which config options we are still using
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 	// $scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
@@ -119,7 +121,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		})
 	
 	}
-
+	// Update which constraints are saved after refactor
 	$scope.saveConstraints = function() {
 
 		var region = regionSelect.options[regionSelect.selectedIndex].value;
@@ -161,6 +163,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 			$scope.saveSuccessful = true;
 			console.log('Save Successful');
 		}, function error(response){
+			// TODO: Make sure error is displayed to the end user so they know it did not save
 			$scope.saveMessage = 'Error in Saving Settings. Please Try Again.';
 			console.log('There was an error saving constraints');
 		});

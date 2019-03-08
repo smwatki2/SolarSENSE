@@ -1,1 +1,2 @@
+TODO: Delete me! Sincerely, datatest.txt
 {"content": "{'water': 12, 'goal': 15}", "_id": "5bef8d3274fece060116d7c5", "timestamp": "2018-11-16 04:43:59", "type": 0}{"content": "{'water': 12, 'goal': 15}", "_id": "5bef8d3274fece060116d7c5", "timestamp": "2018-11-16 04:43:59", "type": 0}{"content": "{'water': 12, 'goal': 15}", "_id": "5bef8d3274fece060116d7c5", "timestamp": "2018-11-16 04:43:59", "type": 0}

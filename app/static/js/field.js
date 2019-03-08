@@ -4,6 +4,7 @@
 	Description: Controllers for Handling UI data binding and REST request
 */
 
+// TODO: Delete this file after it is transfered to index.js
 var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {

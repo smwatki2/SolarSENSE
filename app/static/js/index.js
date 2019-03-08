@@ -3,7 +3,7 @@
 	Date: 11.08.2018
 	Description: Controllers for Handling UI data binding and REST request
 */
-
+// TODO: replace with content in field.js
 var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {

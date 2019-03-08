@@ -7,6 +7,7 @@ class SoildDataCollection(object):
     def __init__(self):
         self.soilDataObjects = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
+        # TODO: change to new mongo database/collection
         self.db = self.client.solarsensereports
 
     def getSoilCollection(self):
