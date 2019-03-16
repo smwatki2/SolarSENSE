@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Originally developed by Thomas Dietrich
 # Modified by ASU Capstone Team 2018
-# Date: 10.25.2018
+# Date: 03.16.2019
 
 import ssl
 import sys
@@ -19,6 +19,7 @@ from miflora.miflora_poller import MiFloraPoller, MI_BATTERY, MI_CONDUCTIVITY, M
 from btlewrap import available_backends, BluepyBackend, GatttoolBackend, PygattBackend, BluetoothBackendException
 import paho.mqtt.client as mqtt
 import sdnotify
+from pymongo import MongoClient
 
 project_name = 'Xiaomi Mi Flora Plant Sensor MQTT Client/Daemon'
 project_url = 'https://github.com/ThomDietrich/miflora-mqtt-daemon'
@@ -119,9 +120,17 @@ def flores_to_openhab_items(flores, reporting_mode):
         raise IOError('Given reporting_mode not supported for the export to openHAB items')
 
 
-# Load configuration file
 config_dir = parse_args.config_dir
+# Start by reading from the FarmInfo.Sensors collection, and appending it's contents into the config.ini file 
+client = MongoClient("mongodb://0.0.0.0:27017")
+sensorsCollection = client.FarmInfo.Sensors
+sensors = sensorsCollection.find({})
+sensor_array = []
+for sensor in sensors:
+    sensor_array.append(["Sensor" + len(sensor_array), sensor["mac"]])
 
+
+# Load configuration file
 config = ConfigParser(delimiters=('=', ))
 config.optionxform = str
 config.read([os.path.join(config_dir, 'config.ini.dist'), os.path.join(config_dir, 'config.ini')])
@@ -146,8 +155,8 @@ miflora_cache_timeout = sleep_period - 1
 if reporting_mode not in ['mqtt-json', 'mqtt-homie', 'json', 'mqtt-smarthome', 'homeassistant-mqtt']:
     print_line('Configuration parameter reporting_mode set to an invalid value', error=True, sd_notify=True)
     sys.exit(1)
-if not config['Sensors']:
-    print_line('No sensors found in configuration file "config.ini"', error=True, sd_notify=True)
+if not sensor_array:
+    print_line('No sensors found in the FieldInfo database', error=True, sd_notify=True)
     sys.exit(1)
 
 print_line('Configuration accepted', console=False, sd_notify=True)
@@ -195,7 +204,7 @@ sd_notifier.notify('READY=1')
 
 # Initialize Mi Flora sensors
 flores = OrderedDict()
-for [name, mac] in config['Sensors'].items():
+for [name, mac] in sensor_array:
     if not re.match("C4:7C:8D:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}", mac):
         print_line('The MAC address "{}" seems to be in the wrong format. Please check your configuration'.format(mac), error=True, sd_notify=True)
         sys.exit(1)
