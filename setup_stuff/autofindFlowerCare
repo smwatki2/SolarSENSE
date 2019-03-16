@@ -13,24 +13,23 @@ sleep 10s
 kill -INT $pid
 wait $pid
 
-sensors=$(mongo DB_NAME_HERE --eval 'db.Sensors.find()')
+sensors=$(mongo FarmInfo --eval 'db.Sensors.find()')
 #make sure we don't already have the MAC address of the sensor before adding it to the config file
 cat bluetooth_devices.txt | grep -w "Flower care"| cut -c-17 | while read line
 do
   skip=false
   for address in sensors
   do
-
     if ["$address" = "$line"]; then
       skip=true
     fi
   done
   if ["$skip" = true]; then
     #the mac address of the sensor is already in
-    echo "$line is already in the config.ini"
+    echo "$line is already in the Database"
   else
     #add the new mac address to the db
-    mongo DB_NAME_HERE --eval 'db.Sensors.insert({mac:$line})'
+    mongo FarmInfo --eval 'db.Sensors.insert({mac:$line})'
   fi
 done
 
