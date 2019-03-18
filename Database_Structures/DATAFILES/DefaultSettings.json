@@ -1,0 +1,15 @@
+{
+	"FieldSettings":[{
+		"numOfFields": 2,
+		"fieldNames" : [
+
+		{
+			"fieldName" : "Test Field 1"
+		},
+		{
+			"fieldName" : "Test Field 2"
+		}
+
+		]
+	}]
+}
