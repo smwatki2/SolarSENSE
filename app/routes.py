@@ -14,6 +14,7 @@ from app.modules.cropfactormodels import *
 from app.modules.historicalmodels import *
 from app.modules.constraintmodel import *
 from app.modules.regionmodel import *
+from app.modules.fieldSettings import *
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -267,7 +268,19 @@ def getCrops():
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        })   
+        })
+@app.route("/saveFieldSettings", methods=["POST"])
+@cross_origin()
+def saveFieldSettings():
+    setting = FieldSetting(request.get_json())
+    setting.updateSettings()
+    print("Save Successful")
+    setting.close()
+
+    success = {
+        "message" : "Save Successful"
+    }
+    return response(success,200)
 """ END POINTS END HERE """
 
 
