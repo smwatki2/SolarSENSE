@@ -32,7 +32,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getSensors = function() {
 			$http({
 				method:'GET',
-				url:'http://0.0.0.0:5000/getSensors',
+				url:'http://11.11.11.11/getSensors',
 				headers: {
 					'Access-Control-Allow-Origin': '*',
         			'Access-Control-Allow-Methods' : 'PUT,GET',
