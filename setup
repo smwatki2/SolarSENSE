@@ -62,8 +62,8 @@ if [ "$packages_flag" = true ]; then
   echo "-----Starting Packages Setup-----"
   #update
   sudo apt-mark hold wpasupplicant
-  sudo apt-get update -y
-  sudo apt-get upgrade -y
+  # sudo apt-get update -y
+  # sudo apt-get upgrade -y
 
   #install all necessary packages
   echo "Installing necessary packages"
