@@ -14,6 +14,7 @@ from app.modules.cropfactormodels import *
 from app.modules.historicalmodels import *
 from app.modules.constraintmodel import *
 from app.modules.regionmodel import *
+from app.modules.sensorModel import *
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -58,6 +59,10 @@ def status():
 @app.route('/config')
 def config():
     return render_template('config.html')
+
+@app.route('/sensors')
+def sensors():
+    return render_template('sensors.html')
 """ ROUTES END HERE """
 
 
@@ -268,6 +273,23 @@ def getCrops():
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         })   
+
+''' Get All sensors '''
+@app.route("/getSensors", methods=['GET'])
+@cross_origin()
+def getSensors():
+    sensors = []
+    sensorsCollection = SensorsCollection()
+    for sensor in sensorsCollection.getSensors():
+        print(sensor.toString())
+        sensors.append(sensor.toString())
+    print("Sensor request was received")
+    sensorsCollection.close()
+    return make_response(jsonify(sensors), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        }) 
 """ END POINTS END HERE """
 
 

@@ -25,5 +25,29 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('SensorsCtrl', function($scope,$http,$timeout){
+		
+		$scope.showLoader = true;
+		$scope.sensors = [];
+
+		$scope.getSensors = function() {
+			$http({
+				method:'GET',
+				url:'http://11.11.11.11/getSensors',
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+        			'Access-Control-Allow-Methods' : 'PUT,GET',
+        			'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+				}
+			}).then(function success(response){
+				console.log(response.data);
+				$scope.sensors = response.data;
+				$scope.showLoader = false;
+			}, function error(err){
+				console.log(err);
+				$scope.showLoader = false;
+			});	
+		}
+
+		$scope.getSensors();
 
 });

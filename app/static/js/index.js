@@ -22,6 +22,10 @@ app.controller('LinkCtrl', function($scope, $window) {
 		$scope.gettingAlgorithmFromSensors();
 	}
 
+	$scope.openSensors = function () {
+		$window.location.href = "/sensors";
+	}
+
 	$scope.scanSensors = function () {
 		$window.location.href = "scan";
 	}
