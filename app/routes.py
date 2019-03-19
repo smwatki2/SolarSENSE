@@ -283,7 +283,6 @@ def getSensors():
     for sensor in sensorsCollection.getSensors():
         print(sensor.toString())
         sensors.append(sensor.toString())
-    print("Sensor request was received")
     sensorsCollection.close()
     return make_response(jsonify(sensors), 200,{
         'Access-Control-Allow-Origin': '*',

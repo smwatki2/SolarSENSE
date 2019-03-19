@@ -32,7 +32,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getSensors = function() {
 			$http({
 				method:'GET',
-				url:'http://11.11.11.11/getSensors',
+				url:'http://0.0.0.0:5000/getSensors',
 				headers: {
 					'Access-Control-Allow-Origin': '*',
         			'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -40,8 +40,11 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 				}
 			}).then(function success(response){
 				console.log(response.data);
-				$scope.sensors = response.data;
+				for (var i = 0; i < response.data.length; i++) {
+					$scope.sensors.push(JSON.parse(response.data[i]));
+				}
 				$scope.showLoader = false;
+				console.log($scope.sensors);
 			}, function error(err){
 				console.log(err);
 				$scope.showLoader = false;
