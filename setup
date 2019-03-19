@@ -61,6 +61,7 @@ done
 if [ "$packages_flag" = true ]; then
   echo "-----Starting Packages Setup-----"
   #update
+  sudo apt-mark hold wpasupplicant
   sudo apt-get update -y
   sudo apt-get upgrade -y
 
@@ -101,45 +102,45 @@ if [ "$mongo_flag" = true ]; then
 fi
 if [ "$databases_flag" = true ]; then
   echo "-----Starting Databases Setup-----"
-  echo "Destroying All Databases"
-  mongo solarsensereports --eval 'db.dropDatabase()'
-  mongo Constraint --eval 'db.dropDatabase()'
-  mongo CropFactor --eval 'db.dropDatabase()'
-  mongo HistoricalClimateData --eval 'db.dropDatabase()'
-  mongo Regions --eval 'db.dropDatabase()'
-  mongo MeanLightValues --eval 'db.dropDatabase()'
+  # echo "Destroying All Databases"
+  # mongo solarsensereports --eval 'db.dropDatabase()'
+  # mongo Constraint --eval 'db.dropDatabase()'
+  # mongo CropFactor --eval 'db.dropDatabase()'
+  # mongo HistoricalClimateData --eval 'db.dropDatabase()'
+  # mongo Regions --eval 'db.dropDatabase()'
+  # mongo MeanLightValues --eval 'db.dropDatabase()'
 
-  echo "Setting Up Databases"
-  # Setup the SolarSenseReports database
-  cd ./Database_Structures
-  mongo solarsensereports --eval 'db.reports.find()'
-  mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
-  #the line above won't print anything meaningful out, but will make sure 
-  #  solarsensereports db exists
+  # echo "Setting Up Databases"
+  # # Setup the SolarSenseReports database
+  # cd ./Database_Structures
+  # mongo solarsensereports --eval 'db.reports.find()'
+  # mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
+  # #the line above won't print anything meaningful out, but will make sure 
+  # #  solarsensereports db exists
 
-  # Just in case, we will remove any sensor data that does not have a date,
-  # and also convert any string dates into ISO date format for easy comparison
-  mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : false } })'
-  python3 convertSensorToISO.py reports
+  # # Just in case, we will remove any sensor data that does not have a date,
+  # # and also convert any string dates into ISO date format for easy comparison
+  # mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : false } })'
+  # python3 convertSensorToISO.py reports
 
-  # Setup the Historical Climate Database
-  #python3 historicalDataDB.py
-  #python3 convertHistoricalToISO.py mesaGatewayClimateData
+  # # Setup the Historical Climate Database
+  # #python3 historicalDataDB.py
+  # #python3 convertHistoricalToISO.py mesaGatewayClimateData
 
-  # Setup the Regions Database
-  python3 regionDB.py
+  # # Setup the Regions Database
+  # python3 regionDB.py
 
-  # Setup the Constraints Database
-  python3 constraintDB.py
+  # # Setup the Constraints Database
+  # python3 constraintDB.py
 
-  # Setup the Crop Factor Database
-  python3 cropfactordb.py CropFactor AZCrops AZCrops.json
-  python3 cropfactordb.py CropFactor HICrops HICrops.json
-  python3 cropfactordb.py CropFactor ALLCrops ALLCrops.json
-  python3 cropfactordb.py CropFactor CropFactors Crops.json
+  # # Setup the Crop Factor Database
+  # python3 cropfactordb.py CropFactor AZCrops AZCrops.json
+  # python3 cropfactordb.py CropFactor HICrops HICrops.json
+  # python3 cropfactordb.py CropFactor ALLCrops ALLCrops.json
+  # python3 cropfactordb.py CropFactor CropFactors Crops.json
 
-  # Setup the Mean Light Values 
-  python3 lightMeandb.py
+  # # Setup the Mean Light Values 
+  # python3 lightMeandb.py
   echo "-----Finished with Databases Setup-----"
 fi
 if [ "$sensors_flag" = true ]; then
