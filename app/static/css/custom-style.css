@@ -269,6 +269,15 @@ button i {
   margin-top: 300px;
 }
 
+.reportsButtons {
+  padding: 12px;
+}
+
+.middle {
+  border-left: 1px solid rgba(0,0,0,.125);
+  border-right: 1px solid rgba(0,0,0,.125);
+}
+
 @keyframes spin {
   0% { 
     transform: rotate(0deg); 
