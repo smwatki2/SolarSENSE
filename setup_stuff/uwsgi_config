@@ -6,6 +6,7 @@ module = run:app
 master = true
 processes = 1
 threads = 2
+cheaper = 4
 
 uid = www-data
 gid= www-data
