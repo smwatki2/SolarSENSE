@@ -101,7 +101,7 @@ if [ "$mongo_flag" = true ]; then
 fi
 if [ "$databases_flag" = true ]; then
   echo "-----Starting Databases Setup-----"
-  echo "Destroying All Databases"
+  echo "Destroying All Databases (before 2019 Spring break Hawaii field test) if they exist"
   mongo solarsensereports --eval 'db.dropDatabase()'
   mongo Constraint --eval 'db.dropDatabase()'
   mongo CropFactor --eval 'db.dropDatabase()'
@@ -109,37 +109,31 @@ if [ "$databases_flag" = true ]; then
   mongo Regions --eval 'db.dropDatabase()'
   mongo MeanLightValues --eval 'db.dropDatabase()'
 
-  echo "Setting Up Databases"
+  echo "Destroying new Database"
+  mongo FarmInfo --eval 'db.dropDatabase()'
+
+  echo "Setting Up Databases (after 2019 Spring break Hawaii field test)"
   # Setup the SolarSenseReports database
   cd ./Database_Structures
-  mongo solarsensereports --eval 'db.reports.find()'
-  mongoimport --db solarsensereports --collection reports --file ./DATAFILES/sensordata.json
+  mongoimport --db FarmInfo --collection fields --file ./DATAFILES/fields.json
   #the line above won't print anything meaningful out, but will make sure 
-  #  solarsensereports db exists
+  #FarmInfo db exists
 
-  # Just in case, we will remove any sensor data that does not have a date,
+  '''  # Just in case, we will remove any sensor data that does not have a date,
   # and also convert any string dates into ISO date format for easy comparison
-  mongo solarsensereports --eval 'db.reports.remove({ "timestamp" : { "$exists" : false } })'
-  python3 convertSensorToISO.py reports
 
-  # Setup the Historical Climate Database
-  #python3 historicalDataDB.py
-  #python3 convertHistoricalToISO.py mesaGatewayClimateData
-
-  # Setup the Regions Database
-  python3 regionDB.py
-
-  # Setup the Constraints Database
-  python3 constraintDB.py
-
-  # Setup the Crop Factor Database
-  python3 cropfactordb.py CropFactor AZCrops AZCrops.json
-  python3 cropfactordb.py CropFactor HICrops HICrops.json
-  python3 cropfactordb.py CropFactor ALLCrops ALLCrops.json
-  python3 cropfactordb.py CropFactor CropFactors Crops.json
+  # update 3/19/2019 uncomment the following lines when fieldData is ready
+  mongo fieldData --eval db.reports.remove({ "timestamp" : { "$exists" : false } })
+  python3 convertSensorToISO.py fieldData
+  '''
 
   # Setup the Mean Light Values 
   python3 lightMeandb.py
+
+  # Setup the fields collection in the FarmInfo Database
+  python3 fieldsCollection.py
+
+
   echo "-----Finished with Databases Setup-----"
 fi
 if [ "$sensors_flag" = true ]; then
