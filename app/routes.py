@@ -281,6 +281,11 @@ def saveFieldSettings():
         "message" : "Save Successful"
     }
     return response(success,200)
+
+@app.route("/scanForSensors", methods=["GET"])
+@cross_origin()
+def scanForSensors():
+    print("Sensors Were Scanned for!")
 """ END POINTS END HERE """
 
 

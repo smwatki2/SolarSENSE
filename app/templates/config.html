@@ -66,69 +66,10 @@
 			</form>
 			<button ng-click="saveFieldSettings()">Save Settings</button>
 		</div>
-<!-- 		<div class="container">
+		<div class="container">
 			<div>
-				<p style="text-align: left;color: grey;margin: 10px;">Presets</p>
-				<hr/>
+				<button ng-click="scanForSensors()">Find New Scanners</button>
 			</div>
-			<form style="margin-bottom: 30px;">
-				<div class="form-group">
-					<label for="region">Region</label>
-					<select class="form-control" id="region" ng-init="getRegion()"required>
-						<option value="" disabled selected>Select A Region</option>
-						<option ng-repeat="item in regions" value="{a item.name a}">{a item.name a}</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="season">Season</label>
-					<select class="form-control" id="season" required>
-						<option value="" disabled selected="">Select a Season</option>
-						<option ng-repeat="season in seasons" value="{a season a}">{a season a}</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="crops">Crop</label>
-					<select class="form-control" id="crops" required>
-						<option value="" disabled selected>Please Select a Region First...</option>
-						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="date">Date</label>
-					<input class="form-control" type="date" name="Date" id="selected_date">
-				</div>
-				<button class="btn btn-info btn-block" ng-click="saveConstraints()">Save Settings</button>
-			</form> -->
-				<!--<div class="dropdownRegion">
-					<h3 style="color: grey;margin: 10px;">Region:</h3>
-					<select id="region" ng-init="getRegion()"required>
-						<option value="" disabled selected>Select A Region</option>
-						<option ng-repeat="item in regions" value="{a item.name a}">{a item.name a}</option>
-					</select>
-				</div>
-				<div>
-					<h3 style="color: grey; margin: 10px;">Season:</h3>
-					<select id="season" required>
-						<option value="" disabled selected="">Select a Season</option>
-						<option ng-repeat="season in seasons" value="{a season a}">{a season a}</option>
-					</select>
-				</div>
-				<div class="dropdownCrop">
-					<h3 style="color: grey;margin: 10px;">Crop:</h3>
-					<select id="crops"  required>
-						<option value="" disabled selected>Select A Crop</option>
-						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
-					</select><br>
-				</div>
-				<div class="dropdownDay">
-					<h3 style="color: grey;margin: 10px;">Date:</h3>
-					<input type="date" name="Date" id="selected_date">			
-				</div><br>	
-				<button ng-click="saveConstraints()">Save Settings</button>-->
-<!-- 		</div> -->
-		<!--<div ng-controller="LinkCtrl">
-			<button class="btn btn-block-back" ng-click="goToFarmStatus()"><i class="fas fa-arrow-circle-left"></i><br>Back</button>
-		</div>-->
-
+		</div>
 	</body>
 </html>	
