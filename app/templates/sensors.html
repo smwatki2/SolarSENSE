@@ -57,9 +57,8 @@
 			      <td>{a sensor.mac a}</td>
 			      <td>
 			      	<div class="form-group">
-					    <select class="form-control" id="fieldSelect">
-					      <option>1</option>
-					      <option>2</option>
+					    <select class="form-control" ng-model="sensor.field">
+					    	<option ng-repeat="field in fields" ng-selected="sensor.field == field.name">{a field.name a}</option>
 					    </select>
 					  </div>
 			      </td>
