@@ -9,8 +9,8 @@ var app = angular.module('solarsenseApp', []);
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
-  	$locationProvider.html5Mode(true);
-  	$sceProvider.enabled(false);
+  	//$locationProvider.html5Mode(true);
+  	//$sceProvider.enabled(false);
 }]);
 
 app.controller('LinkCtrl', function($scope, $window) {
@@ -42,8 +42,8 @@ app.controller('LinkCtrl', function($scope, $window) {
 });
 
 app.controller('LearnCtrl', function($scope, $timeout, $http) {
-	//$scope.url = "http://11.11.11.11/digital_library";
-	$scope.url = "file:///C:/Users/Jimmy/OneDrive/SolarSENSE/SolarSENSE/digital_library";
+	$scope.url = "http://11.11.11.11/digital_library";
+	/*
 	$scope.hash = $window.location.hash.substring(1);
 
  	$scope.getURL = function() {
@@ -52,7 +52,7 @@ app.controller('LearnCtrl', function($scope, $timeout, $http) {
 		else
 			$scope.url = $scope.url + "/index.html"
 	}
-
+	*/
 	$scope.goHome = function () {
 		$window.location.href = "/"; 
 	}
