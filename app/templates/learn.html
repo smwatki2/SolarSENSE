@@ -34,13 +34,9 @@
 				</ul>
 			</div>
 		</div>
-		<div class="library-container"">
-			<iframe src="http://11.11.11.11/digital_library" class="library"></iframe>
-			<!--<iframe ng-src="{a url a}" class="library"></iframe>-->
+		<div class="library-container" ng-init="getURL();">
+			<iframe ng-src="{a url a}""></iframe>
 		</div>
-		<!--<div ng-controller="LinkCtrl">
-			<button class="btn btn-block-back" ng-click="goToFarmStatus()"><i class="fas fa-arrow-circle-left"></i><br>Back</button>
-		</div>-->
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="../static/js/popper.min.js"></script>
