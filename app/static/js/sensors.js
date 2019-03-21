@@ -77,4 +77,36 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 
 	$scope.getSensors();
 
+	$scope.saveSensor = function(sensor) {
+
+		$scope.sensorData = {
+			'mac': sensor.mac,
+			'field': sensor.field
+		};
+
+		$scope.showLoader = true;
+
+		$http({
+			method:'POST',
+			url:'http://0.0.0.0:5000/editSensor',
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Methods' : 'POST',
+				'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+			},
+			data: $scope.sensorData
+		}).then(function success(response){
+			$scope.showLoader = false;
+		}, function error(err){
+			console.log(err);
+			$scope.showLoader = false;
+		});
+	}
+
+	$scope.save = function () {
+		for (var i = 0; i < $scope.sensors.length; i++) {
+			$scope.saveSensor($scope.sensors[i]);
+		}
+	}
+
 });

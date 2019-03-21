@@ -28,6 +28,12 @@ class SensorsCollection(object):
             oneSensor = Sensor(i, 'AD:GF:HD:JD:2' + str(i), 'Field_' + str(i))
             self.sensorsList.append(oneSensor)
 
+    def updateSensor(self, mac, field):
+        sensors = self.db.sensors
+        query = { "mac" : mac }
+        updateField = {"$set":{"field": field}}
+        sensors.update_one(query, updateField)
+
     def close(self):
         self.client.close()
 
