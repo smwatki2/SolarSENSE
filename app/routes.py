@@ -7,13 +7,7 @@ import logging
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
-from app.modules.soilalgomodel import *
-from app.modules.soilmodels import * 
 from app.modules.notificationmodels import *
-from app.modules.cropfactormodels import *
-from app.modules.historicalmodels import *
-from app.modules.constraintmodel import *
-from app.modules.regionmodel import *
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -43,8 +37,6 @@ def instant():
 
 @app.route('/scan')
 def scan():
-    constraint = Constraint()
-    soil = SoilAlgorithm(constraint.getConstraint())
     return render_template('scan.html')
 
 @app.route('/learn')
@@ -66,15 +58,6 @@ def config():
 @cross_origin()
 def data():
     jsonArray = []
-    sdc = SoildDataCollection()
-    for soilObj in sdc.getSoilCollection():
-        print(soilObj)
-        jsonString = json.dumps(soilObj.getSoilData())
-        jsonArray.append(jsonString)
-        print(jsonString)
-
-    sdc.close()
-
     print(make_response(jsonify(jsonArray),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET'
@@ -127,147 +110,7 @@ def deleteNotification(id):
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
-
-    ''' End point for testing getting crop factor ''' 
-@app.route('/cropfactor/<name>', methods=['GET'])
-@cross_origin()
-def cropfactor(name):
-    factors = []
-    AllFactors = CropFactor(name)
-    for cropfactor in AllFactors.getCropFactor():
-        factors.append(cropfactor.toString())
-
-    AllFactors.close()
-
-    return make_response(jsonify(factors),200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        })
-
-    ''' End point for testing getting crop factor ''' 
-@app.route('/history/<country>/<location>/<datetime>', methods=['GET'])
-@cross_origin()
-def history(country, location, datetime):
-    history = []
-    AllReports = HistoricalData(country, location, datetime)
-    for report in AllReports.getHistoricalData():
-        history.append(report.toString())
-
-    AllReports.close()
-
-    return make_response(jsonify(history),200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        })
-
-    ''' Enpoint for getting regions '''
-
-@app.route("/getRegions", methods=['GET'])
-@cross_origin()
-def getRegions():
-    regions = []
-    regionCollection = RegionCollection()
-    for region in regionCollection.getRegions():
-        print(region.toString())
-        regions.append(region.toString())
-    print("Reqest was received")
-    regionCollection.close()
-    return make_response(jsonify(regions), 200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        })   
-
-    ''' Enpoint for saving constraints'''
-@app.route('/saveConstraints', methods=['POST'])
-@cross_origin()
-def saveConstraints():
-    constraint = Constraint(request.get_json())
-    constraint.updateConstraint()
-    print("Save Successful")
-    constraint.close()
-    return make_response(jsonify("Test Response"), 200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        })
-
-@app.route('/getValues', methods=['GET'])
-@cross_origin()
-def getValues():
-
-    constraint = Constraint()
-    soilAlgo = SoilAlgorithm(constraint.getConstraint())
-    soilAlgo.setCropStage()
-    goalObj = {
-        "GoalTempRange" : soilAlgo.goalTempRange(),
-        "GoalEvo" : soilAlgo.getGoalEvotransporation()
-    }
-    actualObj = {
-        "WaterActual" : soilAlgo.getEvotransporation(),
-        "LightActual" : soilAlgo.getLightMeanActual(),
-        "TempActual" : soilAlgo.getTempMeanActual()       
-    }
-    responseObj = {
-        'CropName' : soilAlgo.getCropName(),
-        "GoalObj" : goalObj,
-        "ActualObj" : actualObj
-    }
-    constraint.close()
-    soilAlgo.close()
-
-    info_logger.info(responseObj)
-
-    return response(responseObj, 200)
-
-@app.route("/changeStage", methods=['POST'])
-@cross_origin()
-def changeStage():
-
-    stageObj = request.get_json()
-    print(stageObj)
-
-    constraint = Constraint()
-    soilAlgo = SoilAlgorithm(constraint.getConstraint())
-    soilAlgo.setCropStage(stageObj)
-    goalObj = {
-        "GoalTempRange" : soilAlgo.goalTempRange(),
-        "GoalEvo" : soilAlgo.getGoalEvotransporation()
-    }
-    actualObj = {
-        "WaterActual" : soilAlgo.getEvotransporation(),
-        "LightActual" : soilAlgo.getLightMeanActual(),
-        "TempActual" : soilAlgo.getTempMeanActual()       
-    }
-    responseObj = {
-        'CropName' : soilAlgo.getCropName(),
-        "GoalObj" : goalObj,
-        "ActualObj" : actualObj
-    }
-    constraint.close()
-    soilAlgo.close()
-
-    return response(responseObj, 200)
-
-''' Given a Region name, return the crops associated with that Region '''
-@app.route("/getCrops", methods=['GET'])
-@cross_origin()
-def getCrops():
-    region = request.args.get('region', '')
-    client = MongoClient("mongodb://0.0.0.0:27017")
-    region_info = client.Regions.RegionInfo.find({"REGION_NAME": region})
-    crops = client.CropFactor[region_info[0]['CF_COLLECTION']].find()
-    crop_names = []
-    for crop in crops:
-        crop_names.append(crop['CROPNAME'])
-    client.close()
-    return make_response(jsonify(crop_names), 200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        })   
+   
 """ END POINTS END HERE """
 
 
