@@ -33,14 +33,6 @@ button i {
   width: 30%;
   text-align: center;
 }
-/*.btn-block {
-	height: 100%;
-	border-width: 3px;
-	border-color: #69b2e1!important;
-	background-color: transparent!important;
-	color: #5ea0ca!important;
-	font-weight: bold;
-}*/
 .btn-block-nav {
   border-color: #69b2e1!important;
   background-color: #5ea0ca!important;
@@ -183,12 +175,6 @@ button i {
 }
 .modal-footer {
 	padding-bottom: 0px!important;
-}
-.video {
-  margin-top: 20px;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 }
 .dropbtn {
     background-color: #69b2e1;
