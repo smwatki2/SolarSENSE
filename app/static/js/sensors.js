@@ -33,7 +33,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getSensors = function() {
 			$http({
 				method:'GET',
-				url:'http://0.0.0.0:5000/getSensors',
+				url:'http://11.11.11.11/getSensors',
 				headers: {
 					'Access-Control-Allow-Origin': '*',
         			'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -56,7 +56,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getFields = function () {
 		$http({
 			method:'GET',
-			url:'http://0.0.0.0:5000/getFields',
+			url:'http://11.11.11.11/getFields',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -88,7 +88,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method:'POST',
-			url:'http://0.0.0.0:5000/editSensor',
+			url:'http://11.11.11.11/editSensor',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'POST',
