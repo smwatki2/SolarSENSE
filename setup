@@ -116,6 +116,8 @@ if [ "$databases_flag" = true ]; then
   # Setup the SolarSenseReports database
   cd ./Database_Structures
   mongoimport --db FarmInfo --collection fields --file ./DATAFILES/fields.json
+  mongoimport --db FarmInfo --collection sensors --file ./DATAFILES/sensors.json
+
   #the line above won't print anything meaningful out, but will make sure 
   #FarmInfo db exists
 
@@ -126,9 +128,6 @@ if [ "$databases_flag" = true ]; then
   mongo fieldData --eval db.reports.remove({ "timestamp" : { "$exists" : false } })
   python3 convertSensorToISO.py fieldData
   '''
-
-  # Setup the Mean Light Values 
-  python3 lightMeandb.py
 
   # Setup the fields collection in the FarmInfo Database
   python3 fieldsCollection.py
