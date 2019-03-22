@@ -113,24 +113,11 @@ if [ "$databases_flag" = true ]; then
   mongo FarmInfo --eval 'db.dropDatabase()'
 
   echo "Setting Up Databases (after 2019 Spring break Hawaii field test)"
-  # Setup the SolarSenseReports database
+  # Setup the SolarSenseReports database, and import data into them
   cd ./Database_Structures
   mongoimport --db FarmInfo --collection fields --file ./DATAFILES/fields.json
   mongoimport --db FarmInfo --collection sensors --file ./DATAFILES/sensors.json
-
-  #the line above won't print anything meaningful out, but will make sure 
-  #FarmInfo db exists
-
-  '''  # Just in case, we will remove any sensor data that does not have a date,
-  # and also convert any string dates into ISO date format for easy comparison
-
-  # update 3/19/2019 uncomment the following lines when fieldData is ready
-  mongo fieldData --eval db.reports.remove({ "timestamp" : { "$exists" : false } })
-  python3 convertSensorToISO.py fieldData
-  '''
-
-  # Setup the fields collection in the FarmInfo Database
-  python3 fieldsCollection.py
+  mongoimport --db FarmInfo --collection sensorData --file ./DATAFILES/sensorData.json
 
 
   echo "-----Finished with Databases Setup-----"

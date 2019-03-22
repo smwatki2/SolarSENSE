@@ -1,10 +1,2 @@
-{
-	"Fields": [
-		{
-			"name": "Field 1"
-		},
-		{
-			"name": "Field 2"
-		}
-	]
-}
+{"name": "Field 1"},
+{"name": "Field 2"}
