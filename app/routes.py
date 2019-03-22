@@ -37,6 +37,10 @@ def learn():
 @app.route('/config')
 def config():
     return render_template('config.html')
+
+@app.route('/navigation')
+def navigation():
+    return render_template('navigation.html')
 """ ROUTES END HERE """
 
 
