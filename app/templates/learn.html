@@ -34,18 +34,10 @@
 				</ul>
 			</div>
 		</div>
-		<div class="container">
-			<div class="video">
-				<video width="320" height="240" controls>
-  					<source src="movie.mp4" type="video/mp4">
-				</video>
-				<br/>
-				<center><small>(Placeholder until we have access to SolarSPELL)</small></center>
-			</div>
+		<div class="library-container" ng-init="getURL();">
+			<!--TODO: add ability to link to specific digital library page on load-->
+			<iframe src="http://11.11.11.11/digital_library"></iframe>
 		</div>
-		<!--<div ng-controller="LinkCtrl">
-			<button class="btn btn-block-back" ng-click="goToFarmStatus()"><i class="fas fa-arrow-circle-left"></i><br>Back</button>
-		</div>-->
 
 	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="../static/js/popper.min.js"></script>
