@@ -15,6 +15,7 @@ from app.modules.historicalmodels import *
 from app.modules.constraintmodel import *
 from app.modules.regionmodel import *
 from app.modules.fieldSettings import *
+from app.modules.UtilityModule import Rescan
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -286,6 +287,13 @@ def saveFieldSettings():
 @cross_origin()
 def scanForSensors():
     print("Sensors Were Scanned for!")
+    rescan = Rescan()
+    rescan.rescan()
+
+    success = {
+        "message" : "Save Successful"
+    }
+    return response(success,200)
 """ END POINTS END HERE """
 
 
