@@ -1,16 +1,14 @@
 {
-	"FieldSettings":[{
-		"id" : 0,
-		"numOfFields": 2,
-		"fieldNames" : [
+	"id" : 0,
+	"numOfFields": 2,
+	"fieldNames" : [
 
-		{
-			"fieldName" : "Test Field 1"
-		},
-		{
-			"fieldName" : "Test Field 2"
-		}
+	{
+		"fieldName" : "Test Field 1"
+	},
+	{
+		"fieldName" : "Test Field 2"
+	}
 
-		]
-	}]
+	]
 }
