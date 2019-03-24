@@ -1,0 +1,176 @@
+#!/bin/bash
+#DIR variable is the directory of this file, no matter where you run it from
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+#flag variables for which parts of the setup to run
+packages_flag=false
+hotspot_flag=false
+webserver_flag=false
+mongo_flag=false
+databases_flag=false
+sensors_flag=false
+if [ $# -eq 0 ]; then
+  echo "No arguments supplied. Please provide one or more arguments. Ex:
+    sudo bash setup webserver mongo sensors
+
+Available Arguments:
+    packages        Install packages necessary for SolarSPELL
+    hotspot         Move over all configuration files for the wifi hotspot, disable regular resources
+    webserver       Move configuration files for and set up Flask, uWSGI, and nginx
+    mongo           Start the Mongo service, set up the /data/db folder
+    databases       Removes all databases, then sets them up again
+    sensors         Move configuration files for miflora-mqtt, and start the service
+    all             Run everything
+"
+fi 
+for input in "$@"
+do
+  case "$input" in
+    packages)
+      packages_flag=true
+      ;;
+    hotspot)
+      hotspot_flag=true
+      ;;
+    webserver)
+      webserver_flag=true
+      ;;
+    mongo)
+      mongo_flag=true
+      ;;
+    databases)
+      databases_flag=true
+      ;;
+    sensors)
+      sensors_flag=true
+      ;;
+    all)
+      packages_flag=true
+      hotspot_flag=true
+      webserver_flag=true
+      mongo_flag=true
+      databases_flag=true
+      sensors_flag=true
+      ;;
+    *)
+      echo "Command \"$input\" is not a valid argument"
+      ;;
+  esac
+done
+
+if [ "$packages_flag" = true ]; then
+  echo "-----Starting Packages Setup-----"
+  #update
+  sudo apt-get update -y
+  sudo apt-get upgrade -y
+
+  #install all necessary packages
+  echo "Installing necessary packages"
+  sudo apt-get install -y hostapd dnsmasq nginx python3 python3-dev python3-pip build-essential mongodb-server git bluetooth bluez mosquitto mosquitto-clients
+  sudo pip3 install flask uwsgi flask_wtf pymongo flask_jsonpify flask-cors
+  python3 -m pip install pymongo==3.4.0
+  git clone https://github.com/ThomDietrich/miflora-mqtt-daemon.git /opt/miflora-mqtt-daemon
+  echo "-----Finished with Packages Setup-----"
+fi
+if [ "$webserver_flag" = true ]; then
+  echo "-----Starting Webserver Setup-----"
+  sudo cp $DIR/setup_stuff/uwsgi_config $DIR/uwsgi_config.ini
+  sudo sed -i "s@DIRECTORY_HERE@$DIR@g" $DIR/uwsgi_config.ini
+  sudo echo -e "11.11.11.11 \t solar.sense" >> /etc/hosts
+  #setup Flask, uWSGI, and NGINX
+  echo "Setting up Flask, uWSGI, and NGINX"
+  export FLASK_DEBUG=1
+  sudo chown www-data $DIR
+
+  #delete the default NGINX page
+  sudo rm /etc/nginx/sites-enabled/default
+  # set NGINX as a reverse proxy, serving the socket from uWSGI at port 80 instead
+  sudo cp $DIR/setup_stuff/solarSENSE.conf /etc/nginx/sites-available/solarSENSE.conf
+  sudo sed -i "s@DIRECTORY_HERE@$DIR@g" /etc/nginx/sites-available/solarSENSE.conf
+  sudo ln -s /etc/nginx/sites-available/solarSENSE.conf /etc/nginx/sites-enabled
+  echo "-----Finished with Webserver Setup-----"
+fi
+if [ "$mongo_flag" = true ]; then
+  echo "-----Starting Mongo Setup-----"
+  echo "Setting up MongoDB"
+  #Setup MongoDB as a service 
+  sudo mkdir -p /data/db/
+  sudo chown -R `id -un` /data/db/
+  sudo service mongodb start
+  echo "-----Finished with Mongo Setup-----"
+fi
+if [ "$databases_flag" = true ]; then
+  echo "-----Starting Databases Setup-----"
+  echo "Destroying All Databases (before 2019 Spring break Hawaii field test) if they exist"
+  mongo solarsensereports --eval 'db.dropDatabase()'
+  mongo Constraint --eval 'db.dropDatabase()'
+  mongo CropFactor --eval 'db.dropDatabase()'
+  mongo HistoricalClimateData --eval 'db.dropDatabase()'
+  mongo Regions --eval 'db.dropDatabase()'
+  mongo MeanLightValues --eval 'db.dropDatabase()'
+
+  echo "Destroying new Database"
+  mongo FarmInfo --eval 'db.dropDatabase()'
+
+  echo "Setting Up Databases (after 2019 Spring break Hawaii field test)"
+  # Setup the SolarSenseReports database, and import data into them
+  cd ./Database_Structures
+  mongoimport --db FarmInfo --collection fields --file ./DATAFILES/fields.json
+  mongoimport --db FarmInfo --collection sensors --file ./DATAFILES/sensors.json
+  mongoimport --db FarmInfo --collection sensorData --file ./DATAFILES/sensorData.json
+
+
+  echo "-----Finished with Databases Setup-----"
+fi
+if [ "$sensors_flag" = true ]; then
+  echo "-----Starting Sensors Setup-----"
+  sudo cp $DIR/setup_stuff/autofindFlowerCare /usr/local/bin/autofindFlowerCare
+  sudo chmod +x /usr/local/bin/autofindFlowerCare
+  #move mqtt daemon config file
+  sudo cp $DIR/setup_stuff/config.ini /opt/miflora-mqtt-daemon/config.ini
+  #move miflora dameon to /opt/miflora-mqtt-daemon
+  sudo cp $DIR/setup_stuff/miflora-mqtt-daemon.py /opt/miflora-mqtt-daemon
+  echo "Setting up the miflora part"
+  #miflora setup
+  cd /opt/miflora-mqtt-daemon
+  sudo pip3 install -r requirements.txt
+  sudo systemctl enable mosquitto.service
+  echo "-----Finished with Sensors Setup-----"
+fi
+if [ "$hotspot_flag" = true ]; then
+  echo "-----Starting Hotspot Setup-----"
+  #  move configuration files for dhcpcd, dnsmasq, hostapd, and running it all at start up
+  #  dhcpd handles DHCP for the hotspot
+  #  dnsmasq handles DNS, router advertisement, etc
+  #  hostapd allows us to use the wifi chip as a access point
+  #  wifistart is a script that makes an access point network interface work together with the normal wifi interface at boot
+  #  rc.local holds info on scripts to run at start up
+  sudo cp $DIR/setup_stuff/dhcpcd.conf /etc/dhcpcd.conf
+  #backup the original dnsmasq.conf file
+  sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+  sudo cp $DIR/setup_stuff/dnsmasq.conf /etc/dnsmasq.conf
+  sudo cp $DIR/setup_stuff/hostapd.conf /etc/hostapd/hostapd.conf
+  sudo iwconfig wlan0 channel 1
+  sudo cp $DIR/setup_stuff/hostapd /etc/default/hostapd
+  sudo cp $DIR/setup_stuff/wifistart /usr/local/bin/wifistart
+  sudo chmod +x /usr/local/bin/wifistart
+  sudo cp $DIR/setup_stuff/rc.local /etc/rc.local
+  sudo sed -i "s@DIRECTORY_HERE@$DIR@g" /etc/rc.local
+  #disable regular resources, since we just defined our own custom ones
+  echo "Stopping hostapd"
+  sudo systemctl stop hostapd
+  echo "Stopping dnsmasq"
+  sudo systemctl stop dnsmasq
+  echo "Stopping dhcpcd"
+  sudo systemctl stop dhcpcd
+  echo "Disabling hostapd"
+  sudo systemctl disable hostapd
+  echo "Disabling dnsmasq"
+  sudo systemctl disable dnsmasq
+  echo "Disabling dhcpcd"
+  sudo systemctl disable dhcpcd
+  echo "-----Finished with Hotspot Setup-----"
+  echo "Now rebooting"
+  sudo reboot
+fi
+echo "All Done"
