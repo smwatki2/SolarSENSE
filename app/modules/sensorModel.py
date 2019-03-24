@@ -17,22 +17,23 @@ class SensorsCollection(object):
     def __init__(self):
         self.sensorsList = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
-        self.db = self.client.solarsensereports
+        self.db = self.client.FarmInfo
+        self.collection = self.db.sensors
 
     def getSensors(self):
         self.getAll()
         return self.sensorsList
 
     def getAll(self):
-        for i in range(4):
-            oneSensor = Sensor(i, 'AD:GF:HD:JD:2' + str(i), 'Field_' + str(i))
-            self.sensorsList.append(oneSensor)
+        allSensors = self.collection.find()
+        for aSensor in allSensors:
+                oneSensor = Sensor(str(aSensor['_id']), str(aSensor['mac']), aSensor['assigned_field'])
+                self.sensorsList.append(oneSensor)
 
     def updateSensor(self, mac, field):
-        sensors = self.db.sensors
         query = { "mac" : mac }
-        updateField = {"$set":{"field": field}}
-        sensors.update_one(query, updateField)
+        updateField = {"$set":{"assigned_field": field}}
+        self.collection.update_one(query, updateField)
 
     def close(self):
         self.client.close()

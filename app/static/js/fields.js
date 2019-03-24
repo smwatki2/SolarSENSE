@@ -19,7 +19,7 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getFields = function () {
 		$http({
 			method:'GET',
-			url:'http://0.0.0.0:5000/getFields',
+			url:'http://11.11.11.11/getFields',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'PUT,GET',
