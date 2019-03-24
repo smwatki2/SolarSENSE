@@ -5,10 +5,6 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.endSymbol('a}');
 }]);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> US306_Fields_Page
 app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		
 		$scope.showLoader = true;

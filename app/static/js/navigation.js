@@ -31,7 +31,7 @@ navigation.controller('LinkCtrl', function($scope, $window) {
 
 	angular.element(function() {
 		var path = window.location.href;
-		var processedPath = path.replace("http://11.11.11.11", "");
+		var processedPath = path.replace("http://0.0.0.0:5000", "");
 		console.log(path);
 		console.log(processedPath);
 		if (processedPath === '/') {
