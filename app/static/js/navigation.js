@@ -1,40 +1,60 @@
 /*
 	Author: ASU CAPSTONE TEAM 2018
 	Date: 11.08.2018
-	Description: Controllers for Handling UI data binding and REST request
+	Description: Controllers for UI Navigation
 */
 
-var app = angular.module('solarsenseApp', []);
+var navigation = angular.module('navigation', []);
 
-app.config(['$interpolateProvider', function($interpolateProvider) {
-  	$interpolateProvider.startSymbol('{a');
-  	$interpolateProvider.endSymbol('a}');
-}]);
+navigation.controller('LinkCtrl', function($scope, $window) {
 
-app.controller('LinkCtrl', function($scope, $window) {
-
-  	$scope.startCollection = function () {
-		$window.location.href = "instant";
-	}
-
-	$scope.test = function(){
-		$scope.gettingAlgorithm();
-		$scope.gettingAlgorithmFromSensors();
-	}
-
-	$scope.scanSensors = function () {
-		$window.location.href = "scan";
-	}
+	var fieldsLink = document.getElementById("fieldsLink"),
+		learnLink = document.getElementById("learnLink"),
+		configLink = document.getElementById("configLink"),
+		sensorsLink = document.getElementById("sensorsLink");
 
 	$scope.goToLearn = function () {
-		$window.location.href = "http://11.11.11.11/digital_library";
+		$window.location.href = "/learn";
 	}
 
-	$scope.goToFarmStatus = function () {
+	$scope.goToFields = function () {
 		$window.location.href = "/";
 	}
 
-	$scope.openConfig = function () {
-		$window.location.href = "config";
+	$scope.goToSensors = function () {
+		$window.location.href = "/sensors";
 	}
+
+	$scope.goToConfig = function () {
+		$window.location.href = "/config";
+	}
+
+	angular.element(function() {
+		var path = window.location.href;
+		var processedPath = path.replace("http://11.11.11.11", "");
+		console.log(path);
+		console.log(processedPath);
+		if (processedPath === '/') {
+			configLink.classList.remove("active");
+			learnLink.classList.remove("active");
+			sensorsLink.classList.remove("active");
+			fieldsLink.classList.add("active");
+		} else if (processedPath === "/learn") {
+			fieldsLink.classList.remove("active");
+			configLink.classList.remove("active");
+			sensorsLink.classList.remove("active");
+			learnLink.classList.add("active");
+		} else if (processedPath === "/config") {
+			fieldsLink.classList.remove("active");
+			learnLink.classList.remove("active");
+			sensorsLink.classList.remove("active");
+			configLink.classList.add("active");
+		} else if (processedPath === "/sensors") {
+			sensorsLink.classList.add("active");
+			learnLink.classList.remove("active");
+			fieldsLink.classList.remove("active");
+			configLink.classList.remove("active");
+		}
+	});
+
 });

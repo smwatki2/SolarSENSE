@@ -12,36 +12,9 @@
 		<div class="loadingOverlay" ng-show="showLoader">
 			<div class="loader"></div>
 		</div>
-		<div class="header">
-			<div class="container">
-				<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="container">
-				<ul class="nav nav-tabs nav-justified topButtons" ng-controller="LinkCtrl">
-					<li class="nav-item topButton">
-						<a class="nav-link active" ng-click="goToFarmStatus()">
-							<i class="fas fa-adjust"></i><br>Fields
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="openSensors()">
-							<i class="fas fa-wrench"></i><br>Sensors
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="goToLearn()">
-							<i class="fas fa-chalkboard-teacher"></i><br>Learn
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="openConfig()">
-							<i class="fas fa-wrench"></i><br>Settings
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+		
+		<div ng-include="'/navigation'"></div>
+		
 		<div class="container" style="margin-bottom: 20px;">
 			<div ng-repeat="field in fields"  class="card" style="width: 100%; margin-top: 18px;">
 			  	<div class="card-header">
@@ -70,6 +43,7 @@
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script type="text/javascript" src="../static/js/navigation.js"></script>
 		<script type="text/javascript" src="../static/js/fields.js"></script>
 	</body>
 </html>	
