@@ -4,13 +4,14 @@
 	Description: Controllers for Handling UI data binding and REST request
 */
 
-var app = angular.module('solarsenseApp', []);
+var app = angular.module('solarsenseApp', ['navigation']);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
 }]);
 
+<<<<<<< .merge_file_hR06eP
 app.controller('LinkCtrl', function($scope, $window) {
 
   	$scope.startCollection = function () {
@@ -43,6 +44,8 @@ app.controller('LinkCtrl', function($scope, $window) {
 	}
 });
 
+=======
+>>>>>>> .merge_file_YH8U0W
 app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 	// $scope.regions = ['Hawaii', 'Rwanda', 'AZTestRegion'];
