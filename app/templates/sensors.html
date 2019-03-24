@@ -12,36 +12,11 @@
 		<div class="loadingOverlay" ng-show="showLoader">
 			<div class="loader"></div>
 		</div>
-		<div class="header">
-			<div class="container">
-				<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="container">
-				<ul class="nav nav-tabs nav-justified topButtons" ng-controller="LinkCtrl">
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="goToFarmStatus()">
-							<i class="fas fa-adjust"></i><br>Home
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link active" ng-click="openSensors()">
-							<i class="fas fa-wrench"></i><br>Sensors
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="goToLearn()">
-							<i class="fas fa-chalkboard-teacher"></i><br>Learn
-						</a>
-					</li>
-					<li class="nav-item topButton">
-						<a class="nav-link" ng-click="openConfig()">
-							<i class="fas fa-wrench"></i><br>Settings
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+
+		<!-- MENU -->
+		<div ng-include="'/navigation'"></div>
+		<!-- END OF MENU -->
+		
 		<div class="container" style="margin-top: 20px;">
 			<table class="table table-striped">
 			  <thead>
@@ -75,6 +50,7 @@
 	<script type="text/javascript" src="../static/js/angular.min.js"></script>
 	<script type="text/javascript" src="../static/js/angular-route.js"></script>
 	<script type="text/javascript" src="../static/js/angular-animate.js"></script>
+	<script type="text/javascript" src="../static/js/navigation.js"></script>
 	<script type="text/javascript" src="../static/js/sensors.js"></script>
 	</body>
 </html>	
