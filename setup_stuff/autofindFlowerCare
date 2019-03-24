@@ -13,23 +13,20 @@ sleep 10s
 kill -INT $pid
 wait $pid
 
-sensors=$(mongo FarmInfo --eval 'db.Sensors.find()')
+#get the sensors already in the db
+mongoexport -d FarmInfo -c sensors -o temp.txt
+#parse out the other json stuff we don't care about, and just get the mac addresses
+sensors=$(grep -Po "(?<=\"mac\" : \")[a-zA-Z0-9:]*" temp.txt)
 #make sure we don't already have the MAC address of the sensor before adding it to the config file
 cat bluetooth_devices.txt | grep -w "Flower care"| cut -c-17 | while read line
 do
-  skip=false
-  for address in sensors
-  do
-    if ["$address" = "$line"]; then
-      skip=true
-    fi
-  done
-  if ["$skip" = true]; then
+  #Help on wildcard string matching came from: https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash
+  if [[ "$sensors" == *"$line"* ]]; then
     #the mac address of the sensor is already in
     echo "$line is already in the Database"
   else
     #add the new mac address to the db
-    mongo FarmInfo --eval 'db.Sensors.insert({mac:$line})'
+    mongo FarmInfo --eval "db.sensors.insert({\"mac\":\"$line\", \"assigned_field\": 0})"
   fi
 done
 
