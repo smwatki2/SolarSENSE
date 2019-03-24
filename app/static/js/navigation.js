@@ -56,5 +56,4 @@ navigation.controller('LinkCtrl', function($scope, $window) {
 			configLink.classList.remove("active");
 		}
 	});
-
 });
