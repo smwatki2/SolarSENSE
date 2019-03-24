@@ -105,8 +105,8 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		console.log("Scanning For New Sensors Yo")
 		$http({
 			method: 'GET',
-			// url: 'http://11.11.11.11/scanForSensors',
-			url: 'http://localhost:5000/scanForSensors',
+			url: 'http://11.11.11.11/scanForSensors',
+			// url: 'http://localhost:5000/scanForSensors',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
         		'Access-Control-Allow-Methods' : 'POST',
