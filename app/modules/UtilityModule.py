@@ -1,6 +1,5 @@
 import json
 import subprocess
-import psutil
 from pymongo import MongoClient
 
 class Rescan(object):
