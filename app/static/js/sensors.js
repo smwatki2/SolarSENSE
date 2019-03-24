@@ -1,10 +1,14 @@
-var app = angular.module('solarsenseApp', []);
+var app = angular.module('solarsenseApp', ['navigation']);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
   	$interpolateProvider.endSymbol('a}');
 }]);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> US306_Fields_Page
 app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		
 		$scope.showLoader = true;

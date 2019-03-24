@@ -48,7 +48,6 @@ def sensors():
 def navigation():
     return render_template('navigation.html')
 
-
 """ ROUTES END HERE """
 
 

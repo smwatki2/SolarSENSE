@@ -5,7 +5,7 @@
 	             for Fields
 */
 
-var app = angular.module('solarsenseApp', []);
+var app = angular.module('solarsenseApp', ['navigation']);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
