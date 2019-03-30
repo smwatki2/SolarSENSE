@@ -8,6 +8,19 @@ import traceback
 from datetime import datetime, timedelta
 from pymongo import MongoClient
 
+class ReportEntry(object):
+    """docstring for ReportEntry"""
+    def __init__(self, mac, name, timestamp, temperature, moisture, light, conductivity, battery):
+        self.mac = mac
+        self.name = name
+        self.timestamp = timestamp
+        self.temperature = temperature
+        self.moisture = moisture
+        self.light = light
+        self.conductivity
+        self.battery
+    def toString(self):
+        return json.dumps(self.__dict__)
 
 class Trends(object):
 
@@ -31,7 +44,7 @@ class Trends(object):
         pastWeekStartDate = todayDate  - timedelta(6)
         query = {"mac": sensorMac, "$date": {$lt: self.todayDate, $gte: pastWeekStartDate}}
         sensorData = []
-        result = collection.find(query)
+        result = self.collection.find(query)
         for entry in result:
             sensorData.push(entry)
         return sensorData

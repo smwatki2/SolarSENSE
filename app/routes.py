@@ -12,6 +12,7 @@ from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
 from logging.handlers import RotatingFileHandler
+import modules.trendsModel
 
 info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -51,7 +52,27 @@ def navigation():
 
 
 """ TEST END POINTS START HERE """
-    
+
+''' Test end point for filter sensorDat by Sensor'''
+@app.route('/filterBySensor', methods=['GET'])
+@cross_origin()
+def filterBySensor():
+    jsonArray = []
+    trendModel = Trends()
+    for entry in trendModel.filterBySensor("C4:7C:8D:66:CF:40"):
+        print(entry)
+
+    trendModel.close()
+
+    print(make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET'
+        }))
+    return make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
 """ TEST ENDPOINTS END HERE """
 
 
