@@ -10,9 +10,7 @@
 	</head>
 	<body ng-controller="ConfigCtrl">
 		
-		<!-- MENU -->
-		<div ng-include="'/navigation'"></div>
-		<!-- END OF MENU -->
+		{% extends 'navigation.html'%}
 
 		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-if="didSave()">
 			<p><strong>{a saveMessage a}</strong></p>
