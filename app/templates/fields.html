@@ -13,9 +13,7 @@
 			<div class="loader"></div>
 		</div>
 
-		<!-- MENU -->
-		<div ng-include="'/navigation'"></div>
-		<!-- END OF MENU -->
+		{% extends 'navigation.html' %}
 
 		<div class="container" style="margin-bottom: 20px;">
 			<div ng-repeat="field in fields"  class="card" style="width: 100%; margin-top: 18px;">
