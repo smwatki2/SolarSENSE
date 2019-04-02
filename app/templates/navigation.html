@@ -1,4 +1,4 @@
-<div class="header" ng-controller="LinkCtrl">
+<div class="header">
 	<div class="container">
 		<div class="logo pull-left"><h4 class="vertical" style="margin-left: 44px;color: #FFF;">SolarSENSE</h4></div>
 	</div>
@@ -6,23 +6,22 @@
 	<div class="container">
 		<ul class="nav nav-tabs nav-justified topButtons">
 			<li class="nav-item topButton">
-				<a class="nav-link" id="fieldsLink" ng-click="goToFields()">
+				<a class="nav-link" id="fieldsLink" href="/">
 					<i class="fas fa-adjust"></i><br>Fields
 				</a>
 			</li>
 			<li class="nav-item topButton">
-				<a class="nav-link" id="sensorsLink" ng-click="goToSensors()">
+				<a class="nav-link" id="sensorsLink" href="/sensors">
 					<i class="fas fa-adjust"></i><br>Sensors
-
 				</a>
 			</li>
 			<li class="nav-item topButton">
-				<a class="nav-link" id="learnLink" ng-click="goToLearn()">
+				<a class="nav-link" id="learnLink" href="/learn">
 					<i class="fas fa-chalkboard-teacher"></i><br>Learn
 				</a>
 			</li>
 			<li class="nav-item topButton">
-				<a class="nav-link" id="configLink" ng-click="goToConfig()">
+				<a class="nav-link" id="configLink" href="/config">
 					<i class="fas fa-wrench"></i><br>Settings
 				</a>
 			</li>

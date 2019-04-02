@@ -9,10 +9,9 @@
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
 	</head>
 	<body ng-controller="LearnCtrl">
-    
-		<!-- MENU -->
-		<div ng-include="'/navigation'"></div>
-		<!-- END OF MENU -->
+
+		{% extends 'navigation.html'%}
+
 		<div class="library-container" ng-init="getURL();">
 			<!--TODO: add ability to link to specific digital library page on load-->
 			<iframe src="http://11.11.11.11/digital_library"></iframe>
@@ -24,7 +23,6 @@
 	<script type="text/javascript" src="../static/js/angular.min.js"></script>
 	<script type="text/javascript" src="../static/js/angular-route.js"></script>
 	<script type="text/javascript" src="../static/js/angular-animate.js"></script>
-	<script type="text/javascript" src="../static/js/navigation.js"></script>
 	<script type="text/javascript" src="../static/js/learn.js"></script>
 	</body>
 </html>	

@@ -46,11 +46,6 @@ def config():
 def sensors():
     return render_template('sensors.html')
 
-@app.route('/navigation')
-def navigation():
-    return render_template('navigation.html')
-
-
 """ ROUTES END HERE """
 
 
