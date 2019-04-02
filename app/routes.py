@@ -51,13 +51,34 @@ def config():
 
 """ TEST END POINTS START HERE """
 
-''' Test end point for filter sensorDat by Sensor'''
+''' Test end point for filter sensor reports by sensor'''
 @app.route('/filterBySensor', methods=['GET'])
 @cross_origin()
 def filterBySensor():
     jsonArray = []
     trendModel = Trends()
     for entry in trendModel.filterBySensor("C4:7C:8D:66:CF:40"):
+        print(entry)
+
+    trendModel.close()
+
+    print(make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET'
+        }))
+    return make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' Test end point for filter sensor reports by field'''
+@app.route('/filterByField', methods=['GET'])
+@cross_origin()
+def filterByField():
+    jsonArray = []
+    trendModel = Trends()
+    for entry in trendModel.filterByField("Field_0"):
         print(entry)
 
     trendModel.close()

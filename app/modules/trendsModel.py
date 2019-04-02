@@ -26,6 +26,7 @@ class Trends(object):
 
     def __init__(self):
         self.todayDate = datetime.now()
+        self.pastWeekStartDate = self.todayDate  - timedelta(6)
         self.weekData = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
@@ -41,11 +42,17 @@ class Trends(object):
 
     ''' Function to return a sensor's data for the entire week'''
     def filterBySensor(self, sensorMac):
-        pastWeekStartDate = self.todayDate  - timedelta(6)
-        print(self.todayDate);
-        print(pastWeekStartDate);
-        query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': pastWeekStartDate.isoformat()}}
+        query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
         #query = {"mac": sensorMac}
+        sensorData = []
+        result = self.collection.find(query)
+        for entry in result:
+            sensorData.append(entry)
+        return sensorData
+
+        ''' Function to return a sensor's data for the entire week'''
+    def filterByField(self, field):
+        query = {"field": field, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
