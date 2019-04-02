@@ -1,4 +1,4 @@
-var app = angular.module('solarsenseApp', ['navigation']);
+var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
