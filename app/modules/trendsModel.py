@@ -25,7 +25,7 @@ class ReportEntry(object):
 class Trends(object):
 
     def __init__(self):
-        self.todayDate = datetime.datetime.today()
+        self.todayDate = datetime.now()
         self.weekData = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
@@ -39,15 +39,17 @@ class Trends(object):
         for entry in dataset:
                 self.weekData.append(entry)
 
-    ''' Function to return a sensor's data for the entire '''
+    ''' Function to return a sensor's data for the entire week'''
     def filterBySensor(self, sensorMac):
-        pastWeekStartDate = todayDate  - timedelta(6)
-        query = {"mac": sensorMac, "$date": {'$lte': self.todayDate, '$gte': pastWeekStartDate}}
-        #query = {"mac": sensorMac, "$date": {"$lt": self.todayDate, '$gte': pastWeekStartDate}}
+        pastWeekStartDate = self.todayDate  - timedelta(6)
+        print(self.todayDate);
+        print(pastWeekStartDate);
+        query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': pastWeekStartDate.isoformat()}}
+        #query = {"mac": sensorMac}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
-            sensorData.push(entry)
+            sensorData.append(entry)
         return sensorData
 
 

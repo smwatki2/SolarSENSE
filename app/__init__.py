@@ -1,7 +1,7 @@
 import logging
 import os
 from logging.handlers import RotatingFileHandler
-from flask.logging import default_handler
+#from flask.logging import default_handler
 from flask import Flask
 from config import Config
 from logging.config import dictConfig
