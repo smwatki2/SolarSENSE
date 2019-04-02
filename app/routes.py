@@ -43,6 +43,7 @@ def config():
 @app.route('/sensors')
 def sensors():
     return render_template('sensors.html')
+
 """ ROUTES END HERE """
 
 
@@ -62,9 +63,24 @@ def getSensors():
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        })
+
+''' Update sensor '''
+@app.route("/editSensor", methods=['POST'])
+@cross_origin()
+def editSensor():
+    sensorData = request.get_json()
+    print(request.get_json())
+    sensorsCollection = SensorsCollection()
+    sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])
+    sensorsCollection.close()
+    return make_response(jsonify("success"), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
 
-    ''' Get All sensors '''
+    ''' Get All fields '''
 @app.route("/getFields", methods=['GET'])
 @cross_origin()
 def getFields():
@@ -79,7 +95,7 @@ def getFields():
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
-  
+
 """ END POINTS END HERE """
 
 
