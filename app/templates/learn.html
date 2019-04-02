@@ -7,22 +7,24 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
+		<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
+		<script type="text/javascript" src="../static/js/popper.min.js"></script>
+		<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../static/js/angular.min.js"></script>
+		<script type="text/javascript" src="../static/js/angular-route.js"></script>
+		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
+		<script type="text/javascript" src="../static/js/learn.js"></script>
 	</head>
 	<body ng-controller="LearnCtrl">
 
 		{% extends 'navigation.html'%}
 
+		{% block content %}
 		<div class="library-container" ng-init="getURL();">
 			<!--TODO: add ability to link to specific digital library page on load-->
 			<iframe src="http://11.11.11.11/digital_library"></iframe>
 		</div>
+		{% endblock %}
 
-	<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
-	<script type="text/javascript" src="../static/js/popper.min.js"></script>
-	<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../static/js/angular.min.js"></script>
-	<script type="text/javascript" src="../static/js/angular-route.js"></script>
-	<script type="text/javascript" src="../static/js/angular-animate.js"></script>
-	<script type="text/javascript" src="../static/js/learn.js"></script>
 	</body>
 </html>	

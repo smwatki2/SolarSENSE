@@ -13,14 +13,41 @@
 		<script type="text/javascript" src="../static/js/angular.min.js"></script>
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
-		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
-		<script type="text/javascript" src="../static/js/index.js"></script>
+		<script type="text/javascript" src="../static/js/sensors.js"></script>
 	</head>
-	<body ng-controller="HomeCtrl" ng-init="test();">
+	<body ng-controller="SensorsCtrl">
 		<div class="loadingOverlay" ng-show="showLoader">
 			<div class="loader"></div>
 		</div>
 
 		{% extends 'navigation.html'%}
+
+		{% block content %}
+		<div class="container" style="margin-top: 20px;">
+			<table class="table table-striped">
+			  <thead>
+			    <tr>
+			      <th scope="col">Id</th>
+			      <th scope="col">Mac Address</th>
+			      <th scope="col">Assigned Field</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr ng-repeat="sensor in sensors">
+			      <th scope="row">{a sensor.id a}</th>
+			      <td>{a sensor.mac a}</td>
+			      <td>
+			      	<div class="form-group">
+					    <select class="form-control" id="fieldSelect">
+					      <option>1</option>
+					      <option>2</option>
+					    </select>
+					  </div>
+			      </td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+		{% endblock%}
 	</body>
 </html>	
