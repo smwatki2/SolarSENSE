@@ -4,7 +4,7 @@
 	Description: Controllers for Handling UI data binding and REST request
 */
 
-var app = angular.module('solarsenseApp', ['navigation']);
+var app = angular.module('solarsenseApp', []);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
