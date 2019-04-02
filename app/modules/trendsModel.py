@@ -42,7 +42,7 @@ class Trends(object):
     ''' Function to return a sensor's data for the entire '''
     def filterBySensor(self, sensorMac):
         pastWeekStartDate = todayDate  - timedelta(6)
-        query = {"mac": sensorMac, "$date": {$lt: self.todayDate, $gte: pastWeekStartDate}}
+        query = {"mac": sensorMac, "$date": {"$lt": self.todayDate, '$gte': pastWeekStartDate}}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:

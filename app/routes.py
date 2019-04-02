@@ -12,7 +12,7 @@ from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
 from logging.handlers import RotatingFileHandler
-import modules.trendsModel
+from app.modules.trendsModel import *
 
 info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -27,7 +27,8 @@ error_logger.addHandler(error_file_handler)
 error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
-@app.route("/", methods=['GET', 'POST'])
+# @app.route("/", methods=['GET', 'POST'])
+@app.route('/',methods=['GET'])
 def home():
     return render_template('index.html')
 
