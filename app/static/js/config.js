@@ -135,5 +135,4 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.resetSaveAlert = function() {
 		$scope.saveSuccessful = false;
 	};
-
 });

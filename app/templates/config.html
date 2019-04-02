@@ -17,10 +17,9 @@
 	</head>
 	<body ng-controller="ConfigCtrl">
 		
-		<!-- MENU -->
-		<div ng-include="'/navigation'"></div>
-		<!-- END OF MENU -->
+		{% extends 'navigation.html'%}
 
+		{% block content %}
 		<div class="alert alert-warning alert-dismissible fade show" role="alert" ng-if="didSave()">
 			<p><strong>{a saveMessage a}</strong></p>
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="resetSaveAlert()">
@@ -51,5 +50,6 @@
 				<button ng-click="scanForSensors()">Find New Scanners</button>
 			</div>
 		</div>
+		{% endblock %}
 	</body>
 </html>	

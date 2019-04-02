@@ -1,3 +1,4 @@
-{"mac": "AA-AA-AA-AA", "assigned_field": 1},
-{"mac": "AA-AA-AA-AB", "assigned_field": 2},
-{"mac": "AA-AA-AA-AC", "assigned_field": 1}
+
+{"mac": "AA-AA-AA-AA", "assigned_field": "Field 1"},
+{"mac": "AA-AA-AA-AB", "assigned_field": "Field 2"},
+{"mac": "AA-AA-AA-AC", "assigned_field": "Field 1"}

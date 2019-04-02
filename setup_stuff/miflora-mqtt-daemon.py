@@ -123,11 +123,11 @@ def flores_to_openhab_items(flores, reporting_mode):
 config_dir = parse_args.config_dir
 # Start by reading from the FarmInfo.Sensors collection, and appending it's contents into the config.ini file 
 client = MongoClient("mongodb://0.0.0.0:27017")
-sensorsCollection = client.FarmInfo.Sensors
+sensorsCollection = client.FarmInfo.sensors
 sensors = sensorsCollection.find({})
 sensor_array = []
 for sensor in sensors:
-    sensor_array.append(["Sensor" + len(sensor_array), sensor["mac"]])
+    sensor_array.append(["Sensor" + str(len(sensor_array)), sensor["mac"]])
 
 
 # Load configuration file
@@ -156,7 +156,7 @@ if reporting_mode not in ['mqtt-json', 'mqtt-homie', 'json', 'mqtt-smarthome', '
     print_line('Configuration parameter reporting_mode set to an invalid value', error=True, sd_notify=True)
     sys.exit(1)
 if not sensor_array:
-    print_line('No sensors found in the FieldInfo database', error=True, sd_notify=True)
+    print_line('No sensors found in the FarmInfo database', error=True, sd_notify=True)
     sys.exit(1)
 
 print_line('Configuration accepted', console=False, sd_notify=True)
