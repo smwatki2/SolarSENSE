@@ -12,8 +12,9 @@
 		<div class="loadingOverlay" ng-show="showLoader">
 			<div class="loader"></div>
 		</div>
-    
-		<div ng-include="'/navigation'"></div>
+
+		{% extends 'navigation.html'%}
+
 
 		<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 		<script type="text/javascript" src="../static/js/popper.min.js"></script>
@@ -22,7 +23,6 @@
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
-		<script type="text/javascript" src="../static/js/navigation.js"></script>
 		<script type="text/javascript" src="../static/js/index.js"></script>
 	</body>
 </html>	
