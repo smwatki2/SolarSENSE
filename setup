@@ -114,7 +114,7 @@ if [ "$databases_flag" = true ]; then
 
   echo "Setting Up Databases (after 2019 Spring break Hawaii field test)"
   # Setup the SolarSenseReports database, and import data into them
-  cd ./Database_Structures
+  cd $DIR/Database_Structures
   mongoimport --db FarmInfo --collection fields --file ./DATAFILES/fields.json
   mongoimport --db FarmInfo --collection sensors --file ./DATAFILES/sensors.json
   mongoimport --db FarmInfo --collection sensorData --file ./DATAFILES/sensorData.json

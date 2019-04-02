@@ -12,23 +12,22 @@ pid=$!
 sleep 10s
 kill -INT $pid
 wait $pid
-num=0
-#make sure we don't have the same sensor names that are already added to the config file
-while grep "Flora-care$num" /opt/miflora-mqtt-daemon/config.ini > /dev/null;
-do
-  ((num++))
-done
+
+#get the sensors already in the db
+mongoexport -d FarmInfo -c sensors -o temp.txt
+#parse out the other json stuff we don't care about, and just get the mac addresses
+sensors=$(grep -Po "(?<=\"mac\" : \")[a-zA-Z0-9:]*" temp.txt)
 #make sure we don't already have the MAC address of the sensor before adding it to the config file
 cat bluetooth_devices.txt | grep -w "Flower care"| cut -c-17 | while read line
 do
-  sensor="Flora-care$num = $line"
-  if grep -q "$line" /opt/miflora-mqtt-daemon/config.ini; then
+  #Help on wildcard string matching came from: https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash
+  if [[ "$sensors" == *"$line"* ]]; then
     #the mac address of the sensor is already in
-    echo "$line is already in the config.ini"
+    echo "$line is already in the Database"
   else
-    #append the config.ini file with the new mac address
-    sudo echo $sensor >> /opt/miflora-mqtt-daemon/config.ini
-    ((num++))
+    #add the new mac address to the db
+    mongo FarmInfo --eval "db.sensors.insert({\"mac\":\"$line\", \"assigned_field\": 0})"
   fi
 done
+
 sudo rm -f bluetooth_devices.txt
