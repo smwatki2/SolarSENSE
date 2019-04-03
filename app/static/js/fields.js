@@ -38,5 +38,30 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 		});
 	}
 
+	$scope.statusWarnings = {
+		"WarningHigh" : "-2",
+		"CautionHigh" : "-1"
+		"OK" : "0",
+		"CautionLow" : "1",
+		"WarningLow" : "2"
+	}
+
+	// dummy function, will load graphic based on status
+	$scope.buttonStatus = function(status){
+		switch (status) {
+			case $scope.statusWarnings.WarningHigh:
+                break;
+			case $scope.statusWarnings.CautionHigh:
+                break;
+            case $scope.statusWarnings.OK:
+                break;
+            case $scope.statusWarnings.CautionLow:
+            	break;
+            case $scope.statusWarnings.WarningLow:
+                break;
+            default:
+        }
+    }
+
 	$scope.getFields();
 });
