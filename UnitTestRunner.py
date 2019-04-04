@@ -20,6 +20,7 @@ import unittest
 # Import Modules Here
 #-----------------------------
 import FlaskRoutesUnitTests
+import FlaskEndpointsUnitTests
 
 #-----------------------------
 
@@ -28,6 +29,8 @@ unit_test_loader = unittest.TestLoader()
 unit_test_suite  = unittest.TestSuite()
 
 unit_test_suite.addTests(unit_test_loader.loadTestsFromModule(FlaskRoutesUnitTests))
+
+unit_test_suite.addTests(unit_test_loader.loadTestsFromModule(FlaskEndpointsUnitTests))
 
 unit_test_runner = unittest.TextTestRunner(verbosity=5)
 result = unit_test_runner.run(unit_test_suite)

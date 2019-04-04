@@ -34,3 +34,13 @@ class RoutesUnitTest(unittest.TestCase):
 
 		response = self.app.get("/config")
 		self.assertNotEquals(response.status_code, 404)
+
+	def test_sensors_page(self):
+
+		response = self.app.get("/sensors")
+		self.assertTrue(response.mimetype == 'text/html' and response.data is not None)
+
+	def test_sensors_response_code(self):
+
+		response = self.app.get("/sensors")
+		self.assertNotEquals(response.status_code, 404)
