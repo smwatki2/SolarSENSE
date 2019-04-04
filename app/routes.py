@@ -7,6 +7,9 @@ import logging
 from pathlib import Path
 from app import app
 from app.forms import HomeForm
+from app.modules.sensorModel import *
+from app.modules.fieldsModel import *
+from app.modules.UtilityModule import Rescan
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
@@ -28,7 +31,7 @@ error_logger.setLevel(logging.WARNING)
 """ ROUTES START HERE"""
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template('index.html')
+    return render_template('fields.html')
 
 @app.route('/learn')
 def learn():
@@ -38,14 +41,74 @@ def learn():
 def config():
     return render_template('config.html')
 
-@app.route('/navigation')
-def navigation():
-    return render_template('navigation.html')
-""" ROUTES END HERE """
+@app.route('/sensors')
+def sensors():
+    return render_template('sensors.html')
 
+""" ROUTES END HERE """
 
 """ END POINTS START HERE """
 
+''' Get All sensors '''
+@app.route("/getSensors", methods=['GET'])
+@cross_origin()
+def getSensors():
+    sensors = []
+    sensorsCollection = SensorsCollection()
+    for sensor in sensorsCollection.getSensors():
+        print(sensor.toString())
+        sensors.append(sensor.toString())
+    sensorsCollection.close()
+    return make_response(jsonify(sensors), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        })
+
+''' Update sensor '''
+@app.route("/editSensor", methods=['POST'])
+@cross_origin()
+def editSensor():
+    sensorData = request.get_json()
+    print(request.get_json())
+    sensorsCollection = SensorsCollection()
+    sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])
+    sensorsCollection.close()
+    return make_response(jsonify("success"), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        }) 
+
+    ''' Get All fields '''
+@app.route("/getFields", methods=['GET'])
+@cross_origin()
+def getFields():
+    fields = []
+    fieldsCollection = FieldsCollection()
+    for field in fieldsCollection.getFields():
+        print(field.toString())
+        fields.append(field.toString())
+    fieldsCollection.close()
+    return make_response(jsonify(fields), 200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
+        }) 
+
+
+@app.route("/setFields", methods=['POST'])
+def setFields():
+
+    fields = FieldsCollection()
+    fields.removeAllFields()
+    fields.setFields(request.get_json())
+
+    succes = {
+        "message" : "Save Sucessful"
+    }
+
+    return response(succes, 200)
 
 """ END POINTS END HERE """
 
@@ -61,29 +124,29 @@ def navigation():
 def internal_error(error):
     error_logger.warning("500 Internal Server Error")
     errorObj = {
-        'status': error.code,
+        'status': 500,
         'error' : traceback.format_exc()
     }
-    return response(errorObj,error.code)
+    return response(errorObj,500)
 
 
 @app.errorhandler(404)
 def resource_not_found(error):
     error_logger.warning("404 Error Resource Not Found")
     errorObj = {
-        'status': error.code,
+        'status': 404,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 404)
 
 @app.errorhandler(405)
 def method_not_allowed(error):
     error_logger.warning("405 Error: Method Nnot Allowed")
     errorObj = {
-        'status' : error.code,
+        'status' : 405,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 405)
 
 def response(jsonObject, statusCode):
     responseSettingObj = {
