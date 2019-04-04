@@ -105,7 +105,7 @@ def setFields():
     fields.setFields(request.get_json())
 
     succes = {
-        "message" : "successful"
+        "message" : "Save Sucessful"
     }
 
     return response(succes, 200)
