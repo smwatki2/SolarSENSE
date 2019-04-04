@@ -101,29 +101,6 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		});
 	};
 
-	$scope.scanForSensors = function(){
-		console.log("Scanning For New Sensors Yo")
-		$http({
-			method: 'GET',
-			url: 'http://11.11.11.11/scanForSensors',
-			// url: 'http://localhost:5000/scanForSensors',
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-        		'Access-Control-Allow-Methods' : 'POST',
-        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-			}
-		}).then(function success(response){
-			var res = response.data;
-			console.log(res);
-			$scope.saveMessage = res['message'];
-			$scope.saveSuccessful = true;
-			$scope.numOfFields = "";
-			$scope.hasNumOfFields = false;
-		}, function error(resposne){
-			console.log("There was an error");
-		});
-	}
-
 	$scope.didSave = function() {
 		if($scope.saveSuccessful){
 			return true;
