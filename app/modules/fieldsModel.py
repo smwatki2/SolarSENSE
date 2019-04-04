@@ -29,6 +29,15 @@ class FieldsCollection(object):
                 oneField = Field(str(aField['_id']), str(aField['name']))
                 self.fieldsList.append(oneField)
 
+    def removeAllFields(self):
+        self.collection.delete_many({})
+
+    def setFields(self, field_dict):
+        fieldNames = field_dict.get("fieldNames")
+        for field in fieldNames:
+            print(field.get("fieldName"))
+            self.collection.insert({"name" : field.get("fieldName")})
+
     def close(self):
         self.client.close()
 

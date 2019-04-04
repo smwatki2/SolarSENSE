@@ -121,7 +121,6 @@ if [ "$databases_flag" = true ]; then
   mongoimport --db FarmInfoTest --collection fields --file ./DATAFILES/fieldsTest.json
   mongoimport --db FarmInfoTest --collection sensors --file ./DATAFILES/sensorsTest.json
   mongoimport --db FarmInfoTest --collection sensorData --file ./DATAFILES/sensorDataTest.json
-  mongoimport --db Settings --collection FieldSettings --file ./DATAFILES/DefaultSettings.json
 
 
   echo "-----Finished with Databases Setup-----"

@@ -97,30 +97,20 @@ def getFields():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
 
-@app.route("/saveFieldSettings", methods=["POST"])
-@cross_origin()
-def saveFieldSettings():
-    setting = FieldSetting(request.get_json())
-    setting.updateSettings()
-    print("Save Successful")
-    setting.close()
-    success = {
-        "message" : "Save Successful"
-    }
-    return response(success,200)
 
-@app.route("/scanForSensors", methods=["GET"])
-@cross_origin()
-def scanForSensors():
-    print("Sensors Were Scanned for!")
-    rescan = Rescan()
-    rescanSucces = rescan.rescan()
-    print(type(rescanSucces))
-    success = {
-        "message" : rescanSucces
+@app.route("/setFields", methods=['POST'])
+def setFields():
+
+    fields = FieldsCollection()
+    fields.removeAllFields()
+    fields.setFields(request.get_json())
+
+    succes = {
+        "message" : "successful"
     }
-    info_logger.info(rescanSucces)
-    return response(success,200)
+
+    return response(succes, 200)
+
 """ END POINTS END HERE """
 
 

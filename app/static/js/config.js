@@ -81,8 +81,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			url: 'http://11.11.11.11/saveFieldSettings',
-			// url: 'http://localhost:5000/saveFieldSettings',
+			url: 'http://11.11.11.11/setFields',
 			data: saveObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
