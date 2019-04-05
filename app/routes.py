@@ -109,9 +109,9 @@ def getFields():
 def filterBySensor():
     jsonArray = []
     trendModel = Trends()
-    for entry in trendModel.filterBySensor("C4:7C:8D:66:CF:40"):
-        print(entry)
-
+    for entry in trendModel.filterBySensor("C4:7C:8D:67:0E:D9"):
+        #print(entry)
+        jsonArray.append(entry.toString())
     trendModel.close()
 
     print(make_response(jsonify(jsonArray),200,{

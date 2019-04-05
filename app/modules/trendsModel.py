@@ -17,8 +17,8 @@ class ReportEntry(object):
         self.temperature = temperature
         self.moisture = moisture
         self.light = light
-        self.conductivity
-        self.battery
+        self.conductivity = conductivity
+        self.battery = battery
     def toString(self):
         return json.dumps(self.__dict__)
 
@@ -33,7 +33,7 @@ class Trends(object):
         self.collection = self.db.sensorData
 
     def toString(self):
-        return json.dumps(self.__dict__)
+        return json.dumps(self.__dict__, default=json_util.default)
 
     def getData(self):
         dataset = self.collection.find()
@@ -42,12 +42,17 @@ class Trends(object):
 
     ''' Function to return a sensor's data for the entire week'''
     def filterBySensor(self, sensorMac):
-        query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
-        #query = {"mac": sensorMac}
+        #query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
+        query = {"mac": sensorMac}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
-            sensorData.append(entry)
+            entry['_id'] = str(entry['_id'])
+            parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], entry['timestamp'], entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
+            file = open("debug.txt", "a")
+            file.write(parsedEntry.toString())
+            file.close()
+            sensorData.append(parsedEntry)
         return sensorData
 
         ''' Function to return a sensor's data for the entire week'''
@@ -56,7 +61,9 @@ class Trends(object):
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
-            sensorData.append(entry)
+            entry['_id'] = str(entry['_id'])
+            parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], entry['timestamp'], entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
+            sensorData.append(parsedEntry)
         return sensorData
 
 

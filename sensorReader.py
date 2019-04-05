@@ -15,9 +15,9 @@ import datetime
 # declare mongo client on port 27017
 mongoClient = MongoClient('localhost', 27017)
 # declare databse object for database 'solarsensereports'
-db = mongoClient['solarsensereports']
+db = mongoClient['FarmInfo']
 # access sensor data collection
-reports = db.reports
+reports = db.sensorData
 
 # frequency by default
 reminderFrequency = 8 
