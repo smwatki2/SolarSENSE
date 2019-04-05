@@ -7,14 +7,6 @@
 		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
 		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
-	</head>
-	<body ng-controller="HomeCtrl" ng-init="test();">
-		<div class="loadingOverlay" ng-show="showLoader">
-			<div class="loader"></div>
-		</div>
-
-		<div ng-include="'/navigation'"></div>
-
 		<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
 		<script type="text/javascript" src="../static/js/popper.min.js"></script>
 		<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
@@ -22,7 +14,13 @@
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
-		<script type="text/javascript" src="../static/js/navigation.js"></script>
 		<script type="text/javascript" src="../static/js/index.js"></script>
+	</head>
+	<body ng-controller="HomeCtrl" ng-init="test();">
+		<div class="loadingOverlay" ng-show="showLoader">
+			<div class="loader"></div>
+		</div>
+
+		{% extends 'navigation.html'%}
 	</body>
 </html>	
