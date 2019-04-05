@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" ng-app="solarsenseApp">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>SolarSENSE</title>
+		<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../static/css/custom-style.css">
+		<link rel="stylesheet" type="text/css" href="../static/fontawesome/css/all.css">
+		<script type="text/javascript" src="../static/js/jquery-3.3.1.slim.min.js"></script>
+		<script type="text/javascript" src="../static/js/popper.min.js"></script>
+		<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../static/js/angular.min.js"></script>
+		<script type="text/javascript" src="../static/js/angular-route.js"></script>
+		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
+		<script type="text/javascript" src="../static/js/sensors.js"></script>
+	</head>
+	<body ng-controller="SensorsCtrl">
+		<div class="loadingOverlay" ng-show="showLoader">
+			<div class="loader"></div>
+		</div>
+
+		{% extends 'navigation.html'%}
+
+		{% block content %}
+		<div class="container" style="margin-top: 20px;">
+			<table class="table table-striped">
+			  <thead>
+			    <tr>
+			      <th scope="col">Id</th>
+			      <th scope="col">Mac Address</th>
+			      <th scope="col">Assigned Field</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr ng-repeat="sensor in sensors">
+			      <th scope="row">{a sensor.id a}</th>
+			      <td>{a sensor.mac a}</td>
+			      <td>
+			      	<div class="form-group">
+					    <select class="form-control" ng-model="sensor.field">
+					    	<option ng-repeat="field in fields" ng-selected="sensor.field == field.name">{a field.name a}</option>
+					    </select>
+					  </div>
+			      </td>
+			    </tr>
+			  </tbody>
+			</table>
+
+			<button type="button" class="btn btn-info btn-block" style="background-color: #69b2e1!important;border: 1px solid #69b2e1!important;" ng-click="save()">Save</button>
+
+		</div>
+		{% endblock %}
+	</body>
+</html>	
