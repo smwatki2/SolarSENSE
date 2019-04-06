@@ -31,6 +31,7 @@ class Trends(object):
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
         self.collection = self.db.sensorData
+        self.sensorsCollection = self.db.sensors
 
     def toString(self):
         return json.dumps(self.__dict__, default=json_util.default)
@@ -48,24 +49,17 @@ class Trends(object):
         for entry in result:
             entry['_id'] = str(entry['_id'])
             parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], str(entry['timestamp']), entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
-            file = open("debug.txt", "a")
-            file.write(str(self.todayDate))
-            file.write(str(self.pastWeekStartDate))
-            file.write(parsedEntry.toString())
-            file.close()
             sensorData.append(parsedEntry)
         return sensorData
 
         ''' Function to return a sensor's data for the entire week'''
     def filterByField(self, field):
-        query = {"field": field, "timestamp": {"$lt": self.todayDate, "$gte": self.pastWeekStartDate}}
-        sensorData = []
-        result = self.collection.find(query)
+        allSensorQuery = {"assigned_field": field}
+        fieldData = []
+        result = self.sensorsCollection.find(allSensorQuery)
         for entry in result:
-            entry['_id'] = str(entry['_id'])
-            parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], entry['timestamp'], entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
-            sensorData.append(parsedEntry)
-        return sensorData
+            fieldData = fieldData + self.filterBySensor(entry['mac'])
+        return fieldData
 
 
     def close(self):

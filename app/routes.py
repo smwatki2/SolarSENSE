@@ -130,8 +130,8 @@ def filterBySensor():
 def filterByField():
     jsonArray = []
     trendModel = Trends()
-    for entry in trendModel.filterByField("Field_0"):
-        print(entry)
+    for entry in trendModel.filterByField("Field 1"):
+        jsonArray.append(entry.toString())
 
     trendModel.close()
 
