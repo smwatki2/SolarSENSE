@@ -144,6 +144,20 @@ def filterByField():
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
         })
+
+    ''' Test end point for slope calculation'''
+@app.route('/slope', methods=['GET'])
+@cross_origin()
+def slope():
+    trendModel = Trends()
+    slopeValue = trendModel.calculateSlope([1,2,3,4,5], [5,4,6,5,6]) 
+    trendModel.close()
+
+    return make_response(jsonify({'slope': slopeValue}),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
 """ TEST ENDPOINTS END HERE """
 
 
