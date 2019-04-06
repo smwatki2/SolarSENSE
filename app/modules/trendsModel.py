@@ -42,14 +42,15 @@ class Trends(object):
 
     ''' Function to return a sensor's data for the entire week'''
     def filterBySensor(self, sensorMac):
-        #query = {"mac": sensorMac, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
-        query = {"mac": sensorMac}
+        query = {"mac": sensorMac, "timestamp": {"$lt": self.todayDate, "$gte": self.pastWeekStartDate}}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
             entry['_id'] = str(entry['_id'])
-            parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], entry['timestamp'], entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
+            parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], str(entry['timestamp']), entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
             file = open("debug.txt", "a")
+            file.write(str(self.todayDate))
+            file.write(str(self.pastWeekStartDate))
             file.write(parsedEntry.toString())
             file.close()
             sensorData.append(parsedEntry)
@@ -57,7 +58,7 @@ class Trends(object):
 
         ''' Function to return a sensor's data for the entire week'''
     def filterByField(self, field):
-        query = {"field": field, "$date": {'$lte': self.todayDate.isoformat(), '$gte': self.pastWeekStartDate.isoformat()}}
+        query = {"field": field, "timestamp": {"$lt": self.todayDate, "$gte": self.pastWeekStartDate}}
         sensorData = []
         result = self.collection.find(query)
         for entry in result:
