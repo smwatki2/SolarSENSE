@@ -26,9 +26,10 @@ class ReportEntry(object):
 
 class Slope(object):
     """docstring for Slope"""
-    def __init__(self, valueType, value, mac, field):
-        self.valueType = valueType
-        self.value = value
+    def __init__(self, light, temperature, moisture, mac, field):
+        self.light = light
+        self.temperature = temperature
+        self.moisture = moisture
         self.mac = mac
         self.field = field
     def toString(self):
@@ -62,11 +63,50 @@ class Trends(object):
             entry['_id'] = str(entry['_id'])
             entry['timestamp'] = entry['timestamp'].timestamp()
             parsedEntry = ReportEntry(entry['mac'], entry['name_pretty'], entry['timestamp'], entry['temperature'], entry['moisture'], entry['light'], entry['conductivity'], entry['battery'])
-            sensorData.append(parsedEntry)
+            sensorData.append(entry)
         return sensorData
+        '''Function to extract data for one value from the a sensor data'''
+    def generateDataForOneValue(self, data, value):
+        extractData = []
+        for entry in data:
+            extractData.append(entry[value])
+        return extractData
 
         '''Function to get the three slopes for values in a field for a specific sensor in that field'''
-    def getSlopesFromSensorData(self, data):
+    def getSlopesFromSensorData(self, data, mac, field):
+        lightData = self.generateDataForOneValue(data, 'light')
+        tempData = self.generateDataForOneValue(data, 'temperature')
+        moistureData = self.generateDataForOneValue(data, 'moisture')
+        timestampData = self.generateDataForOneValue(data, 'timestamp')
+
+        light = self.calculateSlope(timestampData, lightData)
+        temperature = self.calculateSlope(timestampData, tempData)
+        moisture = self.calculateSlope(timestampData, moistureData)
+        slopes = Slope(light, temperature, moisture, mac, field)
+
+        '''
+        UNCOMMENT BELOW TO TEST THAT DATA AND CALCULATIONS ARE RIGHT
+        file = open("debug.txt", "w")
+        file.write("\nFIELD:" + field)
+        file.write("\n\n")
+        file.write("\n\nLIGHT DATA\n")
+        file.write(str(lightData))
+        file.write("\n\nTEMP DATA\n\n")
+        file.write(str(tempData))
+        file.write("\n\nMOISTURE DATA\n\n")
+        file.write(str(moistureData))
+        file.write("\n\nTIMESTAMP DATA\n\n")
+        file.write(str(timestampData))
+        file.write("\n\nLIGHT SLOPE:")
+        file.write(str(light))
+        file.write("\n\nTEMPERATURE SLOPE:")
+        file.write(str(temperature))
+        file.write("\n\nMOISTURE SLOPE:")
+        file.write(str(moisture))
+        file.close()
+        '''
+
+        return slopes
 
         '''Function to generate slope from a dataset'''
     def calculateSlope(self, timeData, valueData):
@@ -77,11 +117,12 @@ class Trends(object):
         ''' Function to return a sensor's data for the entire week'''
     def filterByField(self, field):
         allSensorQuery = {"assigned_field": field}
-        fieldData = []
+        fieldSlopes = []
         result = self.sensorsCollection.find(allSensorQuery)
         for entry in result:
-            fieldData = fieldData + self.filterBySensor(entry['mac'])
-        return fieldData
+            oneSlope = self.getSlopesFromSensorData(self.filterBySensor(entry['mac']), entry['mac'], field)
+            fieldSlopes.append(oneSlope)
+        return fieldSlopes
 
 
     def close(self):
