@@ -15,6 +15,9 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 	$scope.showLoader = true;
 	$scope.fields = [];
+	$scope.statusLight;
+	$scope.statusTemperature;
+	$scope.statusMoisture;
 
 	$scope.getFields = function () {
 		$http({
@@ -50,16 +53,23 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 	$scope.buttonStatus = function(status){
 		switch (status) {
 			case $scope.statusWarnings.WarningHigh:
+				return "/static/img/arrows/+2.PNG";
                 break;
 			case $scope.statusWarnings.CautionHigh:
+				return "/static/img/arrows/+1.PNG";
                 break;
             case $scope.statusWarnings.OK:
+            	return "/static/img/arrows/0.PNG";
                 break;
             case $scope.statusWarnings.CautionLow:
+            	return "/static/img/arrows/-1.PNG";
             	break;
             case $scope.statusWarnings.WarningLow:
+            	return "/static/img/arrows/-2.PNG";
                 break;
             default:
+            	return "/static/img/arrows/0.PNG";
+            	break;
         }
     }
 
