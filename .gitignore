@@ -7,7 +7,6 @@ errorlog.txt
 data/
 opt/
 venv/
-/app/static/js/env.js
 run.sublime-workspace
 sensorReportData.txt
 /uwsgi.log
