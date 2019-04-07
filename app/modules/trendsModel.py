@@ -33,6 +33,16 @@ class Slope(object):
         self.mac = mac
         self.field = field
     def toString(self):
+        return json.dumps(self.__dict__) 
+
+class Averages(object):
+    """docstring for Averages"""
+    def __init__(self, light, temperature, moisture, field):
+        self.light = light
+        self.temperature = temperature
+        self.moisture = moisture
+        self.field = field
+    def toString(self):
         return json.dumps(self.__dict__)    
 
 class Trends(object):
@@ -114,7 +124,8 @@ class Trends(object):
         yaxis = np.array(valueData, dtype=np.float64)
         slope = (((mean(xaxis) * mean(yaxis)) - mean(xaxis*yaxis)) / ((mean(xaxis)**2) - mean(xaxis**2)))
         return slope
-        ''' Function to return a sensor's data for the entire week'''
+
+        ''' Function to return averages for sensors in a field for the entire week'''
     def filterByField(self, field):
         allSensorQuery = {"assigned_field": field}
         fieldSlopes = []
@@ -122,8 +133,22 @@ class Trends(object):
         for entry in result:
             oneSlope = self.getSlopesFromSensorData(self.filterBySensor(entry['mac']), entry['mac'], field)
             fieldSlopes.append(oneSlope)
-        return fieldSlopes
+        return self.getFieldAverages(fieldSlopes, field)
 
+        '''Function to make averages for data by sensors in a field using slopes generated for each sensor'''
+    def getFieldAverages(self, slopes, field):
+        lightAverage = 0
+        tempAverage = 0
+        moistureAverage = 0
+        for slope in slopes:
+            lightAverage += slope.light
+            tempAverage += slope.temperature
+            moistureAverage += slope.moisture
+        lightAverage = lightAverage / len(slopes)
+        tempAverage = tempAverage / len(slopes)
+        moistureAverage = moistureAverage / len(slopes)
+        slopeAverages = Averages(lightAverage, tempAverage, moistureAverage, field)
+        return slopeAverages.toString()
 
     def close(self):
         self.client.close()

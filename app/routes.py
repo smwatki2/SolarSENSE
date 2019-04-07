@@ -128,18 +128,10 @@ def filterBySensor():
 @app.route('/filterByField', methods=['GET'])
 @cross_origin()
 def filterByField():
-    jsonArray = []
     trendModel = Trends()
-    for entry in trendModel.filterByField("Field 1"):
-        jsonArray.append(entry.toString())
-
+    result = trendModel.filterByField("Field 1")
     trendModel.close()
-
-    print(make_response(jsonify(jsonArray),200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET'
-        }))
-    return make_response(jsonify(jsonArray),200,{
+    return make_response(jsonify(result),200,{
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
