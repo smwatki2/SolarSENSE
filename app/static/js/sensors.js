@@ -1,4 +1,12 @@
+var env = {};
+
+if(window){
+	Object.assign(env, window.__env);
+}
+
 var app = angular.module('solarsenseApp', []);
+
+app.constant("__env", env);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
@@ -14,7 +22,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getSensors = function() {
 			$http({
 				method:'GET',
-				url:'http://11.11.11.11/getSensors',
+				url: __env.serverUrl + '/getSensors',
 				headers: {
 					'Access-Control-Allow-Origin': '*',
         			'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -37,7 +45,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		$scope.getFields = function () {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/getFields',
+			url: __env.serverUrl + '/getFields',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -69,7 +77,7 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method:'POST',
-			url:'http://11.11.11.11/editSensor',
+			url: __env.serverUrl + '/editSensor',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'POST',

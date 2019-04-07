@@ -4,7 +4,15 @@
 	Description: Controllers for Handling UI data binding and REST request
 */
 
+var env = {};
+
+if(window){
+	Object.assign(env, window.__env);
+}
+
 var app = angular.module('solarsenseApp', []);
+
+app.constant("__env", env);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
@@ -81,7 +89,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 
 		$http({
 			method: 'POST',
-			url: 'http://11.11.11.11/setFields',
+			url: __env.serverUrl + '/setFields',
 			data: saveObj,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
