@@ -9,7 +9,6 @@ from app import app
 from app.forms import HomeForm
 from app.modules.sensorModel import *
 from app.modules.fieldsModel import *
-from app.modules.UtilityModule import Rescan
 from flask import render_template, make_response, request
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
