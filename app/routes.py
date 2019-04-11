@@ -89,8 +89,9 @@ def getFields():
     fields = []
     fieldsCollection = FieldsCollection()
     for field in fieldsCollection.getFields():
-        print(field.toString())
-        fields.append(field.toString())
+        trendModel = Trends()
+        result = trendModel.filterByField(field.name)
+        fields.append(result)
     fieldsCollection.close()
     return make_response(jsonify(fields), 200,{
         'Access-Control-Allow-Origin': '*',

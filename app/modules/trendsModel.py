@@ -115,7 +115,6 @@ class Trends(object):
         file.write(str(moisture))
         file.close()
         '''
-
         return slopes
 
         '''Function to generate slope from a dataset'''
@@ -144,9 +143,10 @@ class Trends(object):
             lightAverage += slope.light
             tempAverage += slope.temperature
             moistureAverage += slope.moisture
-        lightAverage = lightAverage / len(slopes)
-        tempAverage = tempAverage / len(slopes)
-        moistureAverage = moistureAverage / len(slopes)
+        if len(slopes) > 0:
+            lightAverage = lightAverage / len(slopes)
+            tempAverage = tempAverage / len(slopes)
+            moistureAverage = moistureAverage / len(slopes)
         slopeAverages = Averages(lightAverage, tempAverage, moistureAverage, field)
         return slopeAverages.toString()
 
