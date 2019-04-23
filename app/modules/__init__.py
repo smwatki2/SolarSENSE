@@ -1,1 +1,1 @@
-__all__ = ['soilmodels']
+__all__ = ['trendsModel','notificationmodels']

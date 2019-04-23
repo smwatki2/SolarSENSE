@@ -14,6 +14,7 @@ from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
 from logging.handlers import RotatingFileHandler
+from app.modules.trendsModel import *
 
 info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -28,7 +29,8 @@ error_logger.addHandler(error_file_handler)
 error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
-@app.route("/", methods=['GET', 'POST'])
+# @app.route("/", methods=['GET', 'POST'])
+@app.route('/',methods=['GET'])
 def home():
     return render_template('fields.html')
 
@@ -86,8 +88,9 @@ def getFields():
     fields = []
     fieldsCollection = FieldsCollection()
     for field in fieldsCollection.getFields():
-        print(field.toString())
-        fields.append(field.toString())
+        trendModel = Trends()
+        result = trendModel.filterByField(field.name)
+        fields.append(result)
     fieldsCollection.close()
     return make_response(jsonify(fields), 200,{
         'Access-Control-Allow-Origin': '*',
@@ -113,7 +116,54 @@ def setFields():
 
 
 """ TEST END POINTS START HERE """
-    
+
+''' Test end point for filter sensor reports by sensor'''
+@app.route('/filterBySensor', methods=['GET'])
+@cross_origin()
+def filterBySensor():
+    jsonArray = []
+    trendModel = Trends()
+    for entry in trendModel.filterBySensor("C4:7C:8D:67:0E:D9"):
+        #print(entry)
+        jsonArray.append(entry.toString())
+    trendModel.close()
+
+    print(make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET'
+        }))
+    return make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' Test end point for filter sensor reports by field'''
+@app.route('/filterByField', methods=['GET'])
+@cross_origin()
+def filterByField():
+    trendModel = Trends()
+    result = trendModel.filterByField("Field 1")
+    trendModel.close()
+    return make_response(jsonify(result),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' Test end point for slope calculation'''
+@app.route('/slope', methods=['GET'])
+@cross_origin()
+def slope():
+    trendModel = Trends()
+    slopeValue = trendModel.calculateSlope([1,2,3,4,5], [5,4,6,5,6]) 
+    trendModel.close()
+
+    return make_response(jsonify({'slope': slopeValue}),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
 """ TEST ENDPOINTS END HERE """
 
 

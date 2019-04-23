@@ -36,7 +36,11 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 		}).then(function success(response){
 			console.log(response.data);
 			for (var i = 0; i < response.data.length; i++) {
-				$scope.fields.push(JSON.parse(response.data[i]));
+				var thisField = JSON.parse(response.data[i]);
+				thisField.light = Math.round(thisField.light);
+				thisField.moisture = Math.round(thisField.moisture);
+				thisField.temperature = Math.round(thisField.temperature);
+				$scope.fields.push(thisField);
 			}
 			$scope.showLoader = false;
 			console.log($scope.fields);

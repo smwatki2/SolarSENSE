@@ -34,12 +34,12 @@
 			</div>
 				<div class="form-group">
 					<label for="numberOfFields">Number Of Fields</label><br>
-					<input id="numOfFieldsInput" type="text" name="numberofFields" ng-model="numOfFields" ng-change="displayFields()" placeholder="# of Fields" required>
+					<input id="numOfFieldsInput" type="text" name="numberofFields" ng-model="numOfFields" ng-change="displayFields()" placeholder="# of Fields (MAX 10)"required>
 				</div>
 				<div class="form-group" ng-show="hasNumOfFields">
 					<label>Enter Field Names:</label>
 					<div ng-repeat="i in fields track by $index">
-						<input type="text" name="fieldName" id="fieldName{a $index+1 a}" placeholder="Field #{a $index+1 a} Name" maxlength="20">
+						<input type="text" name="fieldName" id="fieldName{a $index+1 a}" placeholder="Field #{a $index+1 a} Name" maxlength="10">
 					</div>
 				</div>
 			<button type="button" class="btn btn-info btn-block" style="background-color: #69b2e1!important;border: 1px solid #69b2e1!important;" ng-click="saveFieldSettings()">Save Settings</button>		
