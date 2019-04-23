@@ -46,7 +46,6 @@ def sensors():
 
 """ ROUTES END HERE """
 
-
 """ END POINTS START HERE """
 
 ''' Get All sensors '''
@@ -96,6 +95,20 @@ def getFields():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
 
+
+@app.route("/setFields", methods=['POST'])
+def setFields():
+
+    fields = FieldsCollection()
+    fields.removeAllFields()
+    fields.setFields(request.get_json())
+
+    succes = {
+        "message" : "Save Sucessful"
+    }
+
+    return response(succes, 200)
+
 """ END POINTS END HERE """
 
 
@@ -110,29 +123,29 @@ def getFields():
 def internal_error(error):
     error_logger.warning("500 Internal Server Error")
     errorObj = {
-        'status': error.code,
+        'status': 500,
         'error' : traceback.format_exc()
     }
-    return response(errorObj,error.code)
+    return response(errorObj,500)
 
 
 @app.errorhandler(404)
 def resource_not_found(error):
     error_logger.warning("404 Error Resource Not Found")
     errorObj = {
-        'status': error.code,
+        'status': 404,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 404)
 
 @app.errorhandler(405)
 def method_not_allowed(error):
     error_logger.warning("405 Error: Method Nnot Allowed")
     errorObj = {
-        'status' : error.code,
+        'status' : 405,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 405)
 
 def response(jsonObject, statusCode):
     responseSettingObj = {

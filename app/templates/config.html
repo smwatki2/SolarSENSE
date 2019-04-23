@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" ng-app="solarsenseApp">
 	<head>
 		<meta charset="utf-8">
@@ -28,38 +28,20 @@
 		</div>
 		<div class="container">
 			<div>
-				<p style="text-align: left;color: grey;margin: 10px;">Presets</p>
+				<h1 style="text-align: center;color: grey;margin: 10px;">Settings</h1>
 				<hr/>
 			</div>
-			<form style="margin-bottom: 30px;">
 				<div class="form-group">
-					<!-- TODO: decide which options to keep, get rid of and add when we revamp config menu -->
-					<label for="region">Region</label>
-					<select class="form-control" id="region" ng-init="getRegion()"required>
-						<option value="" disabled selected>Select A Region</option>
-						<option ng-repeat="item in regions" value="{a item.name a}">{a item.name a}</option>
-					</select>
+					<label for="numberOfFields">Number Of Fields</label><br>
+					<input id="numOfFieldsInput" type="text" name="numberofFields" ng-model="numOfFields" ng-change="displayFields()" placeholder="# of Fields (MAX 10)"required>
 				</div>
-				<div class="form-group">
-					<label for="season">Season</label>
-					<select class="form-control" id="season" required>
-						<option value="" disabled selected="">Select a Season</option>
-						<option ng-repeat="season in seasons" value="{a season a}">{a season a}</option>
-					</select>
+				<div class="form-group" ng-show="hasNumOfFields">
+					<label>Enter Field Names:</label>
+					<div ng-repeat="i in fields track by $index">
+						<input type="text" name="fieldName" id="fieldName{a $index+1 a}" placeholder="Field #{a $index+1 a} Name" maxlength="10">
+					</div>
 				</div>
-				<div class="form-group">
-					<label for="crops">Crop</label>
-					<select class="form-control" id="crops" required>
-						<option value="" disabled selected>Please Select a Region First...</option>
-						<option ng-repeat="crop in regionCrops" value="{a crop a}">{a crop a}</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label for="date">Date</label>
-					<input class="form-control" type="date" name="Date" id="selected_date">
-				</div>
-				<button class="btn btn-info btn-block" ng-click="saveConstraints()">Save Settings</button>
-			</form>
+			<button type="button" class="btn btn-info btn-block" style="background-color: #69b2e1!important;border: 1px solid #69b2e1!important;" ng-click="saveFieldSettings()">Save Settings</button>		
 		</div>
 		{% endblock %}
 	</body>
