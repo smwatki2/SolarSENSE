@@ -93,9 +93,6 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 	}
 
 	$scope.save = function () {
-		// for (var i = 0; i < $scope.sensors.length; i++) {
-		// 	$scope.saveSensor($scope.sensors[i]);
-		// }
 		saveMsg = "You are about to assign Fields to Sensors.\nBy doing so any current field data associated with the sensors will be removed.\nContinue?";
 		if(confirm(saveMsg)){
 			for (var i = 0; i < $scope.sensors.length; i++) {

@@ -4,8 +4,7 @@ from pymongo import MongoClient
 
 class Sensor(object):
 
-    def __init__(self, id, mac, field):
-        self.id = id
+    def __init__(self, mac, field):
         self.mac = mac
         self.field = field
 
@@ -27,7 +26,7 @@ class SensorsCollection(object):
     def getAll(self):
         allSensors = self.collection.find()
         for aSensor in allSensors:
-                oneSensor = Sensor(str(aSensor['_id']), str(aSensor['mac']), aSensor['assigned_field'])
+                oneSensor = Sensor(str(aSensor['mac']), aSensor['assigned_field'])
                 self.sensorsList.append(oneSensor)
 
     def updateSensor(self, mac, field):
