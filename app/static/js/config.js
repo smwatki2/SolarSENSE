@@ -29,7 +29,7 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 	$scope.displayFields = function(){
 
 		if(parseInt($scope.numOfFields) !== 0
-			&& parseInt($scope.numOfFields) < 100
+			&& parseInt($scope.numOfFields) <= 10
 			&& $scope.numOfFields !== undefined
 			&& !isNaN(parseInt($scope.numOfFields))) {
 			var fields = parseInt($scope.numOfFields,10);
