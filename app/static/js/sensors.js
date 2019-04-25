@@ -85,20 +85,11 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 
 
 	$scope.saveSensor = function(sensors) {
-
-		// $scope.sensorData = {
-		// 	'mac': sensor.mac,
-		// 	'field': sensor.field
-		// };
 		sensorsData = {
 			"sensors" : sensors
 		}
 
 		$scope.showLoader = true;
-
-		// for(var i = 0; i < $scope.sensors.length; i++){
-		// 	console.log("Current Field Settings: " + $scope.sensors);
-		// }
 
 		$http({
 			method:'POST',
@@ -111,8 +102,6 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 			data: sensorsData
 		}).then(function success(response){
 			$scope.showLoader = false;
-			// console.log(response.data);
-			// alert(response.data);
 			$scope.saveMsg = response.data;
 			$scope.savedSensor = true;
 		}, function error(err){
@@ -131,9 +120,6 @@ app.controller('SensorsCtrl', function($scope,$http,$timeout){
 		console.log("Current Sensors: " + JSON.stringify($scope.currentSensors));
 		saveMsg = "You are about to assign Fields to Sensors.\nBy doing so any current field data associated with the sensors will be removed.\nContinue?";
 		if(confirm(saveMsg)){
-			// for (var i = 0; i < $scope.sensors.length; i++) {
-			// 	$scope.saveSensor($scope.sensors[i]);
-			// }
 			$scope.saveSensor($scope.sensors);
 		}
 	}

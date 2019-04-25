@@ -39,15 +39,8 @@ class SensorsCollection(object):
             else:
                 updateField = {"$set":{"assigned_field": field}}
                 self.collection.update_one(query, updateField)
-                # self.filterByMacAndField(query)
                 self.deleteByMac(query)
                 return True
-
-
-    def filterByMacAndField(self, query):
-        
-        for info in self.sensorData.find(query):
-            print(info)
 
     def deleteByMac(self,query):
 

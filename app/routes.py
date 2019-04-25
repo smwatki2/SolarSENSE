@@ -87,17 +87,6 @@ def editSensor():
         saveMsgs.append(saveMsg);
 
     sensorsCollection.close()
-
-
-
-    # sensorsCollection = SensorsCollection()
-    # if(sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])):
-    #     sensorsCollection.filterByMacAndField(sensorData['mac'], sensorData['field'])
-    #     saveMsg = "Change Successful for Sensor at MAC: " + sensorData['mac']
-    # else:
-    #     saveMsg = "No change was made on sensor: " + sensorData['mac']
-
-    # sensorsCollection.close()
     return response(saveMsgs, 200)
 
     ''' Get All fields '''
