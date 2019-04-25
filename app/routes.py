@@ -71,15 +71,34 @@ def getSensors():
 @cross_origin()
 def editSensor():
     sensorData = request.get_json()
-    print(request.get_json())
+    saveMsgs = []
+    saveMsg = ""
+
+    print(sensorData)
+
     sensorsCollection = SensorsCollection()
-    sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])
+    for sensor in sensorData['sensors']:
+        print(sensor)
+        if(sensorsCollection.updateSensor(sensor['mac'], sensor['field'])):
+            saveMsg = "Change Successful for Sensor at MAC: " + sensor['mac']
+        else:
+            saveMsg = "No change was made on sensor: " + sensor['mac']
+
+        saveMsgs.append(saveMsg);
+
     sensorsCollection.close()
-    return make_response(jsonify("success"), 200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        }) 
+
+
+
+    # sensorsCollection = SensorsCollection()
+    # if(sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])):
+    #     sensorsCollection.filterByMacAndField(sensorData['mac'], sensorData['field'])
+    #     saveMsg = "Change Successful for Sensor at MAC: " + sensorData['mac']
+    # else:
+    #     saveMsg = "No change was made on sensor: " + sensorData['mac']
+
+    # sensorsCollection.close()
+    return response(saveMsgs, 200)
 
     ''' Get All fields '''
 @app.route("/getFields", methods=['GET'])
@@ -97,6 +116,17 @@ def getFields():
         'Access-Control-Allow-Methods' : 'PUT,GET',
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
+
+@app.route("/getSensorFields", methods=['GET'])
+@cross_origin()
+def getSensorFields():
+    fields = []
+    fieldsCollection = FieldsCollection()
+    for field in fieldsCollection.getFields():
+        print(field.toString())
+        fields.append(field.toString())
+    fieldsCollection.close()
+    return response(fields, 200)
 
 
 @app.route("/setFields", methods=['POST'])
