@@ -121,6 +121,8 @@ class Trends(object):
     def calculateSlope(self, timeData, valueData):
         xaxis = np.array(timeData, dtype=np.float64)
         yaxis = np.array(valueData, dtype=np.float64)
+        if len(yaxis) == 0 or len(xaxis) == 0:
+            return 0
         slope = (((mean(xaxis) * mean(yaxis)) - mean(xaxis*yaxis)) / ((mean(xaxis)**2) - mean(xaxis**2)))
         return slope
 
