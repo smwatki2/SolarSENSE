@@ -4,8 +4,7 @@ from pymongo import MongoClient
 
 class Sensor(object):
 
-    def __init__(self, id, mac, field):
-        self.id = id
+    def __init__(self, mac, field):
         self.mac = mac
         self.field = field
 
@@ -19,6 +18,7 @@ class SensorsCollection(object):
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
         self.collection = self.db.sensors
+        self.sensorData = self.db.sensorData
 
     def getSensors(self):
         self.getAll()
@@ -27,13 +27,24 @@ class SensorsCollection(object):
     def getAll(self):
         allSensors = self.collection.find()
         for aSensor in allSensors:
-                oneSensor = Sensor(str(aSensor['_id']), str(aSensor['mac']), aSensor['assigned_field'])
+                oneSensor = Sensor(str(aSensor['mac']), aSensor['assigned_field'])
                 self.sensorsList.append(oneSensor)
 
     def updateSensor(self, mac, field):
         query = { "mac" : mac }
-        updateField = {"$set":{"assigned_field": field}}
-        self.collection.update_one(query, updateField)
+
+        for sensorInfo in self.collection.find(query):
+            if sensorInfo['assigned_field'] == field:
+                return False
+            else:
+                updateField = {"$set":{"assigned_field": field}}
+                self.collection.update_one(query, updateField)
+                self.deleteByMac(query)
+                return True
+
+    def deleteByMac(self,query):
+
+        self.sensorData.delete_many(query)
 
     def close(self):
         self.client.close()

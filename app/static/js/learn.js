@@ -4,7 +4,15 @@
 	Description: Displays the SolarSENSE Digital Library
 */
 
+var env = {};
+
+if(window){
+	Object.assign(env, window.__env);
+}
+
 var app = angular.module('solarsenseApp', []);
+
+app.constant("__env", env);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
@@ -12,7 +20,7 @@ app.config(['$interpolateProvider', function($interpolateProvider) {
 }]);
 
 app.controller('LearnCtrl', function($scope, $timeout, $http) {
-	$scope.url = "http://11.11.11.11/digital_library";
+	$scope.url = __env.serverUrl + "/digital_library";
 	// TODO: Finish adding ability to change which page is used on page load.
 	/* 
 	$scope.hash = $window.location.hash.substring(1);
