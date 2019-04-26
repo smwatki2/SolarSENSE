@@ -49,7 +49,7 @@ class Trends(object):
 
     def __init__(self):
         self.todayDate = datetime.now()
-        self.pastWeekStartDate = self.todayDate  - timedelta(6)
+        self.pastWeekStartDate = self.todayDate  - timedelta(1)
         self.weekData = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
