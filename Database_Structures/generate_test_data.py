@@ -41,6 +41,6 @@ for address in macAddresses:
         light -= 33
         moisture += 2.9
         conduct += 30
-      date += 1800
+      date += 1800000
       if ((day*half_hour != 282)):
         file.write('\n')
