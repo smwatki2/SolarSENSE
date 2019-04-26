@@ -21,11 +21,11 @@ for address in macAddresses:
   temp = random.randint(21,30)
   light = random.randint(500,1000)
   moisture = random.randint(50,75)
-  date = 1555632000 + 25200
+  date = 1555657200000
   conduct = 1000
   for day in range(7):
     for half_hour in range(48):
-      file.write('{{"temperature": {0}, "battery": 100, "light": {1}, "mac": \"{2}\", "moisture": {3}, "timestamp": {{"$date": \"{4}\"}}, "name_pretty": "Flora-care0", "conductivity": {5}}}'.format(temp, int(light), address ,int(moisture), datetime.datetime.fromtimestamp(date,tzlocal()).isoformat(), conduct))
+      file.write('{{"temperature": {0}, "battery": 100, "light": {1}, "mac": \"{2}\", "moisture": {3}, "timestamp": {{"$date": {4}}}, "name_pretty": "Flora-care0", "conductivity": {5}}}'.format(temp, int(light), address ,int(moisture), date, conduct))
       if (half_hour < 12): 
         temp += 0
         light += 10
