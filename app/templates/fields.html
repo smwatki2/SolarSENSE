@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="../static/js/angular-route.js"></script>
 		<script type="text/javascript" src="../static/js/angular-animate.js"></script>
 		<script type="text/javascript" src="../static/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script type="text/javascript" src="../static/js/env.js"></script>
 		<script type="text/javascript" src="../static/js/fields.js"></script>
 	</head>
 	<body ng-controller="FieldsCtrl">
@@ -28,18 +29,61 @@
 		<div class="container" style="margin-bottom: 20px;">
 			<div ng-repeat="field in fields"  class="card" style="width: 100%; margin-top: 18px;">
 			  	<div class="card-header">
-			    	<strong>{a field.name a}</strong>
+			    	<strong>{a field.field a}</strong>
 			  	</div>
 			  	<div class="card-body" style="padding: 0px!important;">
 			  		<div class="row" style="flex-direction: row!important;">
 			  			<div class="col-sm-4 col-4 reportsButtons">
+<<<<<<< HEAD
 			  				<center><small><i class="fas fa-sun" style="font-size: 28px;"></i><br>Light</small><img src={a buttonStatus(statusLight) a}></center>
+=======
+			  				<center>
+			  					<div style="width: 70%;">
+			  						<small><i class="fas fa-sun" style="font-size: 28px;"></i><br>Light</small>
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.light==0">
+			  						<img src="./static/img/0.png" width="15" height="15">
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.light>0">
+			  						<img src="./static/img/+2.png" width="15" height="15">
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.light<0">
+			  						<img src="./static/img/-2.png" width="15" height="15">
+			  					</div>
+			  				</center>
+>>>>>>> 9d3ed03e51bcb2adb4abb6eb67d4092adbb83542
 			  			</div>
 			  			<div class="col-sm-4 col-4 reportsButtons middle">
-							<center><small><i class="fas fa-temperature-low" style="font-size: 28px;"></i><br>Temperature</small></center>
+							<center>
+			  					<div>
+			  						<small><i class="fas fa-temperature-low" style="font-size: 28px;"></i><br>Temperature</small>
+			  					</div>
+			  					<div ng-show="field.temperature==0">
+			  						<img src="./static/img/0.png" width="15" height="15">
+			  					</div>
+			  					<div ng-show="field.temperature>0">
+			  						<img src="./static/img/+2.png" width="15" height="15">
+			  					</div>
+			  					<div ng-show="field.temperature<0">
+			  						<img src="./static/img/-2.png" width="15" height="15">
+			  					</div>
+			  				</center>
 			  			</div>
 			  			<div class="col-sm-4 col-4 reportsButtons">
-			  				<center><small><i class="fas fa-tint" style="font-size: 28px;"></i><br>Moisture</small></center>
+			  				<center>
+			  					<div style="width: 70%;">
+			  						<small><i class="fas fa-tint" style="font-size: 28px;"></i><br>Moisture</small>
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.moisture==0">
+			  						<img src="./static/img/0.png" width="15" height="15">
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.moisture>0">
+			  						<img src="./static/img/+2.png" width="15" height="15">
+			  					</div>
+			  					<div style="width: 30%;" ng-show="field.moisture<0">
+			  						<img src="./static/img/-2.png" width="15" height="15">
+			  					</div>
+			  				</center>
 			  			</div>
 					</div>
 			  	</div>

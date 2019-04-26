@@ -14,6 +14,7 @@ from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
 from logging.handlers import RotatingFileHandler
+from app.modules.trendsModel import *
 
 info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -28,7 +29,8 @@ error_logger.addHandler(error_file_handler)
 error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
-@app.route("/", methods=['GET', 'POST'])
+# @app.route("/", methods=['GET', 'POST'])
+@app.route('/',methods=['GET'])
 def home():
     return render_template('fields.html')
 
@@ -45,7 +47,6 @@ def sensors():
     return render_template('sensors.html')
 
 """ ROUTES END HERE """
-
 
 """ END POINTS START HERE """
 
@@ -70,15 +71,23 @@ def getSensors():
 @cross_origin()
 def editSensor():
     sensorData = request.get_json()
-    print(request.get_json())
+    saveMsgs = []
+    saveMsg = ""
+
+    print(sensorData)
+
     sensorsCollection = SensorsCollection()
-    sensorsCollection.updateSensor(sensorData['mac'], sensorData['field'])
+    for sensor in sensorData['sensors']:
+        print(sensor)
+        if(sensorsCollection.updateSensor(sensor['mac'], sensor['field'])):
+            saveMsg = "Change Successful for Sensor at MAC: " + sensor['mac']
+        else:
+            saveMsg = "No change was made on sensor: " + sensor['mac']
+
+        saveMsgs.append(saveMsg);
+
     sensorsCollection.close()
-    return make_response(jsonify("success"), 200,{
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods' : 'PUT,GET',
-        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
-        }) 
+    return response(saveMsgs, 200)
 
     ''' Get All fields '''
 @app.route("/getFields", methods=['GET'])
@@ -87,8 +96,9 @@ def getFields():
     fields = []
     fieldsCollection = FieldsCollection()
     for field in fieldsCollection.getFields():
-        print(field.toString())
-        fields.append(field.toString())
+        trendModel = Trends()
+        result = trendModel.filterByField(field.name)
+        fields.append(result)
     fieldsCollection.close()
     return make_response(jsonify(fields), 200,{
         'Access-Control-Allow-Origin': '*',
@@ -96,11 +106,83 @@ def getFields():
         'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'        
         }) 
 
+@app.route("/getSensorFields", methods=['GET'])
+@cross_origin()
+def getSensorFields():
+    fields = []
+    fieldsCollection = FieldsCollection()
+    for field in fieldsCollection.getFields():
+        print(field.toString())
+        fields.append(field.toString())
+    fieldsCollection.close()
+    return response(fields, 200)
+
+
+@app.route("/setFields", methods=['POST'])
+def setFields():
+
+    fields = FieldsCollection()
+    fields.removeAllFields()
+    fields.setFields(request.get_json())
+
+    succes = {
+        "message" : "Save Sucessful"
+    }
+
+    return response(succes, 200)
+
 """ END POINTS END HERE """
 
 
 """ TEST END POINTS START HERE """
-    
+
+''' Test end point for filter sensor reports by sensor'''
+@app.route('/filterBySensor', methods=['GET'])
+@cross_origin()
+def filterBySensor():
+    jsonArray = []
+    trendModel = Trends()
+    for entry in trendModel.filterBySensor("C4:7C:8D:67:0E:D9"):
+        #print(entry)
+        jsonArray.append(entry.toString())
+    trendModel.close()
+
+    print(make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET'
+        }))
+    return make_response(jsonify(jsonArray),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' Test end point for filter sensor reports by field'''
+@app.route('/filterByField', methods=['GET'])
+@cross_origin()
+def filterByField():
+    trendModel = Trends()
+    result = trendModel.filterByField("Field 1")
+    trendModel.close()
+    return make_response(jsonify(result),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
+
+    ''' Test end point for slope calculation'''
+@app.route('/slope', methods=['GET'])
+@cross_origin()
+def slope():
+    trendModel = Trends()
+    slopeValue = trendModel.calculateSlope([1,2,3,4,5], [5,4,6,5,6]) 
+    trendModel.close()
+
+    return make_response(jsonify({'slope': slopeValue}),200,{
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods' : 'PUT,GET',
+        'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+        })
 """ TEST ENDPOINTS END HERE """
 
 
@@ -110,29 +192,29 @@ def getFields():
 def internal_error(error):
     error_logger.warning("500 Internal Server Error")
     errorObj = {
-        'status': error.code,
+        'status': 500,
         'error' : traceback.format_exc()
     }
-    return response(errorObj,error.code)
+    return response(errorObj,500)
 
 
 @app.errorhandler(404)
 def resource_not_found(error):
     error_logger.warning("404 Error Resource Not Found")
     errorObj = {
-        'status': error.code,
+        'status': 404,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 404)
 
 @app.errorhandler(405)
 def method_not_allowed(error):
     error_logger.warning("405 Error: Method Nnot Allowed")
     errorObj = {
-        'status' : error.code,
+        'status' : 405,
         'error' : traceback.format_exc()
     }
-    return response(errorObj, error.code)
+    return response(errorObj, 405)
 
 def response(jsonObject, statusCode):
     responseSettingObj = {

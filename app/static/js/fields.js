@@ -5,7 +5,15 @@
 	             for Fields
 */
 
+var env = {};
+
+if(window){
+	Object.assign(env, window.__env);
+}
+
 var app = angular.module('solarsenseApp', []);
+
+app.constant("__env", env);
 
 app.config(['$interpolateProvider', function($interpolateProvider) {
   	$interpolateProvider.startSymbol('{a');
@@ -22,7 +30,7 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 	$scope.getFields = function () {
 		$http({
 			method:'GET',
-			url:'http://11.11.11.11/getFields',
+			url: __env.serverUrl + '/getFields',
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'Access-Control-Allow-Methods' : 'PUT,GET',
@@ -31,7 +39,11 @@ app.controller('FieldsCtrl', function($scope, $timeout, $http, $window) {
 		}).then(function success(response){
 			console.log(response.data);
 			for (var i = 0; i < response.data.length; i++) {
-				$scope.fields.push(JSON.parse(response.data[i]));
+				var thisField = JSON.parse(response.data[i]);
+				thisField.light = Math.round(thisField.light);
+				thisField.moisture = Math.round(thisField.moisture);
+				thisField.temperature = Math.round(thisField.temperature);
+				$scope.fields.push(thisField);
 			}
 			$scope.showLoader = false;
 			console.log($scope.fields);
