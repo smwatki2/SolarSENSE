@@ -103,6 +103,7 @@ def getFields():
         trendModel = Trends()
         result = trendModel.filterByField(field.name)
         fields.append(result)
+    print(fields)
     fieldsCollection.close()
     return make_response(jsonify(fields), 200,{
         'Access-Control-Allow-Origin': '*',
