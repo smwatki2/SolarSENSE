@@ -49,7 +49,8 @@ class Trends(object):
 
     def __init__(self):
         self.todayDate = datetime.now()
-        self.pastWeekStartDate = self.todayDate  - timedelta(1)
+        self.pastWeekStartDate = self.todayDate - timedelta(days=7)
+        print(self.pastWeekStartDate)
         self.weekData = []
         self.client = MongoClient("mongodb://0.0.0.0:27017")
         self.db = self.client.FarmInfo
@@ -149,7 +150,7 @@ class Trends(object):
             lightAverage = lightAverage / len(slopes)
             tempAverage = tempAverage / len(slopes)
             moistureAverage = moistureAverage / len(slopes)
-        slopeAverages = Averages(lightAverage, tempAverage, moistureAverage, field)
+        slopeAverages = Averages(lightAverage/1e-6, tempAverage/1e-6, moistureAverage/1e-6, field)
         return slopeAverages.toString()
 
     def close(self):
