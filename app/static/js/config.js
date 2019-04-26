@@ -73,39 +73,48 @@ app.controller('ConfigCtrl', function($scope,$http,$timeout){
 		var fieldNames = document.getElementsByName("fieldName");
 		var saveArray = new Array();
 
-		for(var i = 0; i < fieldNames.length; i++){
-			var nameObj = {
-				"fieldName" : fieldNames[i].value
+		var fieldNumber = document.getElementById("numOfFieldsInput").value;
+		console.log("Test Value: "+ parseInt(fieldNumber));
+
+		if(!isNaN(parseInt(fieldNumber))){
+			for(var i = 0; i < fieldNames.length; i++){
+				var nameObj = {
+					"fieldName" : fieldNames[i].value
+				}
+				saveArray.push(nameObj);
 			}
-			saveArray.push(nameObj);
-		}
 
-		console.log(saveArray);
+			console.log(saveArray);
 
-		var saveObj = {
-			"numOfFields" : saveFieldCount,
-			"fieldNames" : saveArray
-		};
+			var saveObj = {
+				"numOfFields" : saveFieldCount,
+				"fieldNames" : saveArray
+			};
 
-		$http({
-			method: 'POST',
-			url: __env.serverUrl + '/setFields',
-			data: saveObj,
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-        		'Access-Control-Allow-Methods' : 'POST',
-        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
-			}
-		}).then(function success(response){
-			var res = response.data;
-			console.log(res);
-			$scope.saveMessage = res['message'];
+			$http({
+				method: 'POST',
+				url: __env.serverUrl + '/setFields',
+				data: saveObj,
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+	        		'Access-Control-Allow-Methods' : 'POST',
+	        		'Access-Control-Allow-Headers' : 'Content-Type, Authorization, Content-Length, X-Requested-With'
+				}
+			}).then(function success(response){
+				var res = response.data;
+				console.log(res);
+				$scope.saveMessage = res['message'];
+				$scope.saveSuccessful = true;
+				$scope.numOfFields = "";
+				$scope.hasNumOfFields = false;
+			}, function error(resposne){
+				console.log("There was an error");
+			});
+		} else {
+			$scope.saveMessage = "Invalid input in number of fields. Please Check Entry and try again."
 			$scope.saveSuccessful = true;
-			$scope.numOfFields = "";
-			$scope.hasNumOfFields = false;
-		}, function error(resposne){
-			console.log("There was an error");
-		});
+			return;
+		}
 	};
 
 	$scope.didSave = function() {
