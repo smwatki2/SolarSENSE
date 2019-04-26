@@ -9,12 +9,13 @@ from app import app
 from app.forms import HomeForm
 from app.modules.sensorModel import *
 from app.modules.fieldsModel import *
-from flask import render_template, make_response, request
+from flask import render_template, make_response, request, send_from_directory
 from flask_jsonpify import jsonify
 from flask_cors import cross_origin
 from bson.json_util import dumps
 from logging.handlers import RotatingFileHandler
 from app.modules.trendsModel import *
+
 
 info_file_handler = RotatingFileHandler('logs/info.log',maxBytes=10240,backupCount=10)
 info_file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
@@ -29,7 +30,10 @@ error_logger.addHandler(error_file_handler)
 error_logger.setLevel(logging.WARNING)
 
 """ ROUTES START HERE"""
-# @app.route("/", methods=['GET', 'POST'])
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'img/favicon.png', mimetype="image/vnd.microsoft.icon")
+
 @app.route('/',methods=['GET'])
 def home():
     return render_template('fields.html')
