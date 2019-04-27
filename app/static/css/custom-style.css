@@ -1,0 +1,291 @@
+body, html {
+	font-size: 16px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+button i {
+	font-size: 48px;
+}
+.header {
+	width: 100%;
+  padding-top: 10px;
+  padding-bottom: 0px;
+	background-color: #69b2e1!important;
+  z-index: 3;
+  position: relative;
+}
+.white-icon {
+	color: #FFFFFF;
+}
+.white-color {
+	color: #FFFFFF!important;
+}
+.logo {
+	display:block; 
+	padding-top: 10px;
+	width: 40px;
+	height: 40px;
+	border-radius: 40px;
+	background: url('../../static/img/solarspell.jpg');
+	background-size: contain;
+}
+.menuButtonContainter {
+	margin: 1.5%;
+	height: 120px;
+  width: 30%;
+  text-align: center;
+}
+.btn-block-nav {
+  border-color: #69b2e1!important;
+  background-color: #5ea0ca!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+}
+.btn-block-nav-select {
+  height: 85px;
+  width: 75px;
+  border-width: 3px;
+  border-color: #69b2e1!important;
+  background-color: #5ea0ca!important;
+  color: #69b2e1!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+}
+.btn-block-back {
+  border-color: #69b2e1!important;
+  background-color: #FFFFFF!important;
+  color: #5ea0ca!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 0px 0px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.btn-block-green {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #69e178!important;
+  background-color: #44bf4d!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-yellow {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #eef42e!important;
+  background-color: #ffe01c!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-red {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #ff5656!important;
+  background-color: #e52727!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.btn-block-default {
+  height: 100%;
+  width: 100%;
+  border-width: 3px;
+  border-color: #e0e0e0!important;
+  background-color: #808080!important;
+  color: #FFFFFF!important;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px 0px;
+}
+.vertical{
+  padding-left: 10px;
+}
+.library-container {
+  overflow: hidden;
+  height: 100.00vh;
+  position: relative;
+}
+.library-container iframe{
+   overflow: hidden;
+   border: 0;
+   height: 100%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+   padding-bottom: 126px;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 96px;
+    left: 96px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 18px;
+    left: 18px;
+    width: 156px;
+    height: 156px;
+    opacity: 0;
+  }
+}
+@-webkit-keyframes lds-ripple {
+  0% {
+    top: 96px;
+    left: 96px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 18px;
+    left: 18px;
+    width: 156px;
+    height: 156px;
+    opacity: 0;
+  }
+}
+.lds-ripple {
+  position: relative;
+}
+.lds-ripple div {
+  box-sizing: content-box;
+  position: absolute;
+  border-width: 4px;
+  border-style: solid;
+  opacity: 1;
+  border-radius: 50%;
+  -webkit-animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  animation: lds-ripple 1.5s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(1) {
+  border-color: #f8d880;
+}
+.lds-ripple div:nth-child(2) {
+  border-color: #69b2e1;
+  -webkit-animation-delay: -0.75s;
+  animation-delay: -0.75s;
+}
+.lds-ripple {
+  width: 200px !important;
+  height: 200px !important;
+  margin: auto;
+  -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+  transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+.lds-css {
+}
+.modal-footer {
+	padding-bottom: 0px!important;
+}
+.dropbtn {
+    background-color: #69b2e1;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    color: black;
+    padding: 0px 0px;
+    text-decoration: none;
+    display: block;
+}
+.dropdown a:hover {background-color: #ddd;}
+.show {display: block;}
+.topButtons {
+  width: 100%;
+  margin-top: 10px;
+}
+.topButton {
+  width: 25%;
+  color: #FFF;
+}
+.nav-link {
+  font-weight: normal;
+  color: #FFFFFF;
+}
+.nav-link .active {
+  font-weight: bold;
+  color: #69b2e1;
+}
+.toggleButtons {
+  width: 50%;
+}
+.dataViewToggle { width: 100%; align-items: center; justify-content: center; }
+.loadingOverlay {
+  background-color: #FFFFFF; 
+  margin: 0px!important; 
+  width: 100%!important;
+  height: 100%!important;
+  position: fixed;
+  top: 0; 
+  left:0; 
+  right: 0; 
+  bottom: 0; 
+  z-index: 2; 
+  display: table;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
+}
+.loader {
+  border: 4px solid #69b2e1;
+  border-top: 4px solid #ffe01c;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  margin: auto;
+  margin-top: 300px;
+}
+
+.reportsButtons {
+  padding: 12px;
+}
+
+.middle {
+  border-left: 1px solid rgba(0,0,0,.125);
+  border-right: 1px solid rgba(0,0,0,.125);
+}
+
+@keyframes spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

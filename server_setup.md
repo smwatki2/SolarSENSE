@@ -6,10 +6,10 @@
 
 2. **Move into the directory where you saved the setup folder**
      
-    For example: *`cd /home/pi/setup`*
+    For example: *`cd /home/pi/`*
 
 3. **Run the following command**
-    *`sudo bash ./hotspotServerSetup`*
+    *`sudo bash setup all`*
 
 4. **The script will now start setting things up. Wait for it to do it's thing**
 
